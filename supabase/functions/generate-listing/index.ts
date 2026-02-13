@@ -39,7 +39,7 @@ const generateListingResponseSchema = z.object({
   draft: generatedDraftSchema,
 })
 
-const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash'
+const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash-lite'
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024
 const GEMINI_ERROR_CODE_QUOTA = 'AI_PROVIDER_QUOTA_EXCEEDED'
 const GEMINI_ERROR_CODE_RATE_LIMIT = 'AI_PROVIDER_RATE_LIMITED'
