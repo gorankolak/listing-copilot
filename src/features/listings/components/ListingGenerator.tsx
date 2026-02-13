@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FormEvent, useMemo, useState } from 'react'
+import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 
 import { Button } from '../../../components/ui/Button'
@@ -25,13 +25,15 @@ import { listingApi } from '../api'
 import { buildFormattedListing } from '../buildFormattedListing'
 import { ListingPreview } from './ListingPreview'
 import { listingDraftSchema } from '../schemas'
+import { useSaveListingMutation } from '../queries'
 import type { ListingDraft } from '../types'
 
 type InputMode = 'image' | 'text'
 
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const LOCAL_DRAFT_STORAGE_KEY = 'listing-generator-draft'
+const LEGACY_DRAFT_STORAGE_KEY = 'listing-generator-draft'
+const DRAFT_STORAGE_KEY_PREFIX = 'listing-generator-draft'
 
 type ToastVariant = 'info' | 'success' | 'warning' | 'error'
 type ToastMessage = {
@@ -85,33 +87,65 @@ export function ListingGenerator() {
   const [imageError, setImageError] = useState<string | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isUploadingImage, setIsUploadingImage] = useState(false)
-  const [draft, setDraft] = useState<ListingDraft | null>(() => {
-    const fromStorage = localStorage.getItem(LOCAL_DRAFT_STORAGE_KEY)
+  const [draft, setDraft] = useState<ListingDraft | null>(null)
+  const [lastPayload, setLastPayload] = useState<
+    { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
+  >(null)
+  const [toast, setToast] = useState<ToastMessage | null>(null)
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const saveListingMutation = useSaveListingMutation(user?.id ?? null)
+
+  function getDraftStorageKey(userId: string) {
+    return `${DRAFT_STORAGE_KEY_PREFIX}:${userId}`
+  }
+
+  useEffect(() => {
+    const userId = user?.id
+    if (!userId) {
+      setDraft(null)
+      return
+    }
+
+    const userStorageKey = getDraftStorageKey(userId)
+    const fromStorage =
+      localStorage.getItem(userStorageKey) ?? localStorage.getItem(LEGACY_DRAFT_STORAGE_KEY)
     if (!fromStorage) {
-      return null
+      setDraft(null)
+      return
     }
 
     try {
       const parsed = JSON.parse(fromStorage)
       const valid = listingDraftSchema.safeParse(parsed)
-      return valid.success ? valid.data : null
+      if (!valid.success) {
+        setDraft(null)
+        return
+      }
+
+      setDraft(valid.data)
+
+      // Migrate old global draft storage to user-scoped storage.
+      localStorage.setItem(userStorageKey, JSON.stringify(valid.data))
+      localStorage.removeItem(LEGACY_DRAFT_STORAGE_KEY)
     } catch {
-      return null
+      setDraft(null)
     }
-  })
-  const [lastPayload, setLastPayload] = useState<
-    { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
-  >(null)
-  const [toast, setToast] = useState<ToastMessage | null>(null)
+  }, [user?.id])
 
   function setDraftAndPersist(nextDraft: ListingDraft | null) {
     setDraft(nextDraft)
-    if (nextDraft) {
-      localStorage.setItem(LOCAL_DRAFT_STORAGE_KEY, JSON.stringify(nextDraft))
+    const userId = user?.id
+    if (!userId) {
       return
     }
 
-    localStorage.removeItem(LOCAL_DRAFT_STORAGE_KEY)
+    const userStorageKey = getDraftStorageKey(userId)
+    if (nextDraft) {
+      localStorage.setItem(userStorageKey, JSON.stringify(nextDraft))
+      return
+    }
+
+    localStorage.removeItem(userStorageKey)
   }
 
   const generateMutation = useMutation({
@@ -244,11 +278,34 @@ export function ListingGenerator() {
   }
 
   function handleDraftChange(nextDraft: ListingDraft) {
+    setSaveError(null)
     setDraftAndPersist(nextDraft)
   }
 
   function handleDraftReset() {
+    setSaveError(null)
     setDraftAndPersist(null)
+  }
+
+  function handleDraftSave() {
+    if (!draft) {
+      return
+    }
+
+    setSaveError(null)
+    saveListingMutation.mutate(draft, {
+      onSuccess: () => {
+        setToast({
+          variant: 'success',
+          title: 'Listing saved',
+          description: 'Your listing is now available in the dashboard list.',
+        })
+      },
+      onError: (error) => {
+        const message = error instanceof Error ? error.message : 'Failed to save listing.'
+        setSaveError(message)
+      },
+    })
   }
 
   return (
@@ -352,6 +409,9 @@ export function ListingGenerator() {
           draft={draft}
           onChange={handleDraftChange}
           onReset={handleDraftReset}
+          onSave={handleDraftSave}
+          isSaving={saveListingMutation.isPending}
+          saveError={saveError}
           onCopy={handleCopy}
         />
       ) : null}

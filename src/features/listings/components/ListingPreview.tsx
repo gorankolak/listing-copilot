@@ -15,10 +15,21 @@ type ListingPreviewProps = {
   draft: ListingDraft
   onChange: (nextDraft: ListingDraft) => void
   onReset: () => void
+  onSave: () => void
+  isSaving: boolean
+  saveError: string | null
   onCopy: () => void
 }
 
-export function ListingPreview({ draft, onChange, onReset, onCopy }: ListingPreviewProps) {
+export function ListingPreview({
+  draft,
+  onChange,
+  onReset,
+  onSave,
+  isSaving,
+  saveError,
+  onCopy,
+}: ListingPreviewProps) {
   function updateBullet(index: number, nextValue: string) {
     const nextBullets = [...draft.bullet_points]
     nextBullets[index] = nextValue
@@ -105,6 +116,9 @@ export function ListingPreview({ draft, onChange, onReset, onCopy }: ListingPrev
         </div>
       </CardContent>
       <CardFooter>
+        <Button onClick={onSave} disabled={isSaving}>
+          {isSaving ? 'Saving...' : 'Save listing'}
+        </Button>
         <Button variant="secondary" onClick={onCopy}>
           Copy listing
         </Button>
@@ -112,6 +126,7 @@ export function ListingPreview({ draft, onChange, onReset, onCopy }: ListingPrev
           Reset draft
         </Button>
       </CardFooter>
+      {saveError ? <p className="mt-2 text-sm text-red-700">{saveError}</p> : null}
     </Card>
   )
 }

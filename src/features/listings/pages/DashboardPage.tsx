@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { buttonClassName } from '../../../components/ui/Button'
-import { Card } from '../../../components/ui/Card'
 import { EmptyState, EmptyStateActionLink } from '../../../components/ui/EmptyState'
-import { ErrorBanner } from '../../../components/ui/ErrorBanner'
+import { ErrorBanner, ErrorBannerActionButton } from '../../../components/ui/ErrorBanner'
 import { Skeleton } from '../../../components/ui/Skeleton'
 import {
   Toast,
@@ -13,9 +11,9 @@ import {
   ToastTitle,
   ToastViewport,
 } from '../../../components/ui/Toast'
-import { listingApi } from '../api'
 import { ListingGenerator } from '../components/ListingGenerator'
-import type { Listing } from '../types'
+import { ListingCard } from '../components/ListingCard'
+import { useListingsQuery } from '../queries'
 
 type ToastVariant = 'info' | 'success' | 'warning' | 'error'
 type ToastMessage = {
@@ -27,9 +25,7 @@ type ToastMessage = {
 export function DashboardPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [listings, setListings] = useState<Listing[]>([])
+  const listingsQuery = useListingsQuery()
   const [toast, setToast] = useState<ToastMessage | null>(
     (location.state as { toast?: ToastMessage } | null)?.toast ?? null
   )
@@ -40,38 +36,6 @@ export function DashboardPage() {
     }
   }, [location.pathname, location.state, navigate])
 
-  useEffect(() => {
-    let mounted = true
-
-    async function loadListings() {
-      try {
-        setIsLoading(true)
-        setError(null)
-        const data = await listingApi.list()
-        if (!mounted) return
-        setListings(data)
-      } catch {
-        if (!mounted) return
-        setError('Unable to load listings. Please try again.')
-        setToast({
-          variant: 'error',
-          title: 'Failed to load listings',
-          description: 'Please retry in a moment.',
-        })
-      } finally {
-        if (mounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    void loadListings()
-
-    return () => {
-      mounted = false
-    }
-  }, [])
-
   return (
     <section>
       <h1 className="text-2xl font-semibold">Dashboard</h1>
@@ -80,11 +44,19 @@ export function DashboardPage() {
         <ListingGenerator />
       </div>
 
-      {error ? (
-        <ErrorBanner className="mt-4" title="Could not load your listings" message={error} />
+      {listingsQuery.isError ? (
+        <ErrorBanner
+          className="mt-4"
+          title="Could not load your listings"
+          message={listingsQuery.error instanceof Error ? listingsQuery.error.message : 'Please try again.'}
+        >
+          <ErrorBannerActionButton onClick={() => listingsQuery.refetch()}>
+            Retry
+          </ErrorBannerActionButton>
+        </ErrorBanner>
       ) : null}
 
-      {isLoading ? (
+      {listingsQuery.isLoading ? (
         <div className="mt-6 space-y-3" aria-label="Loading listings">
           <Skeleton height="5rem" />
           <Skeleton height="5rem" />
@@ -92,7 +64,9 @@ export function DashboardPage() {
         </div>
       ) : null}
 
-      {!isLoading && !error && listings.length === 0 ? (
+      {!listingsQuery.isLoading &&
+      !listingsQuery.isError &&
+      (listingsQuery.data?.length ?? 0) === 0 ? (
         <EmptyState
           className="mt-6"
           title="No saved listings yet"
@@ -102,20 +76,11 @@ export function DashboardPage() {
         </EmptyState>
       ) : null}
 
-      {!isLoading && !error && listings.length > 0 ? (
+      {!listingsQuery.isLoading &&
+      !listingsQuery.isError &&
+      (listingsQuery.data?.length ?? 0) > 0 ? (
         <div className="mt-6 space-y-3">
-          {listings.map((listing) => (
-            <Card key={listing.id} className="p-4">
-              <h2 className="text-base font-semibold text-gray-900">{listing.title}</h2>
-              <p className="mt-1 text-sm text-gray-600">{listing.description}</p>
-              <Link
-                to={`/app/listings/${listing.id}`}
-                className={buttonClassName({ variant: 'secondary', size: 'sm', className: 'mt-3' })}
-              >
-                Open listing
-              </Link>
-            </Card>
-          ))}
+          {listingsQuery.data?.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
         </div>
       ) : null}
 

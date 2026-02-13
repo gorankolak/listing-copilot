@@ -1,8 +1,39 @@
 import { supabaseClient } from '../../lib/supabaseClient'
 import { env } from '../../lib/env'
-import { generateListingResponseSchema } from './schemas'
+import { generateListingResponseSchema, listingSchema } from './schemas'
+import type { ListingDraft } from './types'
 
 const LISTING_INPUTS_BUCKET = 'listing-inputs'
+const LISTINGS_TABLE = 'listings'
+
+function parseListingRow(row: unknown) {
+  const parsed = listingSchema.safeParse(row)
+  if (!parsed.success) {
+    throw new Error('Listing response format is invalid.')
+  }
+
+  return parsed.data
+}
+
+function normalizeIntegerPrice(value: number) {
+  if (!Number.isFinite(value)) {
+    return null
+  }
+
+  return Math.max(0, Math.round(value))
+}
+
+function mapDraftToInsertPayload(userId: string, draft: ListingDraft) {
+  return {
+    user_id: userId,
+    title: draft.title.trim(),
+    description: draft.description.trim(),
+    bullet_points: draft.bullet_points.map((bullet) => bullet.trim()).filter(Boolean),
+    price_min: normalizeIntegerPrice(draft.price_min),
+    price_max: normalizeIntegerPrice(draft.price_max),
+    currency: 'EUR',
+  }
+}
 
 function createInputObjectPath(userId: string, fileName: string) {
   const extension = fileName.split('.').pop()?.toLowerCase() ?? 'jpg'
@@ -10,8 +41,77 @@ function createInputObjectPath(userId: string, fileName: string) {
   return `${userId}/${crypto.randomUUID()}.${safeExtension}`
 }
 
+function parseJwtPayload(token: string) {
+  try {
+    const payload = token.split('.')[1]
+    if (!payload) {
+      return null
+    }
+
+    const normalized = payload.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=')
+    return JSON.parse(atob(padded)) as Record<string, unknown>
+  } catch {
+    return null
+  }
+}
+
 export const listingApi = {
-  list: async () => Promise.resolve([]),
+  list: async () => {
+    const { data, error } = await supabaseClient
+      .from(LISTINGS_TABLE)
+      .select(
+        'id, user_id, title, description, bullet_points, price_min, price_max, currency, created_at, updated_at',
+      )
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      throw new Error(`Failed to load listings: ${error.message}`)
+    }
+
+    return (data ?? []).map((row) => parseListingRow(row))
+  },
+  getById: async (id: string) => {
+    const { data, error } = await supabaseClient
+      .from(LISTINGS_TABLE)
+      .select(
+        'id, user_id, title, description, bullet_points, price_min, price_max, currency, created_at, updated_at',
+      )
+      .eq('id', id)
+      .maybeSingle()
+
+    if (error) {
+      throw new Error(`Failed to load listing: ${error.message}`)
+    }
+
+    if (!data) {
+      return null
+    }
+
+    return parseListingRow(data)
+  },
+  save: async ({ userId, draft }: { userId: string; draft: ListingDraft }) => {
+    const payload = mapDraftToInsertPayload(userId, draft)
+    const { data, error } = await supabaseClient
+      .from(LISTINGS_TABLE)
+      .insert(payload)
+      .select(
+        'id, user_id, title, description, bullet_points, price_min, price_max, currency, created_at, updated_at',
+      )
+      .single()
+
+    if (error) {
+      throw new Error(`Failed to save listing: ${error.message}`)
+    }
+
+    return parseListingRow(data)
+  },
+  delete: async (id: string) => {
+    const { error } = await supabaseClient.from(LISTINGS_TABLE).delete().eq('id', id)
+    if (error) {
+      throw new Error(`Failed to delete listing: ${error.message}`)
+    }
+  },
   uploadInputImage: async (userId: string, file: File) => {
     const objectPath = createInputObjectPath(userId, file.name)
 
@@ -65,6 +165,35 @@ export const listingApi = {
       throw new Error('Session is invalid or expired. Log out, log in again, then retry.')
     }
 
+    const jwtPayload = parseJwtPayload(accessToken)
+    const tokenIssuer =
+      typeof jwtPayload?.iss === 'string' ? jwtPayload.iss : null
+    const tokenRef =
+      typeof jwtPayload?.ref === 'string' ? jwtPayload.ref : null
+    const tokenExpiry =
+      typeof jwtPayload?.exp === 'number' ? jwtPayload.exp : null
+
+    const expectedIssuer = `${env.VITE_SUPABASE_URL}/auth/v1`
+    const expectedRef = new URL(env.VITE_SUPABASE_URL).hostname.split('.')[0]
+    const isTokenExpired =
+      tokenExpiry !== null ? tokenExpiry * 1000 <= Date.now() : false
+
+    if (tokenIssuer && tokenIssuer !== expectedIssuer) {
+      throw new Error(
+        `Session token issuer mismatch. Expected ${expectedIssuer} but got ${tokenIssuer}. Please log out and log in again.`,
+      )
+    }
+
+    if (tokenRef && tokenRef !== expectedRef) {
+      throw new Error(
+        `Session token project mismatch. Expected ${expectedRef} but got ${tokenRef}. Please log out and log in again.`,
+      )
+    }
+
+    if (isTokenExpired) {
+      throw new Error('Session token is expired. Please log out and log in again.')
+    }
+
     async function invokeWithToken(token: string) {
       const response = await fetch(
         `${env.VITE_SUPABASE_URL}/functions/v1/generate-listing`,
@@ -73,7 +202,7 @@ export const listingApi = {
           headers: {
             'content-type': 'application/json',
             apikey: env.VITE_SUPABASE_ANON_KEY,
-            authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         },
