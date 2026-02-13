@@ -8,15 +8,18 @@ type ErrorBannerProps = HTMLAttributes<HTMLDivElement> & {
 }
 
 export function ErrorBanner({ title = 'Something went wrong', message, className, ...props }: ErrorBannerProps) {
+  const { children, ...restProps } = props
+
   return (
     <div
       role="alert"
       aria-live="assertive"
       className={cn('rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-900', className)}
-      {...props}
+      {...restProps}
     >
       <p className="text-sm font-semibold">{title}</p>
       <div className="mt-1 text-sm">{message}</div>
+      {children}
     </div>
   )
 }

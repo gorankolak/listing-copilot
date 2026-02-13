@@ -6,3 +6,5 @@ export type Listing = {
   price_min: number
   price_max: number
 }
+
+export type ListingDraft = Omit<Listing, 'id'>

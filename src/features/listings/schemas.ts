@@ -8,3 +8,9 @@ export const listingSchema = z.object({
   price_min: z.number(),
   price_max: z.number(),
 })
+
+export const listingDraftSchema = listingSchema.omit({ id: true })
+
+export const generateListingResponseSchema = z.object({
+  draft: listingDraftSchema,
+})
