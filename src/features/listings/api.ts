@@ -109,14 +109,6 @@ export const listingApi = {
       }
     }
 
-    function isInvalidJwtResponse(invokeError: unknown) {
-      const functionHttpError = invokeError as { context?: Response }
-      return (
-        functionHttpError.context instanceof Response &&
-        functionHttpError.context.status === 401
-      )
-    }
-
     function getErrorMessage(
       invokeData: unknown,
       invokeError: unknown,
@@ -175,24 +167,7 @@ export const listingApi = {
         .join(' ')
     }
 
-    let { data, error } = await invokeWithToken(accessToken)
-
-    if (error && isInvalidJwtResponse(error)) {
-      const { data: secondRefreshData, error: secondRefreshError } =
-        await supabaseClient.auth.refreshSession()
-      if (!secondRefreshError && secondRefreshData.session?.access_token) {
-        accessToken = secondRefreshData.session.access_token
-        const retryResult = await invokeWithToken(accessToken)
-        data = retryResult.data
-        error = retryResult.error
-      }
-    }
-
-    if (error && isInvalidJwtResponse(error)) {
-      const anonRetryResult = await invokeWithToken(env.VITE_SUPABASE_ANON_KEY)
-      data = anonRetryResult.data
-      error = anonRetryResult.error
-    }
+    const { data, error } = await invokeWithToken(env.VITE_SUPABASE_ANON_KEY)
 
     if (error) {
       const functionHttpError = error as { context?: Response }
@@ -205,11 +180,6 @@ export const listingApi = {
       }
 
       const baseMessage = getErrorMessage(data, error, functionHttpDetails)
-      if (functionHttpDetails?.includes('"Invalid JWT"')) {
-        throw new Error(
-          `${baseMessage} Check Supabase auth: clear site storage, log in again, and verify frontend env + deployed function use the same project.`,
-        )
-      }
       throw new Error(baseMessage)
     }
 
