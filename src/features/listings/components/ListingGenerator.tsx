@@ -13,8 +13,17 @@ import { ErrorBanner, ErrorBannerActionButton } from '../../../components/ui/Err
 import { FormFieldError } from '../../../components/ui/FormFieldError'
 import { Input } from '../../../components/ui/Input'
 import { Textarea } from '../../../components/ui/Textarea'
+import {
+  Toast,
+  ToastCloseButton,
+  ToastDescription,
+  ToastTitle,
+  ToastViewport,
+} from '../../../components/ui/Toast'
 import { useAuth } from '../../auth/components/useAuth'
 import { listingApi } from '../api'
+import { buildFormattedListing } from '../buildFormattedListing'
+import { ListingPreview } from './ListingPreview'
 import { listingDraftSchema } from '../schemas'
 import type { ListingDraft } from '../types'
 
@@ -23,6 +32,13 @@ type InputMode = 'image' | 'text'
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const LOCAL_DRAFT_STORAGE_KEY = 'listing-generator-draft'
+
+type ToastVariant = 'info' | 'success' | 'warning' | 'error'
+type ToastMessage = {
+  variant?: ToastVariant
+  title: string
+  description?: string
+}
 
 function validateImageFile(file: File | null) {
   if (!file) {
@@ -38,6 +54,26 @@ function validateImageFile(file: File | null) {
   }
 
   return null
+}
+
+function fallbackCopyToClipboard(text: string) {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.setAttribute('readonly', '')
+  textarea.style.position = 'fixed'
+  textarea.style.left = '-9999px'
+  document.body.appendChild(textarea)
+  textarea.focus()
+  textarea.select()
+
+  let isCopied = false
+  try {
+    isCopied = document.execCommand('copy')
+  } finally {
+    document.body.removeChild(textarea)
+  }
+
+  return isCopied
 }
 
 export function ListingGenerator() {
@@ -66,14 +102,24 @@ export function ListingGenerator() {
   const [lastPayload, setLastPayload] = useState<
     { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
   >(null)
+  const [toast, setToast] = useState<ToastMessage | null>(null)
+
+  function setDraftAndPersist(nextDraft: ListingDraft | null) {
+    setDraft(nextDraft)
+    if (nextDraft) {
+      localStorage.setItem(LOCAL_DRAFT_STORAGE_KEY, JSON.stringify(nextDraft))
+      return
+    }
+
+    localStorage.removeItem(LOCAL_DRAFT_STORAGE_KEY)
+  }
 
   const generateMutation = useMutation({
     mutationKey: ['generateListing'],
     mutationFn: listingApi.generateListing,
     onSuccess: (nextDraft) => {
       setSubmitError(null)
-      setDraft(nextDraft)
-      localStorage.setItem(LOCAL_DRAFT_STORAGE_KEY, JSON.stringify(nextDraft))
+      setDraftAndPersist(nextDraft)
     },
     onError: (error) => {
       setSubmitError(
@@ -163,108 +209,162 @@ export function ListingGenerator() {
     generateMutation.mutate(payload)
   }
 
+  async function handleCopy() {
+    if (!draft) {
+      return
+    }
+
+    const formattedListing = buildFormattedListing(draft)
+
+    try {
+      await navigator.clipboard.writeText(formattedListing)
+      setToast({
+        variant: 'success',
+        title: 'Listing copied',
+        description: 'Formatted listing content is now in your clipboard.',
+      })
+      return
+    } catch {
+      const isFallbackCopySuccess = fallbackCopyToClipboard(formattedListing)
+      if (isFallbackCopySuccess) {
+        setToast({
+          variant: 'success',
+          title: 'Listing copied',
+          description: 'Used fallback copy because direct clipboard access failed.',
+        })
+        return
+      }
+    }
+
+    setToast({
+      variant: 'error',
+      title: 'Copy failed',
+      description: 'Clipboard access is unavailable. Please copy manually.',
+    })
+  }
+
+  function handleDraftChange(nextDraft: ListingDraft) {
+    setDraftAndPersist(nextDraft)
+  }
+
+  function handleDraftReset() {
+    setDraftAndPersist(null)
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Generate a listing</CardTitle>
-        <CardDescription>Choose image upload or text input to start.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-2">
-          <Button
-            variant={mode === 'image' ? 'primary' : 'secondary'}
-            size="sm"
-            onClick={() => handleModeChange('image')}
-            aria-pressed={mode === 'image'}
-            disabled={isSubmitting}
-          >
-            Image
-          </Button>
-          <Button
-            variant={mode === 'text' ? 'primary' : 'secondary'}
-            size="sm"
-            onClick={() => handleModeChange('text')}
-            aria-pressed={mode === 'text'}
-            disabled={isSubmitting}
-          >
-            Text
-          </Button>
-        </div>
-
-        <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
-          {mode === 'image' ? (
-            <div className="space-y-2">
-              <label
-                htmlFor="listing-image-upload"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Product image
-              </label>
-              <Input
-                id="listing-image-upload"
-                type="file"
-                accept={ACCEPTED_IMAGE_TYPES.join(',')}
-                onChange={handleImageChange}
-                aria-invalid={Boolean(imageError)}
-                disabled={isSubmitting}
-              />
-              <p className="text-xs text-gray-500">
-                Accepted: JPG, PNG, WEBP. Max size: 10MB.
-              </p>
-              <FormFieldError message={imageError} />
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <label
-                htmlFor="listing-text-input"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Product details
-              </label>
-              <Textarea
-                id="listing-text-input"
-                value={textInput}
-                onChange={(event) => setTextInput(event.target.value)}
-                placeholder="Brand, model, condition, accessories, and any important details."
-                aria-invalid={Boolean(textError)}
-                disabled={isSubmitting}
-              />
-              <FormFieldError message={textError} />
-            </div>
-          )}
-
-          <Button type="submit" disabled={isSubmitDisabled}>
-            {isUploadingImage
-              ? 'Uploading image...'
-              : generateMutation.isPending
-                ? 'Generating listing...'
-                : 'Generate listing'}
-          </Button>
-
-          <FormFieldError message={submitError} />
-          {submitError && lastPayload ? (
-            <ErrorBanner
-              title="Generation failed"
-              message="Please retry. Your inputs were preserved."
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Generate a listing</CardTitle>
+          <CardDescription>Choose image upload or text input to start.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-2">
+            <Button
+              variant={mode === 'image' ? 'primary' : 'secondary'}
+              size="sm"
+              onClick={() => handleModeChange('image')}
+              aria-pressed={mode === 'image'}
+              disabled={isSubmitting}
             >
-              <ErrorBannerActionButton
-                onClick={() => generateMutation.mutate(lastPayload)}
+              Image
+            </Button>
+            <Button
+              variant={mode === 'text' ? 'primary' : 'secondary'}
+              size="sm"
+              onClick={() => handleModeChange('text')}
+              aria-pressed={mode === 'text'}
+              disabled={isSubmitting}
+            >
+              Text
+            </Button>
+          </div>
+
+          <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
+            {mode === 'image' ? (
+              <div className="space-y-2">
+                <label
+                  htmlFor="listing-image-upload"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Product image
+                </label>
+                <Input
+                  id="listing-image-upload"
+                  type="file"
+                  accept={ACCEPTED_IMAGE_TYPES.join(',')}
+                  onChange={handleImageChange}
+                  aria-invalid={Boolean(imageError)}
+                  disabled={isSubmitting}
+                />
+                <p className="text-xs text-gray-500">
+                  Accepted: JPG, PNG, WEBP. Max size: 10MB.
+                </p>
+                <FormFieldError message={imageError} />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <label
+                  htmlFor="listing-text-input"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Product details
+                </label>
+                <Textarea
+                  id="listing-text-input"
+                  value={textInput}
+                  onChange={(event) => setTextInput(event.target.value)}
+                  placeholder="Brand, model, condition, accessories, and any important details."
+                  aria-invalid={Boolean(textError)}
+                  disabled={isSubmitting}
+                />
+                <FormFieldError message={textError} />
+              </div>
+            )}
+
+            <Button type="submit" disabled={isSubmitDisabled}>
+              {isUploadingImage
+                ? 'Uploading image...'
+                : generateMutation.isPending
+                  ? 'Generating listing...'
+                  : 'Generate listing'}
+            </Button>
+
+            <FormFieldError message={submitError} />
+            {submitError && lastPayload ? (
+              <ErrorBanner
+                title="Generation failed"
+                message="Please retry. Your inputs were preserved."
               >
-                Retry
-              </ErrorBannerActionButton>
-            </ErrorBanner>
-          ) : null}
-          {draft ? (
-            <div className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-900">
-              <p className="font-semibold">{draft.title}</p>
-              <p className="mt-1">{draft.description}</p>
-              <p className="mt-2">
-                Price range: ${draft.price_min} - ${draft.price_max}
-              </p>
-            </div>
-          ) : null}
-        </form>
-      </CardContent>
-    </Card>
+                <ErrorBannerActionButton
+                  onClick={() => generateMutation.mutate(lastPayload)}
+                >
+                  Retry
+                </ErrorBannerActionButton>
+              </ErrorBanner>
+            ) : null}
+          </form>
+        </CardContent>
+      </Card>
+
+      {draft ? (
+        <ListingPreview
+          draft={draft}
+          onChange={handleDraftChange}
+          onReset={handleDraftReset}
+          onCopy={handleCopy}
+        />
+      ) : null}
+
+      {toast ? (
+        <ToastViewport>
+          <Toast variant={toast.variant ?? 'info'}>
+            <ToastTitle>{toast.title}</ToastTitle>
+            {toast.description ? <ToastDescription>{toast.description}</ToastDescription> : null}
+            <ToastCloseButton onClick={() => setToast(null)} />
+          </Toast>
+        </ToastViewport>
+      ) : null}
+    </>
   )
 }
