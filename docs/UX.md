@@ -8,7 +8,7 @@ Inputs:
 Assumptions (MVP):
 
 - Supabase (Auth + Postgres + Storage)
-- Frontend calls our backend endpoint for AI generation (proxy to OpenAI)
+- Frontend calls our backend endpoint for AI generation (proxy to Gemini)
 - Listings stored per authenticated user in DB
 
 ---
@@ -62,6 +62,7 @@ Assumptions (MVP):
 - Invalid image upload → Inline error
 - Empty input submission → Inline validation
 - AI failure → Error banner + Retry button
+- AI quota/rate limit → Friendly message ("AI provider quota exceeded. Please try again later.")
 - Save failure → Keep preview visible + Retry
 - Session expired → Redirect to Login with return URL
 - Listing not found → Friendly 404 state

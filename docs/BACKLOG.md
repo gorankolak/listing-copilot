@@ -126,7 +126,7 @@ All must:
 ### Feature: AI Generation API Integration
 
 - [ ] Create `/supabase/functions/generate-listing`
-- [ ] Implement OpenAI proxy logic
+- [ ] Implement Gemini proxy logic
 - [ ] Implement backend Zod response validation
 - [ ] Define strict JSON contract
 - [ ] Handle AI error scenarios
@@ -281,4 +281,3 @@ All must:
 6. Edge cases
 7. A11y polish
 8. Testing
-

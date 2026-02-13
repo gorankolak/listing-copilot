@@ -11,7 +11,7 @@ Assumption:
 ### User
 
 Managed by Supabase Auth.
-Referenced by user_id (UUID).
+Referenced by `user_id` (UUID).
 
 ---
 
@@ -20,16 +20,15 @@ Referenced by user_id (UUID).
 Fields:
 
 - id: UUID
-- user_id: UUID (FK → auth.users.id)
-- input_type: "image" | "text"
+- user_id: UUID (FK -> auth.users.id)
+- input_mode: "image" | "text"
 - input_text: string | null
-- image_url: string | null
+- input_image_url: string | null
 - title: string
 - description: string
-- bullets: string[] (jsonb)
+- bullet_points: string[] (jsonb)
 - price_min: number | null
 - price_max: number | null
-- currency: string
 - created_at: timestamp
 - updated_at: timestamp
 
@@ -37,27 +36,20 @@ Fields:
 
 ## Relationships
 
-- User (1) → (N) Listings
+- User (1) -> (N) Listings
 
 ---
 
-## Example AI Response (Backend → Frontend)
+## API Contract (Generation)
 
-{
-"title": "Vintage IKEA Desk Lamp (Great Condition)",
-"description": "Minimalist IKEA desk lamp with adjustable arm.",
-"bullets": [
-"Adjustable arm",
-"Works perfectly",
-"Lightweight",
-"Ideal for desk"
-],
-"priceRange": {
-"min": 15,
-"max": 25,
-"currency": "EUR"
-}
-}
+Request (Frontend -> Backend):
+
+- `{"mode":"image","imageUrl":"https://..."}`
+- `{"mode":"text","text":"Product details..."}`
+
+Response (Backend -> Frontend):
+
+- `{"draft":{"title":"...","description":"...","bullet_points":["..."],"price_min":0,"price_max":0}}`
 
 ---
 
@@ -66,12 +58,12 @@ Fields:
 {
 "id": "uuid",
 "user_id": "uuid",
-"input_type": "image",
+"input_mode": "image",
 "input_text": null,
-"image_url": "https://storage-url/lamp.jpg",
+"input_image_url": "https://storage-url/lamp.jpg",
 "title": "Vintage IKEA Desk Lamp (Great Condition)",
 "description": "Minimalist IKEA desk lamp with adjustable arm.",
-"bullets": [
+"bullet_points": [
 "Adjustable arm",
 "Works perfectly",
 "Lightweight",
@@ -79,7 +71,6 @@ Fields:
 ],
 "price_min": 15,
 "price_max": 25,
-"currency": "EUR",
 "created_at": "2026-02-12T12:10:00Z",
 "updated_at": "2026-02-12T12:10:00Z"
 }
@@ -88,8 +79,9 @@ Fields:
 
 ## MVP Constraints
 
-- Bullets stored as jsonb array
+- Bullet points stored as jsonb array
 - Price stored as min/max
+- Currency is implicit USD for MVP
 - No analytics fields
 - No prompt history stored
 - No multi-language support

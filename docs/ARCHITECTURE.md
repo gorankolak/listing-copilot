@@ -30,7 +30,7 @@ This is the single source of truth for engineering decisions in MVP.
 
 Recommended:
 
-- Supabase Edge Function (secure OpenAI calls, minimal infrastructure)
+- Supabase Edge Function (secure Gemini calls, minimal infrastructure)
 
 Alternative:
 
@@ -252,25 +252,26 @@ Avoid storing base64 data in React state.
 
 # 8. AI Generation Endpoint
 
-Frontend must call your backend (never OpenAI directly).
+Frontend must call your backend (never Gemini directly).
 
 Request:
 
 {
-"input_type": "image" | "text",
-"input_text": "string | null",
-"image_url": "string | null",
-"item_name": "optional string"
+"mode": "image" | "text",
+"imageUrl": "string (required for image mode)",
+"text": "string (required for text mode)"
 }
 
 Response:
 
 {
+"draft": {
 "title": "string",
 "description": "string",
 "bullet_points": ["string"],
 "price_min": 0,
 "price_max": 0
+}
 }
 
 Validation:
@@ -316,6 +317,7 @@ Generate:
 - Error banner
 - Retry option
 - Preserve draft inputs
+- Normalize provider quota/rate-limit errors to stable backend codes and user-friendly messages
 
 Save:
 
@@ -396,7 +398,8 @@ Frontend (.env):
 
 Backend:
 
-- OPENAI_API_KEY
+- GEMINI_API_KEY
+- GEMINI_MODEL (optional, recommended)
 
 Never commit environment files.
 
@@ -412,4 +415,3 @@ Not included in MVP:
 - Payments or subscriptions
 - Version history
 - Multi-language support
-
