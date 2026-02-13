@@ -1,0 +1,58 @@
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode } from 'react'
+
+import { cn } from '../../lib/utils'
+
+type EmptyStateProps = HTMLAttributes<HTMLDivElement> & {
+  title: ReactNode
+  description?: ReactNode
+  icon?: ReactNode
+}
+
+export function EmptyState({ title, description, icon, className, ...props }: EmptyStateProps) {
+  return (
+    <section
+      className={cn(
+        'rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center',
+        className
+      )}
+      {...props}
+    >
+      {icon ? (
+        <div aria-hidden="true" className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+          {icon}
+        </div>
+      ) : null}
+      <h2 className="text-base font-semibold text-gray-900">{title}</h2>
+      {description ? <p className="mt-2 text-sm text-gray-600">{description}</p> : null}
+    </section>
+  )
+}
+
+export function EmptyStateActionButton({
+  type = 'button',
+  className,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type={type}
+      className={cn(
+        'mt-4 inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:outline-none',
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+export function EmptyStateActionLink({ className, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  return (
+    <a
+      className={cn(
+        'mt-4 inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:outline-none',
+        className
+      )}
+      {...props}
+    />
+  )
+}

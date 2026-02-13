@@ -3,6 +3,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '../../../components/ui/Button'
+import { ErrorBanner } from '../../../components/ui/ErrorBanner'
+import { FormFieldError } from '../../../components/ui/FormFieldError'
 import { Input } from '../../../components/ui/Input'
 import { authApi } from '../api'
 import { loginSchema, type LoginFormValues } from '../schemas'
@@ -61,26 +63,45 @@ export function LoginForm() {
       return
     }
 
-    navigate(returnTo, { replace: true })
+    navigate(returnTo, {
+      replace: true,
+      state: {
+        toast: {
+          variant: 'success',
+          title: 'Signed in',
+          description: 'Welcome back to your dashboard.',
+        },
+      },
+    })
   })
 
   return (
     <form onSubmit={onSubmit} className="mt-4 space-y-4" noValidate>
       <label className="block space-y-1">
         <span className="text-sm font-medium text-gray-700">Email</span>
-        <Input type="email" autoComplete="email" {...register('email')} />
-        {errors.email?.message ? <p className="text-xs text-red-600">{errors.email.message}</p> : null}
+        <Input
+          type="email"
+          autoComplete="email"
+          aria-invalid={errors.email?.message ? true : undefined}
+          aria-describedby={errors.email?.message ? 'login-email-error' : undefined}
+          {...register('email')}
+        />
+        <FormFieldError id="login-email-error" message={errors.email?.message} />
       </label>
 
       <label className="block space-y-1">
         <span className="text-sm font-medium text-gray-700">Password</span>
-        <Input type="password" autoComplete="current-password" {...register('password')} />
-        {errors.password?.message ? (
-          <p className="text-xs text-red-600">{errors.password.message}</p>
-        ) : null}
+        <Input
+          type="password"
+          autoComplete="current-password"
+          aria-invalid={errors.password?.message ? true : undefined}
+          aria-describedby={errors.password?.message ? 'login-password-error' : undefined}
+          {...register('password')}
+        />
+        <FormFieldError id="login-password-error" message={errors.password?.message} />
       </label>
 
-      {submitError ? <p className="text-sm text-red-600">{submitError}</p> : null}
+      {submitError ? <ErrorBanner title="Login failed" message={submitError} /> : null}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Signing in...' : 'Login'}

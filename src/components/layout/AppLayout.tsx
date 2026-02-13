@@ -4,6 +4,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../../features/auth/components/useAuth'
 import { authApi } from '../../features/auth/api'
 import { Button } from '../ui/Button'
+import { ErrorBanner } from '../ui/ErrorBanner'
 
 export function AppLayout() {
   const { user } = useAuth()
@@ -50,7 +51,13 @@ export function AppLayout() {
       </header>
 
       <main className="page-container py-8">
-        {logoutError ? <p className="mb-4 text-sm text-red-600">{logoutError}</p> : null}
+        {logoutError ? (
+          <ErrorBanner
+            className="mb-4"
+            title="Logout failed"
+            message={logoutError}
+          />
+        ) : null}
         <Outlet />
       </main>
     </div>

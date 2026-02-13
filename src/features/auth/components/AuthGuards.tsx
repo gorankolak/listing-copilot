@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation, useSearchParams } from 'react-router-dom'
 
+import { ErrorBanner } from '../../../components/ui/ErrorBanner'
 import { AuthLoadingState } from './AuthLoadingState'
 import { useAuth } from './useAuth'
 
@@ -25,10 +26,7 @@ export function AuthGuard() {
 
   if (error) {
     return (
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-red-600">Unable to verify session.</p>
-        <p className="text-xs text-gray-600">{error}</p>
-      </div>
+      <ErrorBanner title="Unable to verify session" message={error} />
     )
   }
 
@@ -50,10 +48,7 @@ export function PublicOnlyGuard() {
 
   if (error) {
     return (
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-red-600">Unable to verify session.</p>
-        <p className="text-xs text-gray-600">{error}</p>
-      </div>
+      <ErrorBanner title="Unable to verify session" message={error} />
     )
   }
 
