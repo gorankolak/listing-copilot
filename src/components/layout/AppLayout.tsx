@@ -1,9 +1,28 @@
+import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { useAuth } from '../../features/auth/components/useAuth'
+import { authApi } from '../../features/auth/api'
+import { Button } from '../ui/Button'
 
 export function AppLayout() {
   const { user } = useAuth()
+  const [logoutError, setLogoutError] = useState<string | null>(null)
+  const [isSigningOut, setIsSigningOut] = useState(false)
+
+  async function handleLogout() {
+    setLogoutError(null)
+    setIsSigningOut(true)
+
+    const { error } = await authApi.signOut()
+    if (error) {
+      setLogoutError(error.message)
+      setIsSigningOut(false)
+      return
+    }
+
+    setIsSigningOut(false)
+  }
 
   return (
     <div className="min-h-screen">
@@ -23,11 +42,15 @@ export function AppLayout() {
             >
               Dashboard
             </NavLink>
+            <Button type="button" onClick={handleLogout} disabled={isSigningOut}>
+              {isSigningOut ? 'Logging out...' : 'Logout'}
+            </Button>
           </nav>
         </div>
       </header>
 
       <main className="page-container py-8">
+        {logoutError ? <p className="mb-4 text-sm text-red-600">{logoutError}</p> : null}
         <Outlet />
       </main>
     </div>
