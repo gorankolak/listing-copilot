@@ -6,3 +6,6 @@ dist
 !.env.example
 .vscode/*
 !.vscode/extensions.json
+
+supabase/.temp/
+src.zip
