@@ -1,22 +1,20 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
+import { NotFoundRedirect } from './NotFoundRedirect'
 import { AppLayout } from '../components/layout/AppLayout'
 import { PublicLayout } from '../components/layout/PublicLayout'
 import { AuthGuard, PublicOnlyGuard } from '../features/auth/components/AuthGuards'
-import { authRoutes } from '../features/auth/routes'
+import { authGuestRoutes, authPublicRoutes } from '../features/auth/routes'
 import { listingRoutes } from '../features/listings/routes'
 
 export const router = createBrowserRouter([
   {
     element: <PublicLayout />,
     children: [
-      { index: true, element: authRoutes.home },
+      ...authPublicRoutes,
       {
         element: <PublicOnlyGuard />,
-        children: [
-          { path: '/login', element: authRoutes.login },
-          { path: '/signup', element: authRoutes.signup },
-        ],
+        children: authGuestRoutes,
       },
     ],
   },
@@ -32,6 +30,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to="/" replace />,
+    element: <NotFoundRedirect />,
   },
 ])

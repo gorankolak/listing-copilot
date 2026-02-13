@@ -1,6 +1,11 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 export function PublicLayout() {
+  const { search } = useLocation()
+  const searchParams = new URLSearchParams(search)
+  const returnTo = searchParams.get('returnTo')
+  const returnToSearch = returnTo ? `?returnTo=${encodeURIComponent(returnTo)}` : ''
+
   return (
     <div className="page-container min-h-screen py-10">
       <header className="mb-8 flex items-center justify-between">
@@ -8,10 +13,10 @@ export function PublicLayout() {
           Listing Copilot
         </Link>
         <nav className="flex items-center gap-4 text-sm text-gray-600">
-          <Link to="/login" className="hover:text-gray-900">
+          <Link to={`/login${returnToSearch}`} className="hover:text-gray-900">
             Login
           </Link>
-          <Link to="/signup" className="hover:text-gray-900">
+          <Link to={`/signup${returnToSearch}`} className="hover:text-gray-900">
             Sign up
           </Link>
         </nav>
