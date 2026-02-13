@@ -20,30 +20,61 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     let isMounted = true
 
-    async function loadSession() {
+    async function resolveValidSession() {
       const { data, error: sessionError } = await supabaseClient.auth.getSession()
+      if (sessionError) {
+        return { session: null, error: sessionError.message }
+      }
+
+      const session = data.session
+      if (!session?.access_token) {
+        return { session: null, error: null }
+      }
+
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser(session.access_token)
+      if (!userError && userData.user) {
+        return { session, error: null }
+      }
+
+      const { data: refreshData, error: refreshError } = await supabaseClient.auth.refreshSession()
+      if (refreshError || !refreshData.session?.access_token) {
+        return { session: null, error: null }
+      }
+
+      const { data: refreshedUserData, error: refreshedUserError } = await supabaseClient.auth.getUser(
+        refreshData.session.access_token,
+      )
+      if (refreshedUserError || !refreshedUserData.user) {
+        return { session: null, error: null }
+      }
+
+      return { session: refreshData.session, error: null }
+    }
+
+    async function loadSession() {
       if (!isMounted) {
         return
       }
 
-      if (sessionError) {
-        setError(sessionError.message)
-        setSession(null)
-        setIsLoading(false)
-        return
-      }
+      const { session, error: resolvedError } = await resolveValidSession()
+      if (!isMounted) return
 
-      setError(null)
-      setSession(data.session)
+      setError(resolvedError)
+      setSession(session)
       setIsLoading(false)
     }
 
     void loadSession()
 
-    const { data } = supabaseClient.auth.onAuthStateChange((_event, nextSession) => {
-      setError(null)
-      setSession(nextSession)
-      setIsLoading(false)
+    const { data } = supabaseClient.auth.onAuthStateChange(() => {
+      void (async () => {
+        const { session: resolvedSession, error: resolvedError } = await resolveValidSession()
+        if (!isMounted) return
+
+        setError(resolvedError)
+        setSession(resolvedSession)
+        setIsLoading(false)
+      })()
     })
 
     return () => {
