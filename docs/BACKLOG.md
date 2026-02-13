@@ -6,25 +6,25 @@
 
 ### Feature: Vite + Tailwind v4 Setup
 
-- [ ] Initialize Vite + React + TypeScript project
-- [ ] Install TailwindCSS v4 and configure via `globals.css` using `@import "tailwindcss";`
-- [ ] Define design tokens inside `globals.css` using `@theme`
-- [ ] Configure base layout styles and container system
-- [ ] Install and configure ESLint + Prettier
-- [ ] Create folder structure per ARCHITECTURE.md
-- [ ] Add `/docs` folder and copy all phase documents
+- [x] Initialize Vite + React + TypeScript project
+- [x] Install TailwindCSS v4 and configure via `globals.css` using `@import "tailwindcss";`
+- [x] Define design tokens inside `globals.css` using `@theme`
+- [x] Configure base layout styles and container system
+- [x] Install and configure ESLint + Prettier
+- [x] Create folder structure per ARCHITECTURE.md
+- [x] Add `/docs` folder and copy all phase documents
 
 ---
 
 ### Feature: Core Dependencies
 
-- [ ] Install React Router
-- [ ] Install TanStack Query
-- [ ] Install React Hook Form
-- [ ] Install Zod
-- [ ] Install Supabase JS client
-- [ ] Setup `supabaseClient.ts`
-- [ ] Setup `env.ts` and environment variable validation
+- [x] Install React Router
+- [x] Install TanStack Query
+- [x] Install React Hook Form
+- [x] Install Zod
+- [x] Install Supabase JS client
+- [x] Setup `supabaseClient.ts`
+- [x] Setup `env.ts` and environment variable validation
 
 ---
 
@@ -32,21 +32,21 @@
 
 ### Feature: App Providers
 
-- [ ] Implement `AuthProvider` with Supabase session listener
-- [ ] Implement `QueryClientProvider`
-- [ ] Create `providers.tsx`
-- [ ] Wrap providers in `main.tsx`
+- [x] Implement `AuthProvider` with Supabase session listener
+- [x] Implement `QueryClientProvider`
+- [x] Create `providers.tsx`
+- [x] Wrap providers in `main.tsx`
 
 ---
 
 ### Feature: Routing Structure
 
-- [ ] Configure `router.tsx` with public and protected routes
-- [ ] Implement `AuthGuard`
-- [ ] Implement redirect logic with `returnTo`
-- [ ] Create `PublicLayout`
-- [ ] Create `AppLayout` with top navigation
-- [ ] Verify route access behavior (manual test)
+- [x] Configure `router.tsx` with public and protected routes
+- [x] Implement `AuthGuard`
+- [x] Implement redirect logic with `returnTo`
+- [x] Create `PublicLayout`
+- [x] Create `AppLayout` with top navigation
+- [x] Verify route access behavior (manual test)
 
 ---
 
@@ -54,29 +54,29 @@
 
 ### Feature: Signup
 
-- [ ] Create `SignupForm` using React Hook Form
-- [ ] Implement Zod validation schema
-- [ ] Connect to Supabase `signUp`
-- [ ] Add loading + inline error handling
-- [ ] Redirect to `/app` on success
+- [x] Create `SignupForm` using React Hook Form
+- [x] Implement Zod validation schema
+- [x] Connect to Supabase `signUp`
+- [x] Add loading + inline error handling
+- [x] Redirect to `/app` on success
 
 ---
 
 ### Feature: Login
 
-- [ ] Create `LoginForm`
-- [ ] Implement Zod validation
-- [ ] Connect to Supabase `signInWithPassword`
-- [ ] Handle invalid credentials
-- [ ] Redirect authenticated users away from `/login`
+- [x] Create `LoginForm`
+- [x] Implement Zod validation
+- [x] Connect to Supabase `signInWithPassword`
+- [x] Handle invalid credentials
+- [x] Redirect authenticated users away from `/login`
 
 ---
 
 ### Feature: Logout
 
-- [ ] Add logout button in `AppLayout`
-- [ ] Implement Supabase `signOut`
-- [ ] Ensure session clears correctly
+- [x] Add logout button in `AppLayout`
+- [x] Implement Supabase `signOut`
+- [x] Ensure session clears correctly
 
 ---
 
@@ -84,15 +84,15 @@
 
 ### Feature: Base Components
 
-- [ ] Implement `Button`
-- [ ] Implement `Input`
-- [ ] Implement `Textarea`
-- [ ] Implement `Card`
-- [ ] Implement `Badge`
-- [ ] Implement `Skeleton`
-- [ ] Implement `Toast` system
-- [ ] Implement `ErrorBanner`
-- [ ] Implement `EmptyState`
+- [x] Implement `Button`
+- [x] Implement `Input`
+- [x] Implement `Textarea`
+- [x] Implement `Card`
+- [x] Implement `Badge`
+- [x] Implement `Skeleton`
+- [x] Implement `Toast` system
+- [x] Implement `ErrorBanner`
+- [x] Implement `EmptyState`
 
 All must:
 
@@ -105,43 +105,43 @@ All must:
 
 ### Feature: Generator UI Structure
 
-- [ ] Create `ListingGenerator` component
-- [ ] Implement input mode toggle (image/text)
-- [ ] Implement `ImageUploader` with file validation
-- [ ] Implement text input mode
-- [ ] Disable invalid submission states
+- [x] Create `ListingGenerator` component
+- [x] Implement input mode toggle (image/text)
+- [x] Implement `ImageUploader` with file validation
+- [x] Implement text input mode
+- [x] Disable invalid submission states
 
 ---
 
 ### Feature: Supabase Storage Upload
 
-- [ ] Create storage bucket `listing-inputs`
-- [ ] Implement image upload function
-- [ ] Return public URL after upload
-- [ ] Handle upload errors
-- [ ] Ensure no base64 stored in React state
+- [x] Create storage bucket `listing-inputs`
+- [x] Implement image upload function
+- [x] Return public URL after upload
+- [x] Handle upload errors
+- [x] Ensure no base64 stored in React state
 
 ---
 
 ### Feature: AI Generation API Integration
 
-- [ ] Create `/supabase/functions/generate-listing`
-- [ ] Implement Gemini proxy logic
-- [ ] Implement backend Zod response validation
-- [ ] Define strict JSON contract
-- [ ] Handle AI error scenarios
-- [ ] Return structured response
+- [x] Create `/supabase/functions/generate-listing`
+- [x] Implement Gemini proxy logic
+- [x] Implement backend Zod response validation
+- [x] Define strict JSON contract
+- [x] Handle AI error scenarios
+- [x] Return structured response
 
 ---
 
 ### Feature: Frontend Generation Flow
 
-- [ ] Create TanStack mutation `generateListing`
-- [ ] Show loading state with disabled inputs
-- [ ] Parse response using frontend Zod schema
-- [ ] Store generated draft locally
-- [ ] Implement error banner + retry
-- [ ] Preserve user inputs on failure
+- [x] Create TanStack mutation `generateListing`
+- [x] Show loading state with disabled inputs
+- [x] Parse response using frontend Zod schema
+- [x] Store generated draft locally
+- [x] Implement error banner + retry
+- [x] Preserve user inputs on failure
 
 ---
 
@@ -149,21 +149,21 @@ All must:
 
 ### Feature: Preview Component
 
-- [ ] Implement `ListingPreview`
-- [ ] Editable title field
-- [ ] Editable bullets list
-- [ ] Editable description
-- [ ] Price range display
-- [ ] Reset button clears draft
+- [x] Implement `ListingPreview`
+- [x] Editable title field
+- [x] Editable bullets list
+- [x] Editable description
+- [x] Price range display
+- [x] Reset button clears draft
 
 ---
 
 ### Feature: Copy to Clipboard
 
-- [ ] Implement formatted listing builder function
-- [ ] Use `navigator.clipboard.writeText`
-- [ ] Show confirmation toast
-- [ ] Handle clipboard failure fallback
+- [x] Implement formatted listing builder function
+- [x] Use `navigator.clipboard.writeText`
+- [x] Show confirmation toast
+- [x] Handle clipboard failure fallback
 
 ---
 
