@@ -14,6 +14,7 @@ import {
   ToastViewport,
 } from '../../../components/ui/Toast'
 import { listingApi } from '../api'
+import { ListingGenerator } from '../components/ListingGenerator'
 import type { Listing } from '../types'
 
 type ToastVariant = 'info' | 'success' | 'warning' | 'error'
@@ -75,6 +76,9 @@ export function DashboardPage() {
     <section>
       <h1 className="text-2xl font-semibold">Dashboard</h1>
       <p className="mt-2 text-sm text-gray-600">Manage generated listings and review details.</p>
+      <div className="mt-6">
+        <ListingGenerator />
+      </div>
 
       {error ? (
         <ErrorBanner className="mt-4" title="Could not load your listings" message={error} />
@@ -94,7 +98,7 @@ export function DashboardPage() {
           title="No saved listings yet"
           description="Generate your first listing to see it here."
         >
-          <EmptyStateActionLink href="/app/listings/demo">Start a listing</EmptyStateActionLink>
+          <EmptyStateActionLink href="/app">Start a listing</EmptyStateActionLink>
         </EmptyState>
       ) : null}
 
