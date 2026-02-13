@@ -171,42 +171,42 @@ All must:
 
 ### Feature: Save Listing
 
-- [ ] Create `saveListing` mutation
-- [ ] Map preview data to DB schema
-- [ ] Insert record into Supabase
-- [ ] Invalidate `['listings']` query
-- [ ] Disable save while saving
-- [ ] Preserve preview on failure
+- [x] Create `saveListing` mutation
+- [x] Map preview data to DB schema
+- [x] Insert record into Supabase
+- [x] Invalidate `['listings']` query
+- [x] Disable save while saving
+- [x] Preserve preview on failure
 
 ---
 
 ### Feature: Fetch Listings (Dashboard Panel)
 
-- [ ] Create `useListingsQuery`
-- [ ] Implement loading skeleton
-- [ ] Implement empty state
-- [ ] Render `ListingCard`
-- [ ] Handle query error with retry
+- [x] Create `useListingsQuery`
+- [x] Implement loading skeleton
+- [x] Implement empty state
+- [x] Render `ListingCard`
+- [x] Handle query error with retry
 
 ---
 
 ### Feature: Listing Detail Page
 
-- [ ] Create `useListingQuery`
-- [ ] Implement route `/app/listings/:id`
-- [ ] Show skeleton while loading
-- [ ] Handle 404 state
-- [ ] Render full listing detail
-- [ ] Add copy action
+- [x] Create `useListingQuery`
+- [x] Implement route `/app/listings/:id`
+- [x] Show skeleton while loading
+- [x] Handle 404 state
+- [x] Render full listing detail
+- [x] Add copy action
 
 ---
 
 ### Feature: Delete Listing (Optional MVP)
 
-- [ ] Implement delete mutation
-- [ ] Confirm deletion dialog
-- [ ] Invalidate listings query
-- [ ] Redirect to dashboard after delete
+- [x] Implement delete mutation
+- [x] Confirm deletion dialog
+- [x] Invalidate listings query
+- [x] Redirect to dashboard after delete
 
 ---
 
