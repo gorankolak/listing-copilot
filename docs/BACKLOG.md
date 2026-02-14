@@ -233,21 +233,21 @@ All must:
 
 ### Feature: Accessibility Compliance
 
-- [ ] Associate labels with all inputs
-- [ ] Add `aria-live` for generation status
-- [ ] Manage focus on errors
-- [ ] Ensure keyboard operability
-- [ ] Validate heading hierarchy
-- [ ] Verify WCAG AA contrast
+- [x] Associate labels with all inputs
+- [x] Add `aria-live` for generation status
+- [x] Manage focus on errors
+- [x] Ensure keyboard operability
+- [x] Validate heading hierarchy
+- [x] Verify WCAG AA contrast
 
 ---
 
 ### Feature: Responsive Layout
 
-- [ ] Implement mobile-first layout
-- [ ] Stack generator + listings on mobile
-- [ ] Two-column layout on desktop
-- [ ] Ensure buttons stack properly
+- [x] Implement mobile-first layout
+- [x] Stack generator + listings on mobile
+- [x] Two-column layout on desktop
+- [x] Ensure buttons stack properly
 
 ---
 
