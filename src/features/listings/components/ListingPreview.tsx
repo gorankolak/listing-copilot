@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 import { Button } from '../../../components/ui/Button'
 import {
   Card,
@@ -30,6 +32,8 @@ export function ListingPreview({
   saveError,
   onCopy,
 }: ListingPreviewProps) {
+  const bulletGroupId = useId()
+
   function updateBullet(index: number, nextValue: string) {
     const nextBullets = [...draft.bullet_points]
     nextBullets[index] = nextValue
@@ -67,20 +71,28 @@ export function ListingPreview({
         </div>
 
         <div className="space-y-2">
-          <p className="block text-sm font-medium text-gray-700">Bullet points</p>
+          <p id={bulletGroupId} className="block text-sm font-medium text-gray-700">
+            Bullet points
+          </p>
           <div className="space-y-2">
             {draft.bullet_points.map((bullet, index) => (
-              <div key={`bullet-${index}`} className="flex gap-2">
+              <div key={`bullet-${index}`} className="flex flex-col gap-2 sm:flex-row">
+                <label htmlFor={`preview-bullet-${index}`} className="sr-only">
+                  Bullet point {index + 1}
+                </label>
                 <Input
+                  id={`preview-bullet-${index}`}
                   value={bullet}
                   onChange={(event) => updateBullet(index, event.target.value)}
                   placeholder={`Bullet ${index + 1}`}
+                  aria-labelledby={bulletGroupId}
                 />
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => removeBullet(index)}
                   aria-label={`Remove bullet ${index + 1}`}
+                  className="sm:self-start"
                 >
                   Remove
                 </Button>
@@ -115,14 +127,14 @@ export function ListingPreview({
           </p>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button onClick={onSave} disabled={isSaving}>
+      <CardFooter className="flex-col items-stretch sm:flex-row sm:items-center">
+        <Button onClick={onSave} disabled={isSaving} fullWidth>
           {isSaving ? 'Saving...' : 'Save listing'}
         </Button>
-        <Button variant="secondary" onClick={onCopy}>
+        <Button variant="secondary" onClick={onCopy} fullWidth>
           Copy listing
         </Button>
-        <Button variant="ghost" onClick={onReset}>
+        <Button variant="ghost" onClick={onReset} fullWidth>
           Reset draft
         </Button>
       </CardFooter>

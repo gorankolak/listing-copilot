@@ -1,4 +1,12 @@
-import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from 'react'
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -165,6 +173,13 @@ export function ListingGenerator() {
   >(() => listingGeneratorMemoryState?.lastPayload ?? null)
   const [toast, setToast] = useState<ToastMessage | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
+  const textInputRef = useRef<HTMLTextAreaElement | null>(null)
+  const submitErrorRef = useRef<HTMLDivElement | null>(null)
+  const generationStatusId = useId()
+  const imageErrorId = useId()
+  const textErrorId = useId()
+  const submitErrorId = useId()
   const saveListingMutation = useSaveListingMutation(user?.id ?? null)
 
   function redirectToLoginForSessionExpiry() {
@@ -234,6 +249,14 @@ export function ListingGenerator() {
     }
   }, [draft, lastPayload, mode, selectedImage, textInput])
 
+  useEffect(() => {
+    if (!submitError) {
+      return
+    }
+
+    window.requestAnimationFrame(() => submitErrorRef.current?.focus())
+  }, [submitError])
+
   function setDraftAndPersist(nextDraft: ListingDraft | null) {
     setDraft(nextDraft)
     const userId = user?.id
@@ -294,6 +317,11 @@ export function ListingGenerator() {
   function handleModeChange(nextMode: InputMode) {
     setMode(nextMode)
     setSubmitError(null)
+    if (nextMode === 'image') {
+      window.requestAnimationFrame(() => imageInputRef.current?.focus())
+      return
+    }
+    window.requestAnimationFrame(() => textInputRef.current?.focus())
   }
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
@@ -313,6 +341,7 @@ export function ListingGenerator() {
 
     if (!user) {
       setSubmitError('You must be signed in to generate a listing.')
+      window.requestAnimationFrame(() => submitErrorRef.current?.focus())
       return
     }
 
@@ -321,6 +350,7 @@ export function ListingGenerator() {
       setImageError(error)
 
       if (error || !selectedImage) {
+        window.requestAnimationFrame(() => imageInputRef.current?.focus())
         return
       }
 
@@ -347,6 +377,7 @@ export function ListingGenerator() {
     }
 
     if (textError) {
+      window.requestAnimationFrame(() => textInputRef.current?.focus())
       return
     }
 
@@ -433,7 +464,7 @@ export function ListingGenerator() {
           <CardDescription>Choose image upload or text input to start.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row" role="group" aria-label="Generation mode">
             <Button
               variant={mode === 'image' ? 'primary' : 'secondary'}
               size="sm"
@@ -464,17 +495,19 @@ export function ListingGenerator() {
                   Product image
                 </label>
                 <Input
+                  ref={imageInputRef}
                   id="listing-image-upload"
                   type="file"
                   accept={ACCEPTED_IMAGE_TYPES.join(',')}
                   onChange={handleImageChange}
                   aria-invalid={Boolean(imageError)}
+                  aria-describedby={imageError ? imageErrorId : undefined}
                   disabled={isSubmitting}
                 />
                 <p className="text-xs text-gray-500">
                   Accepted: JPG, PNG, WEBP. Max size: 10MB.
                 </p>
-                <FormFieldError message={imageError} />
+                <FormFieldError id={imageErrorId} message={imageError} />
               </div>
             ) : (
               <div className="space-y-2">
@@ -485,14 +518,16 @@ export function ListingGenerator() {
                   Product details
                 </label>
                 <Textarea
+                  ref={textInputRef}
                   id="listing-text-input"
                   value={textInput}
                   onChange={(event) => setTextInput(event.target.value)}
                   placeholder="Brand, model, condition, accessories, and any important details."
                   aria-invalid={Boolean(textError)}
+                  aria-describedby={textError ? textErrorId : undefined}
                   disabled={isSubmitting}
                 />
-                <FormFieldError message={textError} />
+                <FormFieldError id={textErrorId} message={textError} />
               </div>
             )}
 
@@ -504,9 +539,22 @@ export function ListingGenerator() {
                   : 'Generate listing'}
             </Button>
 
-            <FormFieldError message={submitError} />
+            <p id={generationStatusId} className="text-sm text-gray-700" role="status" aria-live="polite">
+              {isUploadingImage
+                ? 'Uploading image for generation.'
+                : generateMutation.isPending
+                  ? 'Generating listing.'
+                  : draft
+                    ? 'Listing draft generated and ready for review.'
+                    : 'Ready to generate a listing.'}
+            </p>
+
+            <div ref={submitErrorRef} tabIndex={-1}>
+              <FormFieldError id={submitErrorId} message={submitError} />
+            </div>
             {submitError && lastPayload ? (
               <ErrorBanner
+                tabIndex={-1}
                 title="Generation failed"
                 message="Please retry. Your inputs were preserved."
               >

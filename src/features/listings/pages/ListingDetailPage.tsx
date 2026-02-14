@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { Badge } from '../../../components/ui/Badge'
@@ -56,6 +56,8 @@ export function ListingDetailPage() {
   const deleteMutation = useDeleteListingMutation()
   const [copyStatus, setCopyStatus] = useState<string | null>(null)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+  const copyStatusId = useId()
+  const deleteErrorId = useId()
 
   useEffect(() => {
     if (!(listingQuery.error instanceof SessionInvalidatedError)) {
@@ -204,44 +206,55 @@ export function ListingDetailPage() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <Badge>Saved</Badge>
-        <CardTitle className="mt-2">{listing.title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-gray-600">{listing.description}</p>
-        <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
-          <p className="text-sm font-medium text-gray-700">Bullet points</p>
-          {listing.bullet_points.length > 0 ? (
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-900">
-              {listing.bullet_points.map((bullet, index) => (
-                <li key={`${listing.id}-${index}`}>{bullet}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-2 text-sm text-gray-500">No bullet points provided.</p>
-          )}
-        </div>
-        <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
-          <p className="text-sm font-medium text-gray-700">Price range</p>
-          <p className="mt-1 text-sm text-gray-900">{priceLabel}</p>
-        </div>
-        <p className="text-xs text-gray-500">Created {new Date(listing.created_at).toLocaleString()}</p>
-        {copyStatus ? <p className="text-sm text-gray-700">{copyStatus}</p> : null}
-        {deleteError ? <p className="text-sm text-red-700">{deleteError}</p> : null}
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" onClick={handleCopy}>
-            Copy listing
-          </Button>
-          <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleteMutation.isPending}>
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
-          </Button>
-          <Link to="/app" className={buttonClassName({ variant: 'ghost', size: 'sm' })}>
-            Back to dashboard
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+    <section>
+      <h1 className="text-2xl font-semibold text-gray-900">Listing details</h1>
+      <Card className="mt-4">
+        <CardHeader>
+          <Badge>Saved</Badge>
+          <CardTitle className="mt-2">{listing.title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-gray-700">{listing.description}</p>
+          <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+            <h3 className="text-sm font-medium text-gray-700">Bullet points</h3>
+            {listing.bullet_points.length > 0 ? (
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-900">
+                {listing.bullet_points.map((bullet, index) => (
+                  <li key={`${listing.id}-${index}`}>{bullet}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-2 text-sm text-gray-600">No bullet points provided.</p>
+            )}
+          </div>
+          <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+            <h3 className="text-sm font-medium text-gray-700">Price range</h3>
+            <p className="mt-1 text-sm text-gray-900">{priceLabel}</p>
+          </div>
+          <p className="text-xs text-gray-600">Created {new Date(listing.created_at).toLocaleString()}</p>
+          {copyStatus ? (
+            <p id={copyStatusId} className="text-sm text-gray-700" role="status" aria-live="polite">
+              {copyStatus}
+            </p>
+          ) : null}
+          {deleteError ? (
+            <p id={deleteErrorId} className="text-sm text-red-700" role="alert">
+              {deleteError}
+            </p>
+          ) : null}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <Button variant="secondary" size="sm" onClick={handleCopy} fullWidth>
+              Copy listing
+            </Button>
+            <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleteMutation.isPending} fullWidth>
+              {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
+            </Button>
+            <Link to="/app" className={buttonClassName({ variant: 'ghost', size: 'sm', fullWidth: true })}>
+              Back to dashboard
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </section>
   )
 }

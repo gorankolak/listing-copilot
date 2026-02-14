@@ -32,10 +32,10 @@ export function ListingCard({ listing }: ListingCardProps) {
 
   return (
     <Card className="p-4">
-      <h2 className="text-base font-semibold text-gray-900">{listing.title}</h2>
-      <p className="mt-1 text-sm text-gray-600 line-clamp-2">{listing.description}</p>
-      <p className="mt-2 text-xs text-gray-500">Price range: {priceLabel}</p>
-      <p className="mt-1 text-xs text-gray-500">
+      <h3 className="text-base font-semibold text-gray-900">{listing.title}</h3>
+      <p className="mt-1 text-sm text-gray-700 line-clamp-2">{listing.description}</p>
+      <p className="mt-2 text-xs text-gray-600">Price range: {priceLabel}</p>
+      <p className="mt-1 text-xs text-gray-600">
         Created {new Date(listing.created_at).toLocaleString()}
       </p>
       <Link
