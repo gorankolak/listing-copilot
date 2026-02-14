@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { Badge } from '../../../components/ui/Badge'
 import { Button, buttonClassName } from '../../../components/ui/Button'
@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui
 import { EmptyState, EmptyStateActionLink } from '../../../components/ui/EmptyState'
 import { ErrorBanner, ErrorBannerActionButton } from '../../../components/ui/ErrorBanner'
 import { Skeleton } from '../../../components/ui/Skeleton'
+import { supabaseClient } from '../../../lib/supabaseClient'
+import { SessionInvalidatedError } from '../api'
 import { buildFormattedListing } from '../buildFormattedListing'
 import { useDeleteListingMutation, useListingQuery } from '../queries'
 
@@ -48,11 +50,38 @@ function fallbackCopyToClipboard(text: string) {
 
 export function ListingDetailPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { id } = useParams<{ id: string }>()
   const listingQuery = useListingQuery(id)
   const deleteMutation = useDeleteListingMutation()
   const [copyStatus, setCopyStatus] = useState<string | null>(null)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!(listingQuery.error instanceof SessionInvalidatedError)) {
+      return
+    }
+
+    const returnTo = `${location.pathname}${location.search}${location.hash}`
+    void supabaseClient.auth.signOut().finally(() => {
+      navigate(`/login?returnTo=${encodeURIComponent(returnTo)}`, {
+        replace: true,
+        state: {
+          toast: {
+            variant: 'warning',
+            title: 'Session expired',
+            description: 'Please sign in again to continue.',
+          },
+        },
+      })
+    })
+  }, [
+    listingQuery.error,
+    location.hash,
+    location.pathname,
+    location.search,
+    navigate,
+  ])
 
   if (!id) {
     return (
@@ -152,6 +181,23 @@ export function ListingDetailPage() {
         })
       },
       onError: (error) => {
+        if (error instanceof SessionInvalidatedError) {
+          const returnTo = `${location.pathname}${location.search}${location.hash}`
+          void supabaseClient.auth.signOut().finally(() => {
+            navigate(`/login?returnTo=${encodeURIComponent(returnTo)}`, {
+              replace: true,
+              state: {
+                toast: {
+                  variant: 'warning',
+                  title: 'Session expired',
+                  description: 'Please sign in again to continue.',
+                },
+              },
+            })
+          })
+          return
+        }
+
         setDeleteError(error instanceof Error ? error.message : 'Failed to delete listing.')
       },
     })

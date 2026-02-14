@@ -11,6 +11,8 @@ import {
   ToastTitle,
   ToastViewport,
 } from '../../../components/ui/Toast'
+import { supabaseClient } from '../../../lib/supabaseClient'
+import { SessionInvalidatedError } from '../api'
 import { ListingGenerator } from '../components/ListingGenerator'
 import { ListingCard } from '../components/ListingCard'
 import { useListingsQuery } from '../queries'
@@ -35,6 +37,32 @@ export function DashboardPage() {
       navigate(location.pathname, { replace: true, state: null })
     }
   }, [location.pathname, location.state, navigate])
+
+  useEffect(() => {
+    if (!(listingsQuery.error instanceof SessionInvalidatedError)) {
+      return
+    }
+
+    const returnTo = `${location.pathname}${location.search}${location.hash}`
+    void supabaseClient.auth.signOut().finally(() => {
+      navigate(`/login?returnTo=${encodeURIComponent(returnTo)}`, {
+        replace: true,
+        state: {
+          toast: {
+            variant: 'warning',
+            title: 'Session expired',
+            description: 'Please sign in again to continue.',
+          },
+        },
+      })
+    })
+  }, [
+    listingsQuery.error,
+    location.hash,
+    location.pathname,
+    location.search,
+    navigate,
+  ])
 
   return (
     <section>

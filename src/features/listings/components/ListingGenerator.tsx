@@ -1,5 +1,6 @@
 import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { Button } from '../../../components/ui/Button'
 import {
@@ -20,8 +21,9 @@ import {
   ToastTitle,
   ToastViewport,
 } from '../../../components/ui/Toast'
+import { supabaseClient } from '../../../lib/supabaseClient'
 import { useAuth } from '../../auth/components/useAuth'
-import { listingApi } from '../api'
+import { listingApi, SessionInvalidatedError } from '../api'
 import { buildFormattedListing } from '../buildFormattedListing'
 import { ListingPreview } from './ListingPreview'
 import { listingDraftSchema } from '../schemas'
@@ -40,6 +42,72 @@ type ToastMessage = {
   variant?: ToastVariant
   title: string
   description?: string
+}
+
+type ListingGeneratorMemoryState = {
+  mode: InputMode
+  textInput: string
+  selectedImage: File | null
+  draft: ListingDraft | null
+  lastPayload: { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
+}
+
+let listingGeneratorMemoryState: ListingGeneratorMemoryState | null = null
+
+const TEXT_MODE_STOP_WORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'any',
+  'for',
+  'from',
+  'good',
+  'great',
+  'have',
+  'in',
+  'is',
+  'it',
+  'my',
+  'nice',
+  'on',
+  'or',
+  'product',
+  'sale',
+  'sell',
+  'selling',
+  'some',
+  'stuff',
+  'the',
+  'this',
+  'to',
+  'used',
+  'with',
+])
+
+function validateTextInput(value: string) {
+  const trimmedValue = value.trim()
+  if (!trimmedValue) {
+    return 'Enter product details to continue.'
+  }
+
+  const words = trimmedValue.split(/\s+/).filter(Boolean)
+  if (words.length < 4 || trimmedValue.length < 20) {
+    return 'Add specific details like brand, model, condition, and accessories.'
+  }
+
+  const meaningfulWords = words.filter((word) => {
+    const normalized = word.toLowerCase().replace(/[^a-z0-9]/g, '')
+    if (!normalized) {
+      return false
+    }
+    return normalized.length > 2 && !TEXT_MODE_STOP_WORDS.has(normalized)
+  })
+
+  if (meaningfulWords.length < 3) {
+    return 'Input is too vague. Include concrete product details before generating.'
+  }
+
+  return null
 }
 
 function validateImageFile(file: File | null) {
@@ -80,20 +148,40 @@ function fallbackCopyToClipboard(text: string) {
 
 export function ListingGenerator() {
   const { user } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const [mode, setMode] = useState<InputMode>('image')
-  const [textInput, setTextInput] = useState('')
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [mode, setMode] = useState<InputMode>(() => listingGeneratorMemoryState?.mode ?? 'image')
+  const [textInput, setTextInput] = useState(() => listingGeneratorMemoryState?.textInput ?? '')
+  const [selectedImage, setSelectedImage] = useState<File | null>(
+    () => listingGeneratorMemoryState?.selectedImage ?? null,
+  )
   const [imageError, setImageError] = useState<string | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isUploadingImage, setIsUploadingImage] = useState(false)
-  const [draft, setDraft] = useState<ListingDraft | null>(null)
+  const [draft, setDraft] = useState<ListingDraft | null>(() => listingGeneratorMemoryState?.draft ?? null)
   const [lastPayload, setLastPayload] = useState<
     { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
-  >(null)
+  >(() => listingGeneratorMemoryState?.lastPayload ?? null)
   const [toast, setToast] = useState<ToastMessage | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
   const saveListingMutation = useSaveListingMutation(user?.id ?? null)
+
+  function redirectToLoginForSessionExpiry() {
+    const returnTo = `${location.pathname}${location.search}${location.hash}`
+    void supabaseClient.auth.signOut().finally(() => {
+      navigate(`/login?returnTo=${encodeURIComponent(returnTo)}`, {
+        replace: true,
+        state: {
+          toast: {
+            variant: 'warning',
+            title: 'Session expired',
+            description: 'Please sign in again. Unsaved draft data was preserved.',
+          },
+        },
+      })
+    })
+  }
 
   function getDraftStorageKey(userId: string) {
     return `${DRAFT_STORAGE_KEY_PREFIX}:${userId}`
@@ -102,7 +190,11 @@ export function ListingGenerator() {
   useEffect(() => {
     const userId = user?.id
     if (!userId) {
-      setDraft(null)
+      return
+    }
+
+    if (listingGeneratorMemoryState?.draft) {
+      setDraft(listingGeneratorMemoryState.draft)
       return
     }
 
@@ -132,6 +224,16 @@ export function ListingGenerator() {
     }
   }, [user?.id])
 
+  useEffect(() => {
+    listingGeneratorMemoryState = {
+      mode,
+      textInput,
+      selectedImage,
+      draft,
+      lastPayload,
+    }
+  }, [draft, lastPayload, mode, selectedImage, textInput])
+
   function setDraftAndPersist(nextDraft: ListingDraft | null) {
     setDraft(nextDraft)
     const userId = user?.id
@@ -156,6 +258,11 @@ export function ListingGenerator() {
       setDraftAndPersist(nextDraft)
     },
     onError: (error) => {
+      if (error instanceof SessionInvalidatedError) {
+        redirectToLoginForSessionExpiry()
+        return
+      }
+
       setSubmitError(
         error instanceof Error ? error.message : 'Listing generation failed.',
       )
@@ -169,11 +276,7 @@ export function ListingGenerator() {
       return null
     }
 
-    if (!textInput.trim()) {
-      return 'Enter product details to continue.'
-    }
-
-    return null
+    return validateTextInput(textInput)
   }, [mode, textInput])
 
   const isSubmitDisabled = useMemo(() => {
@@ -202,6 +305,10 @@ export function ListingGenerator() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (isSubmitting || generateMutation.isPending) {
+      return
+    }
+
     setSubmitError(null)
 
     if (!user) {
@@ -224,6 +331,11 @@ export function ListingGenerator() {
         setLastPayload(payload)
         generateMutation.mutate(payload)
       } catch (uploadError) {
+        if (uploadError instanceof SessionInvalidatedError) {
+          redirectToLoginForSessionExpiry()
+          return
+        }
+
         setSubmitError(
           uploadError instanceof Error ? uploadError.message : 'Image upload failed.',
         )
@@ -302,6 +414,11 @@ export function ListingGenerator() {
         })
       },
       onError: (error) => {
+        if (error instanceof SessionInvalidatedError) {
+          redirectToLoginForSessionExpiry()
+          return
+        }
+
         const message = error instanceof Error ? error.message : 'Failed to save listing.'
         setSaveError(message)
       },
@@ -395,6 +512,7 @@ export function ListingGenerator() {
               >
                 <ErrorBannerActionButton
                   onClick={() => generateMutation.mutate(lastPayload)}
+                  disabled={generateMutation.isPending}
                 >
                   Retry
                 </ErrorBannerActionButton>

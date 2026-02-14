@@ -6,6 +6,31 @@ import type { ListingDraft } from './types'
 const LISTING_INPUTS_BUCKET = 'listing-inputs'
 const LISTINGS_TABLE = 'listings'
 
+const SESSION_INVALIDATION_MESSAGE = 'Session is invalid or expired. Please sign in again.'
+const FUNCTION_AUTHENTICATION_MESSAGE =
+  'Listing service authentication failed. Please retry, and if this persists check Supabase function auth settings.'
+
+export class SessionInvalidatedError extends Error {
+  constructor(message = SESSION_INVALIDATION_MESSAGE) {
+    super(message)
+    this.name = 'SessionInvalidatedError'
+  }
+}
+
+function isSessionInvalidationMessage(message: string) {
+  return /jwt|token|session|not authenticated|invalid claim|auth|refresh token|signed out/i.test(
+    message,
+  )
+}
+
+function normalizeApiError(prefix: string, message: string) {
+  if (isSessionInvalidationMessage(message)) {
+    throw new SessionInvalidatedError()
+  }
+
+  throw new Error(`${prefix}: ${message}`)
+}
+
 function parseListingRow(row: unknown) {
   const parsed = listingSchema.safeParse(row)
   if (!parsed.success) {
@@ -66,7 +91,7 @@ export const listingApi = {
       .order('created_at', { ascending: false })
 
     if (error) {
-      throw new Error(`Failed to load listings: ${error.message}`)
+      normalizeApiError('Failed to load listings', error.message)
     }
 
     return (data ?? []).map((row) => parseListingRow(row))
@@ -81,7 +106,7 @@ export const listingApi = {
       .maybeSingle()
 
     if (error) {
-      throw new Error(`Failed to load listing: ${error.message}`)
+      normalizeApiError('Failed to load listing', error.message)
     }
 
     if (!data) {
@@ -101,7 +126,7 @@ export const listingApi = {
       .single()
 
     if (error) {
-      throw new Error(`Failed to save listing: ${error.message}`)
+      normalizeApiError('Failed to save listing', error.message)
     }
 
     return parseListingRow(data)
@@ -109,7 +134,7 @@ export const listingApi = {
   delete: async (id: string) => {
     const { error } = await supabaseClient.from(LISTINGS_TABLE).delete().eq('id', id)
     if (error) {
-      throw new Error(`Failed to delete listing: ${error.message}`)
+      normalizeApiError('Failed to delete listing', error.message)
     }
   },
   uploadInputImage: async (userId: string, file: File) => {
@@ -123,7 +148,7 @@ export const listingApi = {
       })
 
     if (uploadError) {
-      throw new Error(`Image upload failed: ${uploadError.message}`)
+      normalizeApiError('Image upload failed', uploadError.message)
     }
 
     const { data } = supabaseClient.storage
@@ -145,11 +170,11 @@ export const listingApi = {
     } = await supabaseClient.auth.getSession()
 
     if (sessionError) {
-      throw new Error(`Failed to read auth session: ${sessionError.message}`)
+      normalizeApiError('Failed to read auth session', sessionError.message)
     }
 
     if (!initialSession?.access_token) {
-      throw new Error('You are not authenticated. Please sign in and retry.')
+      throw new SessionInvalidatedError()
     }
 
     let accessToken = initialSession.access_token
@@ -162,7 +187,7 @@ export const listingApi = {
     const { data: currentUserData, error: currentUserError } =
       await supabaseClient.auth.getUser(accessToken)
     if (currentUserError || !currentUserData.user) {
-      throw new Error('Session is invalid or expired. Log out, log in again, then retry.')
+      throw new SessionInvalidatedError()
     }
 
     const jwtPayload = parseJwtPayload(accessToken)
@@ -170,6 +195,10 @@ export const listingApi = {
       typeof jwtPayload?.iss === 'string' ? jwtPayload.iss : null
     const tokenRef =
       typeof jwtPayload?.ref === 'string' ? jwtPayload.ref : null
+    const tokenSub =
+      typeof jwtPayload?.sub === 'string' ? jwtPayload.sub : null
+    const tokenRole =
+      typeof jwtPayload?.role === 'string' ? jwtPayload.role : null
     const tokenExpiry =
       typeof jwtPayload?.exp === 'number' ? jwtPayload.exp : null
 
@@ -179,22 +208,32 @@ export const listingApi = {
       tokenExpiry !== null ? tokenExpiry * 1000 <= Date.now() : false
 
     if (tokenIssuer && tokenIssuer !== expectedIssuer) {
-      throw new Error(
-        `Session token issuer mismatch. Expected ${expectedIssuer} but got ${tokenIssuer}. Please log out and log in again.`,
+      throw new SessionInvalidatedError(
+        `Session token issuer mismatch. Expected ${expectedIssuer} but got ${tokenIssuer}.`,
       )
     }
 
     if (tokenRef && tokenRef !== expectedRef) {
-      throw new Error(
-        `Session token project mismatch. Expected ${expectedRef} but got ${tokenRef}. Please log out and log in again.`,
+      throw new SessionInvalidatedError(
+        `Session token project mismatch. Expected ${expectedRef} but got ${tokenRef}.`,
+      )
+    }
+
+    if (!tokenSub) {
+      throw new SessionInvalidatedError('Session token is missing subject claim.')
+    }
+
+    if (tokenRole && tokenRole !== 'authenticated') {
+      throw new SessionInvalidatedError(
+        `Session token role is invalid for this action: ${tokenRole}.`,
       )
     }
 
     if (isTokenExpired) {
-      throw new Error('Session token is expired. Please log out and log in again.')
+      throw new SessionInvalidatedError('Session token is expired.')
     }
 
-    async function invokeWithToken(token: string) {
+    async function invokeFunction() {
       const response = await fetch(
         `${env.VITE_SUPABASE_URL}/functions/v1/generate-listing`,
         {
@@ -202,7 +241,8 @@ export const listingApi = {
           headers: {
             'content-type': 'application/json',
             apikey: env.VITE_SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${token}`,
+            // Use anon JWT at gateway level. User session validity is still enforced above.
+            Authorization: `Bearer ${env.VITE_SUPABASE_ANON_KEY}`,
           },
           body: JSON.stringify(payload),
         },
@@ -218,23 +258,19 @@ export const listingApi = {
         }
       }
 
-      if (!response.ok) {
-        return {
-          data: responseBody,
-          error: {
-            message: 'Edge Function returned a non-2xx status code',
-            context: new Response(responseText, {
-              status: response.status,
-              statusText: response.statusText,
-              headers: response.headers,
-            }),
-          },
-        }
+      if (response.ok) {
+        return { data: responseBody, error: null }
       }
 
       return {
         data: responseBody,
-        error: null,
+        error: {
+          message: 'Edge Function returned a non-2xx status code',
+          status: response.status,
+          details: responseText
+            ? `Function ${response.status}: ${responseText.slice(0, 500)}`
+            : `Function ${response.status}: empty error response`,
+        },
       }
     }
 
@@ -296,19 +332,33 @@ export const listingApi = {
         .join(' ')
     }
 
-    const { data, error } = await invokeWithToken(env.VITE_SUPABASE_ANON_KEY)
+    const { data, error } = await invokeFunction()
 
     if (error) {
-      const functionHttpError = error as { context?: Response }
-      let functionHttpDetails: string | null = null
-      if (functionHttpError.context instanceof Response) {
-        const errorText = await functionHttpError.context.text()
-        functionHttpDetails = errorText
-          ? `Function ${functionHttpError.context.status}: ${errorText.slice(0, 500)}`
-          : `Function ${functionHttpError.context.status}: empty error response`
-      }
+      const functionHttpStatus =
+        typeof error === 'object' &&
+        error !== null &&
+        'status' in error &&
+        typeof error.status === 'number'
+          ? error.status
+          : null
+      const functionHttpDetails =
+        typeof error === 'object' &&
+        error !== null &&
+        'details' in error &&
+        typeof error.details === 'string'
+          ? error.details
+          : null
 
       const baseMessage = getErrorMessage(data, error, functionHttpDetails)
+      if (isSessionInvalidationMessage(baseMessage)) {
+        throw new SessionInvalidatedError()
+      }
+
+      if (functionHttpStatus === 401 || functionHttpStatus === 403) {
+        throw new Error(FUNCTION_AUTHENTICATION_MESSAGE)
+      }
+
       throw new Error(baseMessage)
     }
 
