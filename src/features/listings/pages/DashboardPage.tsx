@@ -67,50 +67,61 @@ export function DashboardPage() {
   return (
     <section>
       <h1 className="text-2xl font-semibold">Dashboard</h1>
-      <p className="mt-2 text-sm text-gray-600">Manage generated listings and review details.</p>
-      <div className="mt-6">
-        <ListingGenerator />
+      <p className="mt-2 text-sm text-gray-700">Manage generated listings and review details.</p>
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <section aria-labelledby="generate-listing-heading">
+          <h2 id="generate-listing-heading" className="sr-only">
+            Generate listing
+          </h2>
+          <ListingGenerator />
+        </section>
+
+        <section aria-labelledby="saved-listings-heading">
+          <h2 id="saved-listings-heading" className="text-lg font-semibold text-gray-900">
+            Saved listings
+          </h2>
+
+          {listingsQuery.isError ? (
+            <ErrorBanner
+              className="mt-3"
+              title="Could not load your listings"
+              message={listingsQuery.error instanceof Error ? listingsQuery.error.message : 'Please try again.'}
+            >
+              <ErrorBannerActionButton onClick={() => listingsQuery.refetch()}>
+                Retry
+              </ErrorBannerActionButton>
+            </ErrorBanner>
+          ) : null}
+
+          {listingsQuery.isLoading ? (
+            <div className="mt-3 space-y-3" aria-label="Loading listings">
+              <Skeleton height="5rem" />
+              <Skeleton height="5rem" />
+              <Skeleton height="5rem" />
+            </div>
+          ) : null}
+
+          {!listingsQuery.isLoading &&
+          !listingsQuery.isError &&
+          (listingsQuery.data?.length ?? 0) === 0 ? (
+            <EmptyState
+              className="mt-3"
+              title="No saved listings yet"
+              description="Generate your first listing to see it here."
+            >
+              <EmptyStateActionLink href="/app">Start a listing</EmptyStateActionLink>
+            </EmptyState>
+          ) : null}
+
+          {!listingsQuery.isLoading &&
+          !listingsQuery.isError &&
+          (listingsQuery.data?.length ?? 0) > 0 ? (
+            <div className="mt-3 space-y-3">
+              {listingsQuery.data?.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
+            </div>
+          ) : null}
+        </section>
       </div>
-
-      {listingsQuery.isError ? (
-        <ErrorBanner
-          className="mt-4"
-          title="Could not load your listings"
-          message={listingsQuery.error instanceof Error ? listingsQuery.error.message : 'Please try again.'}
-        >
-          <ErrorBannerActionButton onClick={() => listingsQuery.refetch()}>
-            Retry
-          </ErrorBannerActionButton>
-        </ErrorBanner>
-      ) : null}
-
-      {listingsQuery.isLoading ? (
-        <div className="mt-6 space-y-3" aria-label="Loading listings">
-          <Skeleton height="5rem" />
-          <Skeleton height="5rem" />
-          <Skeleton height="5rem" />
-        </div>
-      ) : null}
-
-      {!listingsQuery.isLoading &&
-      !listingsQuery.isError &&
-      (listingsQuery.data?.length ?? 0) === 0 ? (
-        <EmptyState
-          className="mt-6"
-          title="No saved listings yet"
-          description="Generate your first listing to see it here."
-        >
-          <EmptyStateActionLink href="/app">Start a listing</EmptyStateActionLink>
-        </EmptyState>
-      ) : null}
-
-      {!listingsQuery.isLoading &&
-      !listingsQuery.isError &&
-      (listingsQuery.data?.length ?? 0) > 0 ? (
-        <div className="mt-6 space-y-3">
-          {listingsQuery.data?.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
-        </div>
-      ) : null}
 
       {toast ? (
         <ToastViewport>
