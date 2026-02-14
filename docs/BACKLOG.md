@@ -214,18 +214,18 @@ All must:
 
 ### Feature: Session Expiry Handling
 
-- [ ] Detect session invalidation
-- [ ] Redirect to login with `returnTo`
-- [ ] Preserve unsaved draft in memory
+- [x] Detect session invalidation
+- [x] Redirect to login with `returnTo`
+- [x] Preserve unsaved draft in memory
 
 ---
 
 ### Feature: Form Validation Edge Cases
 
-- [ ] Enforce image required in image mode
-- [ ] Enforce text required in text mode
-- [ ] Prevent double submission
-- [ ] Handle extremely vague input gracefully
+- [x] Enforce image required in image mode
+- [x] Enforce text required in text mode
+- [x] Prevent double submission
+- [x] Handle extremely vague input gracefully
 
 ---
 
