@@ -342,16 +342,16 @@ with expressive gradients, marketplace aesthetic, and improved perceived perform
 
 ### Feature: Image-First Listing Cards
 
-- [ ] Create ListingCardV2 with thumbnail + status pill
-- [ ] Add hover elevation + overlay
-- [ ] Add thumbnail skeleton loading
-- [ ] Improve responsive grid layout
+- [x] Create ListingCardV2 with thumbnail + status pill
+- [x] Add hover elevation + overlay
+- [x] Add thumbnail skeleton loading
+- [x] Improve responsive grid layout
 
 ---
 
 ### Feature: Listing Detail Visual Upgrade
 
-- [ ] Add image header/gallery section
-- [ ] Restyle price range display panel
-- [ ] Improve editable fields layout
-- [ ] Enhance Save / Copy / Regenerate button styling
+- [x] Add image header/gallery section
+- [x] Restyle price range display panel
+- [x] Improve editable fields layout
+- [x] Enhance Save / Copy / Regenerate button styling
