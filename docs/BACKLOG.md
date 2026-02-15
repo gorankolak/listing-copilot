@@ -255,11 +255,11 @@ All must:
 
 ### Feature: Unit & Integration
 
-- [ ] Setup Vitest
-- [ ] Test AuthGuard behavior
-- [ ] Test generator validation logic
-- [ ] Test Zod parsing of AI response
-- [ ] Test save mutation updates list cache
+- [x] Setup Vitest
+- [x] Test AuthGuard behavior
+- [x] Test generator validation logic
+- [x] Test Zod parsing of AI response
+- [x] Test save mutation updates list cache
 
 ---
 
@@ -281,3 +281,7 @@ All must:
 6. Edge cases
 7. A11y polish
 8. Testing
+
+---
+
+
