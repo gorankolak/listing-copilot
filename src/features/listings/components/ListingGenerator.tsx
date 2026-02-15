@@ -37,11 +37,14 @@ import { useSaveListingMutation } from '../queries'
 import type { ListingDraft } from '../types'
 import { ACCEPTED_IMAGE_TYPES, validateImageFile, validateTextInput } from './validation'
 import { ImageDropzone } from './ImageDropzone'
+import { GeneratingOverlay } from './GeneratingOverlay'
 
 type InputMode = 'image' | 'text'
 
 const LEGACY_DRAFT_STORAGE_KEY = 'listing-generator-draft'
 const DRAFT_STORAGE_KEY_PREFIX = 'listing-generator-draft'
+const MIN_GENERATING_OVERLAY_MS = 1800
+const GENERATING_STEP_INTERVAL_MS = 900
 
 type ToastVariant = 'info' | 'success' | 'warning' | 'error'
 type ToastMessage = {
@@ -99,9 +102,13 @@ export function ListingGenerator() {
   >(() => listingGeneratorMemoryState?.lastPayload ?? null)
   const [toast, setToast] = useState<ToastMessage | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [isGeneratingOverlayVisible, setIsGeneratingOverlayVisible] = useState(false)
+  const [generatingOverlayStartedAt, setGeneratingOverlayStartedAt] = useState<number | null>(null)
+  const [generatingStepIndex, setGeneratingStepIndex] = useState(0)
   const imageInputRef = useRef<HTMLInputElement | null>(null)
   const textInputRef = useRef<HTMLTextAreaElement | null>(null)
   const submitErrorRef = useRef<HTMLDivElement | null>(null)
+  const overlayHideTimeoutRef = useRef<number | null>(null)
   const generationStatusId = useId()
   const imageErrorId = useId()
   const textErrorId = useId()
@@ -218,7 +225,8 @@ export function ListingGenerator() {
     },
   })
 
-  const isSubmitting = isUploadingImage || generateMutation.isPending
+  const isGenerationInFlight = isUploadingImage || generateMutation.isPending
+  const isSubmitting = isGenerationInFlight || isGeneratingOverlayVisible
 
   const textError = useMemo(() => {
     if (mode !== 'text') {
@@ -239,6 +247,57 @@ export function ListingGenerator() {
 
     return Boolean(textError)
   }, [isSubmitting, mode, selectedImage, textError, user])
+
+  useEffect(() => {
+    if (isGenerationInFlight) {
+      if (overlayHideTimeoutRef.current) {
+        window.clearTimeout(overlayHideTimeoutRef.current)
+        overlayHideTimeoutRef.current = null
+      }
+
+      if (!isGeneratingOverlayVisible) {
+        setIsGeneratingOverlayVisible(true)
+        setGeneratingOverlayStartedAt(Date.now())
+        setGeneratingStepIndex(0)
+      }
+      return
+    }
+
+    if (!isGeneratingOverlayVisible || generatingOverlayStartedAt === null) {
+      return
+    }
+
+    const elapsed = Date.now() - generatingOverlayStartedAt
+    const remaining = Math.max(MIN_GENERATING_OVERLAY_MS - elapsed, 0)
+    overlayHideTimeoutRef.current = window.setTimeout(() => {
+      setIsGeneratingOverlayVisible(false)
+      setGeneratingOverlayStartedAt(null)
+      setGeneratingStepIndex(0)
+      overlayHideTimeoutRef.current = null
+    }, remaining)
+  }, [generatingOverlayStartedAt, isGenerationInFlight, isGeneratingOverlayVisible])
+
+  useEffect(() => {
+    if (!isGeneratingOverlayVisible || generatingOverlayStartedAt === null) {
+      return
+    }
+
+    const intervalId = window.setInterval(() => {
+      const elapsed = Date.now() - generatingOverlayStartedAt
+      const nextStep = Math.min(2, Math.floor(elapsed / GENERATING_STEP_INTERVAL_MS))
+      setGeneratingStepIndex(nextStep)
+    }, 150)
+
+    return () => window.clearInterval(intervalId)
+  }, [generatingOverlayStartedAt, isGeneratingOverlayVisible])
+
+  useEffect(() => {
+    return () => {
+      if (overlayHideTimeoutRef.current) {
+        window.clearTimeout(overlayHideTimeoutRef.current)
+      }
+    }
+  }, [])
 
   function handleModeChange(nextMode: InputMode) {
     setMode(nextMode)
@@ -388,7 +447,12 @@ export function ListingGenerator() {
           <CardTitle>Generate a listing</CardTitle>
           <CardDescription>Choose image upload or text input to start.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="relative">
+          <GeneratingOverlay
+            visible={isGeneratingOverlayVisible}
+            stepIndex={generatingStepIndex}
+            inputMode={mode}
+          />
           <div
             className="inline-flex rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-1"
             role="group"
@@ -460,11 +524,7 @@ export function ListingGenerator() {
             )}
 
             <Button type="submit" disabled={isSubmitDisabled}>
-              {isUploadingImage
-                ? 'Uploading image...'
-                : generateMutation.isPending
-                  ? 'Generating listing...'
-                  : 'Generate listing'}
+              Generate listing
             </Button>
 
             <p
@@ -473,13 +533,11 @@ export function ListingGenerator() {
               role="status"
               aria-live="polite"
             >
-              {isUploadingImage
-                ? 'Uploading image for generation.'
-                : generateMutation.isPending
-                  ? 'Generating listing.'
-                  : draft
-                    ? 'Listing draft generated and ready for review.'
-                    : 'Ready to generate a listing.'}
+              {isGenerationInFlight || isGeneratingOverlayVisible
+                ? 'AI generation in progress.'
+                : draft
+                  ? 'Listing draft generated and ready for review.'
+                  : 'Ready to generate a listing.'}
             </p>
 
             <div ref={submitErrorRef} tabIndex={-1}>
@@ -493,7 +551,7 @@ export function ListingGenerator() {
               >
                 <ErrorBannerActionButton
                   onClick={() => generateMutation.mutate(lastPayload)}
-                  disabled={generateMutation.isPending}
+                  disabled={isSubmitting}
                 >
                   Retry
                 </ErrorBannerActionButton>
