@@ -59,6 +59,7 @@ type ListingGeneratorMemoryState = {
   selectedImage: File | null
   draft: ListingDraft | null
   lastPayload: { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
+  draftImageUrl: string | null
 }
 
 let listingGeneratorMemoryState: ListingGeneratorMemoryState | null = null
@@ -90,6 +91,7 @@ export function ListingGenerator() {
 
   const [mode, setMode] = useState<InputMode>(() => listingGeneratorMemoryState?.mode ?? 'image')
   const [textInput, setTextInput] = useState(() => listingGeneratorMemoryState?.textInput ?? '')
+  const [hasInteractedWithTextInput, setHasInteractedWithTextInput] = useState(false)
   const [selectedImage, setSelectedImage] = useState<File | null>(
     () => listingGeneratorMemoryState?.selectedImage ?? null,
   )
@@ -100,6 +102,9 @@ export function ListingGenerator() {
   const [lastPayload, setLastPayload] = useState<
     { mode: 'image'; imageUrl: string } | { mode: 'text'; text: string } | null
   >(() => listingGeneratorMemoryState?.lastPayload ?? null)
+  const [draftImageUrl, setDraftImageUrl] = useState<string | null>(
+    () => listingGeneratorMemoryState?.draftImageUrl ?? null,
+  )
   const [toast, setToast] = useState<ToastMessage | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [isGeneratingOverlayVisible, setIsGeneratingOverlayVisible] = useState(false)
@@ -179,8 +184,9 @@ export function ListingGenerator() {
       selectedImage,
       draft,
       lastPayload,
+      draftImageUrl,
     }
-  }, [draft, lastPayload, mode, selectedImage, textInput])
+  }, [draft, draftImageUrl, lastPayload, mode, selectedImage, textInput])
 
   useEffect(() => {
     if (!submitError) {
@@ -209,9 +215,10 @@ export function ListingGenerator() {
   const generateMutation = useMutation({
     mutationKey: ['generateListing'],
     mutationFn: listingApi.generateListing,
-    onSuccess: (nextDraft) => {
+    onSuccess: (nextDraft, variables) => {
       setSubmitError(null)
       setDraftAndPersist(nextDraft)
+      setDraftImageUrl(variables.mode === 'image' ? variables.imageUrl : null)
     },
     onError: (error) => {
       if (error instanceof SessionInvalidatedError) {
@@ -235,6 +242,8 @@ export function ListingGenerator() {
 
     return validateTextInput(textInput)
   }, [mode, textInput])
+  const visibleTextError =
+    mode === 'text' && hasInteractedWithTextInput ? textError : null
 
   const isSubmitDisabled = useMemo(() => {
     if (!user || isSubmitting) {
@@ -306,7 +315,15 @@ export function ListingGenerator() {
       window.requestAnimationFrame(() => imageInputRef.current?.focus())
       return
     }
+    setHasInteractedWithTextInput(false)
     window.requestAnimationFrame(() => textInputRef.current?.focus())
+  }
+
+  function handleTextInputChange(nextValue: string) {
+    if (!hasInteractedWithTextInput) {
+      setHasInteractedWithTextInput(true)
+    }
+    setTextInput(nextValue)
   }
 
   function handleImageChange(file: File | null) {
@@ -361,6 +378,7 @@ export function ListingGenerator() {
     }
 
     if (textError) {
+      setHasInteractedWithTextInput(true)
       window.requestAnimationFrame(() => textInputRef.current?.focus())
       return
     }
@@ -412,6 +430,7 @@ export function ListingGenerator() {
   function handleDraftReset() {
     setSaveError(null)
     setDraftAndPersist(null)
+    setDraftImageUrl(null)
   }
 
   function handleDraftSave() {
@@ -420,7 +439,7 @@ export function ListingGenerator() {
     }
 
     setSaveError(null)
-    saveListingMutation.mutate(draft, {
+    saveListingMutation.mutate({ draft, imageUrl: draftImageUrl }, {
       onSuccess: () => {
         setToast({
           variant: 'success',
@@ -438,6 +457,15 @@ export function ListingGenerator() {
         setSaveError(message)
       },
     })
+  }
+
+  function handleRegenerate() {
+    if (!lastPayload || isSubmitting) {
+      return
+    }
+
+    setSubmitError(null)
+    generateMutation.mutate(lastPayload)
   }
 
   return (
@@ -513,13 +541,14 @@ export function ListingGenerator() {
                   ref={textInputRef}
                   id="listing-text-input"
                   value={textInput}
-                  onChange={(event) => setTextInput(event.target.value)}
+                  onChange={(event) => handleTextInputChange(event.target.value)}
+                  onBlur={() => setHasInteractedWithTextInput(true)}
                   placeholder="Brand, model, condition, accessories, and any important details."
-                  aria-invalid={Boolean(textError)}
-                  aria-describedby={textError ? textErrorId : undefined}
+                  aria-invalid={Boolean(visibleTextError)}
+                  aria-describedby={visibleTextError ? textErrorId : undefined}
                   disabled={isSubmitting}
                 />
-                <FormFieldError id={textErrorId} message={textError} />
+                <FormFieldError id={textErrorId} message={visibleTextError} />
               </div>
             )}
 
@@ -550,10 +579,10 @@ export function ListingGenerator() {
                 message="Please retry. Your inputs were preserved."
               >
                 <ErrorBannerActionButton
-                  onClick={() => generateMutation.mutate(lastPayload)}
+                  onClick={handleRegenerate}
                   disabled={isSubmitting}
                 >
-                  Retry
+                  Regenerate listing
                 </ErrorBannerActionButton>
               </ErrorBanner>
             ) : null}
@@ -570,6 +599,10 @@ export function ListingGenerator() {
           isSaving={saveListingMutation.isPending}
           saveError={saveError}
           onCopy={handleCopy}
+          onRegenerate={handleRegenerate}
+          canRegenerate={Boolean(lastPayload)}
+          isRegenerating={isSubmitting}
+          imageUrl={draftImageUrl}
         />
       ) : null}
 

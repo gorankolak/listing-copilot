@@ -6,6 +6,7 @@ export const listingSchema = z.object({
   title: z.string(),
   description: z.string(),
   bullet_points: z.array(z.string()),
+  image_url: z.string().nullable(),
   price_min: z.number().nullable(),
   price_max: z.number().nullable(),
   currency: z.string(),

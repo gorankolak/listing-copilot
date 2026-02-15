@@ -59,6 +59,17 @@ body {
   min-height: 100vh;
 }
 
+a[href],
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
 .page-container {
   width: min(100% - 2rem, var(--spacing-container));
   margin-inline: auto;

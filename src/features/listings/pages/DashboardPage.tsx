@@ -124,10 +124,34 @@ export function DashboardPage() {
           ) : null}
 
           {listingsQuery.isLoading ? (
-            <div className="mt-3 space-y-3" aria-label="Loading listings">
-              <Skeleton height="5rem" />
-              <Skeleton height="5rem" />
-              <Skeleton height="5rem" />
+            <div
+              className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+              aria-label="Loading listings"
+            >
+              <div className="surface-elevated overflow-hidden p-0">
+                <Skeleton className="h-auto rounded-none" height="12rem" />
+                <div className="space-y-2 p-4">
+                  <Skeleton height="1rem" />
+                  <Skeleton height="1rem" />
+                  <Skeleton height="2rem" />
+                </div>
+              </div>
+              <div className="surface-elevated overflow-hidden p-0">
+                <Skeleton className="h-auto rounded-none" height="12rem" />
+                <div className="space-y-2 p-4">
+                  <Skeleton height="1rem" />
+                  <Skeleton height="1rem" />
+                  <Skeleton height="2rem" />
+                </div>
+              </div>
+              <div className="surface-elevated overflow-hidden p-0 sm:col-span-2 xl:col-span-1">
+                <Skeleton className="h-auto rounded-none" height="12rem" />
+                <div className="space-y-2 p-4">
+                  <Skeleton height="1rem" />
+                  <Skeleton height="1rem" />
+                  <Skeleton height="2rem" />
+                </div>
+              </div>
             </div>
           ) : null}
 
@@ -146,7 +170,10 @@ export function DashboardPage() {
           {!listingsQuery.isLoading &&
           !listingsQuery.isError &&
           listingCount > 0 ? (
-            <div id="recent-listings" className="mt-3 space-y-3">
+            <div
+              id="recent-listings"
+              className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+            >
               {visibleListings.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
             </div>
           ) : null}

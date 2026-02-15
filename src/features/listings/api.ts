@@ -48,12 +48,21 @@ function normalizeIntegerPrice(value: number) {
   return Math.max(0, Math.round(value))
 }
 
-function mapDraftToInsertPayload(userId: string, draft: ListingDraft) {
+function mapDraftToInsertPayload({
+  userId,
+  draft,
+  imageUrl,
+}: {
+  userId: string
+  draft: ListingDraft
+  imageUrl: string | null
+}) {
   return {
     user_id: userId,
     title: draft.title.trim(),
     description: draft.description.trim(),
     bullet_points: draft.bullet_points.map((bullet) => bullet.trim()).filter(Boolean),
+    image_url: imageUrl,
     price_min: normalizeIntegerPrice(draft.price_min),
     price_max: normalizeIntegerPrice(draft.price_max),
     currency: 'EUR',
@@ -86,7 +95,7 @@ export const listingApi = {
     const { data, error } = await supabaseClient
       .from(LISTINGS_TABLE)
       .select(
-        'id, user_id, title, description, bullet_points, price_min, price_max, currency, created_at, updated_at',
+        'id, user_id, title, description, bullet_points, image_url, price_min, price_max, currency, created_at, updated_at',
       )
       .order('created_at', { ascending: false })
 
@@ -100,7 +109,7 @@ export const listingApi = {
     const { data, error } = await supabaseClient
       .from(LISTINGS_TABLE)
       .select(
-        'id, user_id, title, description, bullet_points, price_min, price_max, currency, created_at, updated_at',
+        'id, user_id, title, description, bullet_points, image_url, price_min, price_max, currency, created_at, updated_at',
       )
       .eq('id', id)
       .maybeSingle()
@@ -115,13 +124,21 @@ export const listingApi = {
 
     return parseListingRow(data)
   },
-  save: async ({ userId, draft }: { userId: string; draft: ListingDraft }) => {
-    const payload = mapDraftToInsertPayload(userId, draft)
+  save: async ({
+    userId,
+    draft,
+    imageUrl,
+  }: {
+    userId: string
+    draft: ListingDraft
+    imageUrl: string | null
+  }) => {
+    const payload = mapDraftToInsertPayload({ userId, draft, imageUrl })
     const { data, error } = await supabaseClient
       .from(LISTINGS_TABLE)
       .insert(payload)
       .select(
-        'id, user_id, title, description, bullet_points, price_min, price_max, currency, created_at, updated_at',
+        'id, user_id, title, description, bullet_points, image_url, price_min, price_max, currency, created_at, updated_at',
       )
       .single()
 

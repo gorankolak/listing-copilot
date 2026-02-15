@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react'
 import type { ReactNode } from 'react'
 
 import { listingQueryKeys, useSaveListingMutation } from './queries'
-import type { ListingDraft } from './types'
+import type { SaveListingInput } from './types'
 
 const { saveMock } = vi.hoisted(() => ({
   saveMock: vi.fn(),
@@ -43,19 +43,22 @@ describe('useSaveListingMutation', () => {
       wrapper: createWrapper(queryClient),
     })
 
-    const draft: ListingDraft = {
-      title: 'Draft title',
-      description: 'Draft description',
-      bullet_points: ['Point A'],
-      price_min: 10,
-      price_max: 20,
+    const payload: SaveListingInput = {
+      draft: {
+        title: 'Draft title',
+        description: 'Draft description',
+        bullet_points: ['Point A'],
+        price_min: 10,
+        price_max: 20,
+      },
+      imageUrl: 'https://example.test/listing-image.jpg',
     }
 
     await act(async () => {
-      await result.current.mutateAsync(draft)
+      await result.current.mutateAsync(payload)
     })
 
-    expect(saveMock).toHaveBeenCalledWith({ userId: 'user-1', draft })
+    expect(saveMock).toHaveBeenCalledWith({ userId: 'user-1', ...payload })
     expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: listingQueryKeys.all })
   })
 })

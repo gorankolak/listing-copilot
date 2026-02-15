@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query'
 
 import { listingApi } from './api'
-import type { ListingDraft } from './types'
+import type { SaveListingInput } from './types'
 
 export const listingQueryKeys = {
   all: ['listings'] as const,
@@ -32,12 +32,12 @@ export function useSaveListingMutation(userId: string | null) {
 
   return useMutation({
     mutationKey: ['saveListing'],
-    mutationFn: async (draft: ListingDraft) => {
+    mutationFn: async ({ draft, imageUrl }: SaveListingInput) => {
       if (!userId) {
         throw new Error('You must be signed in to save a listing.')
       }
 
-      return listingApi.save({ userId, draft })
+      return listingApi.save({ userId, draft, imageUrl })
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: listingQueryKeys.all })

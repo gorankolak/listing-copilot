@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
-import { buttonClassName } from '../ui/Button'
+import { buttonClassName } from '../ui/buttonClassName'
 import { cn } from '../../lib/utils'
 
 export function PublicLayout() {

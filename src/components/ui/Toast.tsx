@@ -63,7 +63,7 @@ export function ToastCloseButton({ className, type = 'button', ...props }: Butto
       type={type}
       aria-label="Dismiss notification"
       className={cn(
-        'mt-2 inline-flex h-8 items-center justify-center rounded-xl border border-current px-2 text-xs font-medium opacity-80 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] focus-visible:outline-none',
+        'mt-2 inline-flex h-8 cursor-pointer items-center justify-center rounded-xl border border-current px-2 text-xs font-medium opacity-80 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] focus-visible:outline-none disabled:cursor-not-allowed',
         className
       )}
       {...props}
