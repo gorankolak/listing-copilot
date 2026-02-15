@@ -332,11 +332,11 @@ with expressive gradients, marketplace aesthetic, and improved perceived perform
 
 ### Feature: AI Progress Experience
 
-- [ ] Implement GeneratingOverlay component
-- [ ] Add animated progress ring
-- [ ] Simulate step states (Analyzing → Crafting → Optimizing)
-- [ ] Enforce minimum display duration
-- [ ] Replace generic spinner usage
+- [x] Implement GeneratingOverlay component
+- [x] Add animated progress ring
+- [x] Simulate step states (Analyzing → Crafting → Optimizing)
+- [x] Enforce minimum display duration
+- [x] Replace generic spinner usage
 
 ---
 
