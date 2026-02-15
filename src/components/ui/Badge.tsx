@@ -11,11 +11,11 @@ type BadgeProps = {
 }
 
 const variantClassMap: Record<BadgeVariant, string> = {
-  default: 'bg-blue-100 text-blue-700',
-  success: 'bg-emerald-100 text-emerald-700',
-  warning: 'bg-amber-100 text-amber-700',
-  danger: 'bg-red-100 text-red-700',
-  neutral: 'bg-gray-100 text-gray-700',
+  default: 'bg-[color:var(--color-info-bg)] text-[color:var(--color-info-text)]',
+  success: 'bg-[color:var(--color-success-bg)] text-[color:var(--color-success-text)]',
+  warning: 'bg-[color:var(--color-warning-bg)] text-[color:var(--color-warning-text)]',
+  danger: 'bg-[color:var(--color-error-bg)] text-[color:var(--color-error-text)]',
+  neutral: 'bg-[color:var(--color-surface-muted)] text-[color:var(--color-text-muted)]',
 }
 
 export function Badge({ children, className, variant = 'default' }: BadgeProps) {

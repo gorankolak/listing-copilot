@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from 'react'
 
 import { cn } from '../../lib/utils'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -12,11 +12,14 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const variantClassMap: Record<ButtonVariant, string> = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600',
+  primary:
+    'btn-primary-gradient text-white hover:brightness-105 focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40',
   secondary:
-    'border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 focus-visible:ring-gray-400',
-  ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-400',
-  danger: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600',
+    'surface-elevated text-[color:var(--color-text)] hover:bg-[color:var(--color-surface-muted)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40',
+  ghost:
+    'bg-transparent text-[color:var(--color-text)] hover:bg-[color:var(--color-surface-muted)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40',
+  destructive:
+    'bg-[color:var(--color-danger)] text-white hover:brightness-95 focus-visible:ring-2 focus-visible:ring-[color:var(--color-danger)]/30',
 }
 
 const sizeClassMap: Record<ButtonSize, string> = {
@@ -37,7 +40,7 @@ export function buttonClassName({
   className?: string
 }) {
   return cn(
-    'inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60',
+    'inline-flex items-center justify-center rounded-xl font-medium transition outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] disabled:pointer-events-none disabled:opacity-60',
     variantClassMap[variant],
     sizeClassMap[size],
     fullWidth && 'w-full',

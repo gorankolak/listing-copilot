@@ -78,7 +78,7 @@ export function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="mt-4 space-y-4" noValidate>
       <label className="block space-y-1">
-        <span className="text-sm font-medium text-gray-700">Email</span>
+        <span className="text-sm font-medium text-[color:var(--color-text)]">Email</span>
         <Input
           type="email"
           autoComplete="email"
@@ -90,7 +90,7 @@ export function LoginForm() {
       </label>
 
       <label className="block space-y-1">
-        <span className="text-sm font-medium text-gray-700">Password</span>
+        <span className="text-sm font-medium text-[color:var(--color-text)]">Password</span>
         <Input
           type="password"
           autoComplete="current-password"
@@ -107,9 +107,12 @@ export function LoginForm() {
         {isSubmitting ? 'Signing in...' : 'Login'}
       </Button>
 
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-[color:var(--color-text-muted)]">
         Need an account?{' '}
-        <Link to="/signup" className="text-blue-700 hover:text-blue-800">
+        <Link
+          to="/signup"
+          className="text-[color:var(--color-primary)] hover:text-[color:var(--color-text)]"
+        >
           Sign up
         </Link>
       </p>

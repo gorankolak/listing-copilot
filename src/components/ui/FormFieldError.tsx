@@ -12,7 +12,7 @@ export function FormFieldError({ message, className, ...props }: FormFieldErrorP
   }
 
   return (
-    <p className={cn('text-xs text-red-600', className)} {...props}>
+    <p className={cn('text-xs text-[color:var(--color-danger)]', className)} {...props}>
       {message}
     </p>
   )

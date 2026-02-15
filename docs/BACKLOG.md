@@ -284,4 +284,75 @@ All must:
 
 ---
 
+## EPIC 11 — Full Visual Refresh (Light + Expressive Marketplace)
+
+Goal: Upgrade ListingCopilot from functional MVP to portfolio-grade SaaS UI
+with expressive gradients, marketplace aesthetic, and improved perceived performance.
+
+---
+
+### Feature: Public Landing Page (/)
+
+- [x] Redesign HomePage into full marketing landing (hero + preview + CTA)
+- [x] Implement hero gradient background
+- [x] Add bold headline + gradient-highlight word
+- [x] Add product preview mock panel
+- [x] Improve PublicLayout spacing for marketing layout
+- [x] Ensure clean separation between `/` (public) and `/app` (protected)
+
+---
+
+### Feature: Visual System (Design Tokens & UI Consistency)
+
+- [x] Extend `globals.css` @theme tokens (surface, border, shadow, accent)
+- [x] Add gradient utility classes (.bg-hero-gradient, .btn-primary-gradient)
+- [x] Refactor Button variants (primary gradient, ghost, destructive)
+- [x] Normalize Card, Input, Textarea rounding & shadow scale
+- [x] Remove inconsistent Tailwind color usage
+
+---
+
+### Feature: Dashboard UX Restructure (/app)
+
+- [ ] Refactor DashboardPage layout (two-column desktop, stacked mobile)
+- [ ] Add segmented toggle styling (Image/Text)
+- [ ] Improve section hierarchy & spacing
+- [ ] Add "Recent Listings" section with See All link
+
+---
+
+### Feature: Upload Dropzone
+
+- [ ] Implement ImageDropzone component (drag/drop, preview, remove)
+- [ ] Add drag-over active styling
+- [ ] Integrate dropzone into ListingGenerator
+- [ ] Add animated dashed border effect
+
+---
+
+### Feature: AI Progress Experience
+
+- [ ] Implement GeneratingOverlay component
+- [ ] Add animated progress ring
+- [ ] Simulate step states (Analyzing → Crafting → Optimizing)
+- [ ] Enforce minimum display duration
+- [ ] Replace generic spinner usage
+
+---
+
+### Feature: Image-First Listing Cards
+
+- [ ] Create ListingCardV2 with thumbnail + status pill
+- [ ] Add hover elevation + overlay
+- [ ] Add thumbnail skeleton loading
+- [ ] Improve responsive grid layout
+
+---
+
+### Feature: Listing Detail Visual Upgrade
+
+- [ ] Add image header/gallery section
+- [ ] Restyle price range display panel
+- [ ] Improve editable fields layout
+- [ ] Enhance Save / Copy / Regenerate button styling
 

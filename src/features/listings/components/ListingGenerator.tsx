@@ -417,7 +417,7 @@ export function ListingGenerator() {
               <div className="space-y-2">
                 <label
                   htmlFor="listing-image-upload"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[color:var(--color-text)]"
                 >
                   Product image
                 </label>
@@ -431,7 +431,7 @@ export function ListingGenerator() {
                   aria-describedby={imageError ? imageErrorId : undefined}
                   disabled={isSubmitting}
                 />
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-[color:var(--color-text-muted)]">
                   Accepted: JPG, PNG, WEBP. Max size: 10MB.
                 </p>
                 <FormFieldError id={imageErrorId} message={imageError} />
@@ -440,7 +440,7 @@ export function ListingGenerator() {
               <div className="space-y-2">
                 <label
                   htmlFor="listing-text-input"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-[color:var(--color-text)]"
                 >
                   Product details
                 </label>
@@ -466,7 +466,12 @@ export function ListingGenerator() {
                   : 'Generate listing'}
             </Button>
 
-            <p id={generationStatusId} className="text-sm text-gray-700" role="status" aria-live="polite">
+            <p
+              id={generationStatusId}
+              className="text-sm text-[color:var(--color-text-muted)]"
+              role="status"
+              aria-live="polite"
+            >
               {isUploadingImage
                 ? 'Uploading image for generation.'
                 : generateMutation.isPending

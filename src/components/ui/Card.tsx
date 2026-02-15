@@ -8,7 +8,7 @@ type HeadingProps = HTMLAttributes<HTMLHeadingElement>
 
 export function Card({ children, className, ...props }: CardProps) {
   return (
-    <section className={cn('surface-card p-6', className)} {...props}>
+    <section className={cn('surface-elevated p-6', className)} {...props}>
       {children}
     </section>
   )
@@ -19,11 +19,11 @@ export function CardHeader({ className, ...props }: DivProps) {
 }
 
 export function CardTitle({ className, ...props }: HeadingProps) {
-  return <h2 className={cn('text-lg font-semibold text-gray-900', className)} {...props} />
+  return <h2 className={cn('text-lg font-semibold text-[color:var(--color-text)]', className)} {...props} />
 }
 
 export function CardDescription({ className, ...props }: DivProps) {
-  return <p className={cn('text-sm text-gray-600', className)} {...props} />
+  return <p className={cn('text-sm text-[color:var(--color-text-muted)]', className)} {...props} />
 }
 
 export function CardContent({ className, ...props }: DivProps) {

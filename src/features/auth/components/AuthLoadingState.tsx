@@ -1,3 +1,3 @@
 export function AuthLoadingState() {
-  return <p className="text-sm text-gray-500">Checking session...</p>
+  return <p className="text-sm text-[color:var(--color-text-muted)]">Checking session...</p>
 }

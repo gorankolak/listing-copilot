@@ -59,7 +59,10 @@ export function ListingPreview({
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <label htmlFor="preview-title" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="preview-title"
+            className="block text-sm font-medium text-[color:var(--color-text)]"
+          >
             Title
           </label>
           <Input
@@ -71,7 +74,10 @@ export function ListingPreview({
         </div>
 
         <div className="space-y-2">
-          <p id={bulletGroupId} className="block text-sm font-medium text-gray-700">
+          <p
+            id={bulletGroupId}
+            className="block text-sm font-medium text-[color:var(--color-text)]"
+          >
             Bullet points
           </p>
           <div className="space-y-2">
@@ -107,7 +113,7 @@ export function ListingPreview({
         <div className="space-y-2">
           <label
             htmlFor="preview-description"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-[color:var(--color-text)]"
           >
             Description
           </label>
@@ -120,9 +126,9 @@ export function ListingPreview({
           />
         </div>
 
-        <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
-          <p className="text-sm font-medium text-gray-700">Price range</p>
-          <p className="mt-1 text-sm text-gray-900">
+        <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-3">
+          <p className="text-sm font-medium text-[color:var(--color-text)]">Price range</p>
+          <p className="mt-1 text-sm text-[color:var(--color-text)]">
             ${draft.price_min.toLocaleString()} - ${draft.price_max.toLocaleString()}
           </p>
         </div>
@@ -138,7 +144,7 @@ export function ListingPreview({
           Reset draft
         </Button>
       </CardFooter>
-      {saveError ? <p className="mt-2 text-sm text-red-700">{saveError}</p> : null}
+      {saveError ? <p className="mt-2 text-sm text-[color:var(--color-danger)]">{saveError}</p> : null}
     </Card>
   )
 }

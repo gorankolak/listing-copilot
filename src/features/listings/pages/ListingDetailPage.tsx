@@ -207,38 +207,45 @@ export function ListingDetailPage() {
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold text-gray-900">Listing details</h1>
+      <h1 className="text-2xl font-semibold text-[color:var(--color-text)]">Listing details</h1>
       <Card className="mt-4">
         <CardHeader>
           <Badge>Saved</Badge>
           <CardTitle className="mt-2">{listing.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-700">{listing.description}</p>
-          <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
-            <h3 className="text-sm font-medium text-gray-700">Bullet points</h3>
+          <p className="text-sm text-[color:var(--color-text-muted)]">{listing.description}</p>
+          <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-3">
+            <h3 className="text-sm font-medium text-[color:var(--color-text)]">Bullet points</h3>
             {listing.bullet_points.length > 0 ? (
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-900">
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[color:var(--color-text)]">
                 {listing.bullet_points.map((bullet, index) => (
                   <li key={`${listing.id}-${index}`}>{bullet}</li>
                 ))}
               </ul>
             ) : (
-              <p className="mt-2 text-sm text-gray-600">No bullet points provided.</p>
+              <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">No bullet points provided.</p>
             )}
           </div>
-          <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
-            <h3 className="text-sm font-medium text-gray-700">Price range</h3>
-            <p className="mt-1 text-sm text-gray-900">{priceLabel}</p>
+          <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-3">
+            <h3 className="text-sm font-medium text-[color:var(--color-text)]">Price range</h3>
+            <p className="mt-1 text-sm text-[color:var(--color-text)]">{priceLabel}</p>
           </div>
-          <p className="text-xs text-gray-600">Created {new Date(listing.created_at).toLocaleString()}</p>
+          <p className="text-xs text-[color:var(--color-text-muted)]">
+            Created {new Date(listing.created_at).toLocaleString()}
+          </p>
           {copyStatus ? (
-            <p id={copyStatusId} className="text-sm text-gray-700" role="status" aria-live="polite">
+            <p
+              id={copyStatusId}
+              className="text-sm text-[color:var(--color-text-muted)]"
+              role="status"
+              aria-live="polite"
+            >
               {copyStatus}
             </p>
           ) : null}
           {deleteError ? (
-            <p id={deleteErrorId} className="text-sm text-red-700" role="alert">
+            <p id={deleteErrorId} className="text-sm text-[color:var(--color-danger)]" role="alert">
               {deleteError}
             </p>
           ) : null}
@@ -246,7 +253,13 @@ export function ListingDetailPage() {
             <Button variant="secondary" size="sm" onClick={handleCopy} fullWidth>
               Copy listing
             </Button>
-            <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleteMutation.isPending} fullWidth>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+              fullWidth
+            >
               {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
             </Button>
             <Link to="/app" className={buttonClassName({ variant: 'ghost', size: 'sm', fullWidth: true })}>

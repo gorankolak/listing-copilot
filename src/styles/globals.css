@@ -3,15 +3,32 @@
 @theme {
   --color-primary: #2563eb;
   --color-primary-foreground: #ffffff;
-  --color-background: #f7f8fb;
+  --color-background: #f3f6ff;
   --color-surface: #ffffff;
+  --color-surface-muted: #f8faff;
+  --color-border: #dbe3f0;
   --color-text: #111827;
-  --color-text-muted: #6b7280;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
+  --color-text-muted: #5b6473;
+  --color-accent: #06b6d4;
+  --color-danger: #dc2626;
+  --color-info-bg: #eff6ff;
+  --color-info-border: #bfdbfe;
+  --color-info-text: #1e3a8a;
+  --color-success-bg: #ecfdf5;
+  --color-success-border: #a7f3d0;
+  --color-success-text: #065f46;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fde68a;
+  --color-warning-text: #92400e;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+  --color-error-text: #991b1b;
+  --radius-xl: 0.875rem;
   --spacing-container: 72rem;
-  --shadow-card: 0 12px 30px rgba(17, 24, 39, 0.08);
+  --shadow-sm: 0 6px 16px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 14px 38px rgba(15, 23, 42, 0.12);
+  --gradient-hero: linear-gradient(135deg, #eff3ff 0%, #e9f8ff 55%, #f7fbff 100%);
+  --gradient-primary: linear-gradient(120deg, #7c3aed 0%, #2563eb 100%);
 }
 
 :root {
@@ -28,6 +45,8 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background: var(--gradient-hero);
+  background-attachment: fixed;
 }
 
 #root {
@@ -40,7 +59,29 @@ body {
 }
 
 .surface-card {
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.bg-hero-gradient {
+  background: var(--gradient-hero);
+}
+
+.btn-primary-gradient {
+  border: 1px solid transparent;
+  background-image: var(--gradient-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.surface-elevated {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.ring-accent {
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.24);
 }

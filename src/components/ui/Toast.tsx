@@ -10,10 +10,13 @@ type ToastProps = DivProps & {
 }
 
 const variantClassMap: Record<ToastVariant, string> = {
-  info: 'border-blue-200 bg-blue-50 text-blue-900',
-  success: 'border-emerald-200 bg-emerald-50 text-emerald-900',
-  warning: 'border-amber-200 bg-amber-50 text-amber-900',
-  error: 'border-red-200 bg-red-50 text-red-900',
+  info: 'border-[color:var(--color-info-border)] bg-[color:var(--color-info-bg)] text-[color:var(--color-info-text)]',
+  success:
+    'border-[color:var(--color-success-border)] bg-[color:var(--color-success-bg)] text-[color:var(--color-success-text)]',
+  warning:
+    'border-[color:var(--color-warning-border)] bg-[color:var(--color-warning-bg)] text-[color:var(--color-warning-text)]',
+  error:
+    'border-[color:var(--color-error-border)] bg-[color:var(--color-error-bg)] text-[color:var(--color-error-text)]',
 }
 
 export function ToastViewport({ className, ...props }: DivProps) {
@@ -37,7 +40,7 @@ export function Toast({ className, variant = 'info', role = 'status', ...props }
     <div
       role={role}
       className={cn(
-        'pointer-events-auto rounded-md border px-4 py-3 shadow-sm backdrop-blur-sm',
+        'pointer-events-auto rounded-xl border px-4 py-3 shadow-[var(--shadow-sm)] backdrop-blur-sm',
         variantClassMap[variant],
         className
       )}
@@ -60,7 +63,7 @@ export function ToastCloseButton({ className, type = 'button', ...props }: Butto
       type={type}
       aria-label="Dismiss notification"
       className={cn(
-        'mt-2 inline-flex h-8 items-center justify-center rounded-md border border-current px-2 text-xs font-medium opacity-80 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+        'mt-2 inline-flex h-8 items-center justify-center rounded-xl border border-current px-2 text-xs font-medium opacity-80 transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] focus-visible:outline-none',
         className
       )}
       {...props}
