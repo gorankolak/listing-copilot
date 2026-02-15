@@ -28,9 +28,13 @@ export function DashboardPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const listingsQuery = useListingsQuery()
+  const [showAllListings, setShowAllListings] = useState(false)
   const [toast, setToast] = useState<ToastMessage | null>(
     (location.state as { toast?: ToastMessage } | null)?.toast ?? null
   )
+  const listingCount = listingsQuery.data?.length ?? 0
+  const recentListings = (listingsQuery.data ?? []).slice(0, 3)
+  const visibleListings = showAllListings ? listingsQuery.data ?? [] : recentListings
 
   useEffect(() => {
     if ((location.state as { toast?: ToastMessage } | null)?.toast) {
@@ -70,18 +74,42 @@ export function DashboardPage() {
       <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">
         Manage generated listings and review details.
       </p>
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <section aria-labelledby="generate-listing-heading">
-          <h2 id="generate-listing-heading" className="sr-only">
-            Generate listing
-          </h2>
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <section aria-labelledby="generate-listing-heading" className="lg:col-span-5">
+          <header className="mb-3">
+            <h2 id="generate-listing-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
+              Generate listing
+            </h2>
+            <p className="mt-1 text-sm text-[color:var(--color-text-muted)]">
+              Start with an image upload or paste details to generate listing copy.
+            </p>
+          </header>
           <ListingGenerator />
         </section>
 
-        <section aria-labelledby="saved-listings-heading">
-          <h2 id="saved-listings-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
-            Saved listings
-          </h2>
+        <section aria-labelledby="saved-listings-heading" className="lg:col-span-7">
+          <header className="mb-3 flex items-center justify-between gap-2">
+            <div>
+              <h2 id="saved-listings-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
+                Recent listings
+              </h2>
+              <p className="mt-1 text-sm text-[color:var(--color-text-muted)]">
+                Your latest saved drafts and generated listings.
+              </p>
+            </div>
+            {listingCount > 3 && !showAllListings ? (
+              <a
+                href="#recent-listings"
+                className="text-sm font-medium text-[color:var(--color-primary)] hover:underline"
+                onClick={(event) => {
+                  event.preventDefault()
+                  setShowAllListings(true)
+                }}
+              >
+                See all
+              </a>
+            ) : null}
+          </header>
 
           {listingsQuery.isError ? (
             <ErrorBanner
@@ -105,7 +133,7 @@ export function DashboardPage() {
 
           {!listingsQuery.isLoading &&
           !listingsQuery.isError &&
-          (listingsQuery.data?.length ?? 0) === 0 ? (
+          listingCount === 0 ? (
             <EmptyState
               className="mt-3"
               title="No saved listings yet"
@@ -117,9 +145,9 @@ export function DashboardPage() {
 
           {!listingsQuery.isLoading &&
           !listingsQuery.isError &&
-          (listingsQuery.data?.length ?? 0) > 0 ? (
-            <div className="mt-3 space-y-3">
-              {listingsQuery.data?.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
+          listingCount > 0 ? (
+            <div id="recent-listings" className="mt-3 space-y-3">
+              {visibleListings.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
             </div>
           ) : null}
         </section>

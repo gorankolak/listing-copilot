@@ -314,19 +314,19 @@ with expressive gradients, marketplace aesthetic, and improved perceived perform
 
 ### Feature: Dashboard UX Restructure (/app)
 
-- [ ] Refactor DashboardPage layout (two-column desktop, stacked mobile)
-- [ ] Add segmented toggle styling (Image/Text)
-- [ ] Improve section hierarchy & spacing
-- [ ] Add "Recent Listings" section with See All link
+- [x] Refactor DashboardPage layout (two-column desktop, stacked mobile)
+- [x] Add segmented toggle styling (Image/Text)
+- [x] Improve section hierarchy & spacing
+- [x] Add "Recent Listings" section with See All link
 
 ---
 
 ### Feature: Upload Dropzone
 
-- [ ] Implement ImageDropzone component (drag/drop, preview, remove)
-- [ ] Add drag-over active styling
-- [ ] Integrate dropzone into ListingGenerator
-- [ ] Add animated dashed border effect
+- [x] Implement ImageDropzone component (drag/drop, preview, remove)
+- [x] Add drag-over active styling
+- [x] Integrate dropzone into ListingGenerator
+- [x] Add animated dashed border effect
 
 ---
 
@@ -355,4 +355,3 @@ with expressive gradients, marketplace aesthetic, and improved perceived perform
 - [ ] Restyle price range display panel
 - [ ] Improve editable fields layout
 - [ ] Enhance Save / Copy / Regenerate button styling
-

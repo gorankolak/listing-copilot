@@ -85,3 +85,51 @@ body {
 .ring-accent {
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.24);
 }
+
+.dropzone-animated-border {
+  --dropzone-dash-color: color-mix(in srgb, var(--color-border) 92%, white 8%);
+  border: 2px dashed var(--dropzone-dash-color);
+  background-color: var(--color-surface);
+  background-image: linear-gradient(
+    120deg,
+    transparent 20%,
+    color-mix(in srgb, var(--color-accent) 9%, transparent 91%) 50%,
+    transparent 80%
+  );
+  background-size: 240% 240%;
+  animation: dropzone-dash-pan 7s linear infinite;
+}
+
+.dropzone-active {
+  --dropzone-dash-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border) 45%);
+  background-image: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--color-accent) 6%, transparent 94%) 20%,
+    color-mix(in srgb, var(--color-accent) 20%, transparent 80%) 50%,
+    color-mix(in srgb, var(--color-accent) 6%, transparent 94%) 80%
+  );
+}
+
+.dropzone-remove {
+  animation: dropzone-remove-fade 0.18s ease-out forwards;
+}
+
+@keyframes dropzone-dash-pan {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 240% 50%;
+  }
+}
+
+@keyframes dropzone-remove-fade {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(2px) scale(0.985);
+  }
+}

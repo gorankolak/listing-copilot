@@ -1,5 +1,4 @@
 import {
-  type ChangeEvent,
   type FormEvent,
   useEffect,
   useId,
@@ -20,7 +19,6 @@ import {
 } from '../../../components/ui/Card'
 import { ErrorBanner, ErrorBannerActionButton } from '../../../components/ui/ErrorBanner'
 import { FormFieldError } from '../../../components/ui/FormFieldError'
-import { Input } from '../../../components/ui/Input'
 import { Textarea } from '../../../components/ui/Textarea'
 import {
   Toast,
@@ -38,6 +36,7 @@ import { listingDraftSchema } from '../schemas'
 import { useSaveListingMutation } from '../queries'
 import type { ListingDraft } from '../types'
 import { ACCEPTED_IMAGE_TYPES, validateImageFile, validateTextInput } from './validation'
+import { ImageDropzone } from './ImageDropzone'
 
 type InputMode = 'image' | 'text'
 
@@ -251,8 +250,7 @@ export function ListingGenerator() {
     window.requestAnimationFrame(() => textInputRef.current?.focus())
   }
 
-  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0] ?? null
+  function handleImageChange(file: File | null) {
     setSubmitError(null)
     setSelectedImage(file)
     setImageError(validateImageFile(file))
@@ -391,10 +389,15 @@ export function ListingGenerator() {
           <CardDescription>Choose image upload or text input to start.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-2 sm:flex-row" role="group" aria-label="Generation mode">
+          <div
+            className="inline-flex rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-1"
+            role="group"
+            aria-label="Generation mode"
+          >
             <Button
-              variant={mode === 'image' ? 'primary' : 'secondary'}
+              variant={mode === 'image' ? 'primary' : 'ghost'}
               size="sm"
+              className={mode === 'image' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'}
               onClick={() => handleModeChange('image')}
               aria-pressed={mode === 'image'}
               disabled={isSubmitting}
@@ -402,8 +405,9 @@ export function ListingGenerator() {
               Image
             </Button>
             <Button
-              variant={mode === 'text' ? 'primary' : 'secondary'}
+              variant={mode === 'text' ? 'primary' : 'ghost'}
               size="sm"
+              className={mode === 'text' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'}
               onClick={() => handleModeChange('text')}
               aria-pressed={mode === 'text'}
               disabled={isSubmitting}
@@ -421,19 +425,16 @@ export function ListingGenerator() {
                 >
                   Product image
                 </label>
-                <Input
+                <ImageDropzone
                   ref={imageInputRef}
                   id="listing-image-upload"
-                  type="file"
                   accept={ACCEPTED_IMAGE_TYPES.join(',')}
-                  onChange={handleImageChange}
-                  aria-invalid={Boolean(imageError)}
-                  aria-describedby={imageError ? imageErrorId : undefined}
+                  file={selectedImage}
+                  onFileChange={handleImageChange}
+                  error={imageError}
+                  errorId={imageErrorId}
                   disabled={isSubmitting}
                 />
-                <p className="text-xs text-[color:var(--color-text-muted)]">
-                  Accepted: JPG, PNG, WEBP. Max size: 10MB.
-                </p>
                 <FormFieldError id={imageErrorId} message={imageError} />
               </div>
             ) : (
