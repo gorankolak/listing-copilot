@@ -265,9 +265,9 @@ All must:
 
 ### Feature: Optional E2E (Smoke)
 
-- [ ] Setup Playwright
-- [ ] Test login flow
-- [ ] Test generate → save → view listing
+- [x] Setup Playwright
+- [x] Test login flow
+- [x] Test generate → save → view listing
 
 ---
 
