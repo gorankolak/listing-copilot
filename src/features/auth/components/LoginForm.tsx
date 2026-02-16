@@ -103,8 +103,8 @@ export function LoginForm() {
 
       {submitError ? <ErrorBanner title="Login failed" message={submitError} /> : null}
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Signing in...' : 'Login'}
+      <Button type="submit" disabled={isSubmitting} fullWidth>
+        {isSubmitting ? 'Signing in...' : 'Sign in'}
       </Button>
 
       <p className="text-sm text-[color:var(--color-text-muted)]">
@@ -113,7 +113,7 @@ export function LoginForm() {
           to="/signup"
           className="text-[color:var(--color-primary)] hover:text-[color:var(--color-text)]"
         >
-          Sign up
+          Create account
         </Link>
       </p>
     </form>

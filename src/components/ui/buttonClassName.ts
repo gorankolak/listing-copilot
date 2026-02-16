@@ -1,6 +1,6 @@
 import { cn } from '../../lib/utils'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive'
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive' | 'danger-subtle'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 const variantClassMap: Record<ButtonVariant, string> = {
@@ -12,6 +12,8 @@ const variantClassMap: Record<ButtonVariant, string> = {
     'bg-transparent text-[color:var(--color-text)] hover:bg-[color:var(--color-surface-muted)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40',
   destructive:
     'bg-[color:var(--color-danger)] text-white hover:brightness-95 focus-visible:ring-2 focus-visible:ring-[color:var(--color-danger)]/30',
+  'danger-subtle':
+    'border border-[color:var(--color-error-border)] bg-[color:color-mix(in_srgb,var(--color-error-bg)_82%,var(--color-surface)_18%)] text-[color:var(--color-error-text)] hover:bg-[color:var(--color-error-bg)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-danger)]/25',
 }
 
 const sizeClassMap: Record<ButtonSize, string> = {
@@ -39,4 +41,3 @@ export function buttonClassName({
     className
   )
 }
-

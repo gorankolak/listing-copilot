@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { cn } from '../../../lib/utils'
 import { Skeleton } from '../../../components/ui/Skeleton'
@@ -23,26 +23,53 @@ export function ListingThumbnail({
   className,
   imageClassName,
 }: ListingThumbnailProps) {
+  const imageRef = useRef<HTMLImageElement | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isSourceUnavailable, setIsSourceUnavailable] = useState(false)
   const generatedSrc = useMemo(
     () => createListingThumbnailDataUrl({ title, subtitle }),
     [subtitle, title],
   )
-  const displaySrc = src ?? generatedSrc
+  const displaySrc = isSourceUnavailable ? generatedSrc : (src ?? generatedSrc)
   const fallbackLabel = !src ? 'No image' : isSourceUnavailable ? 'Image unavailable' : null
 
   useEffect(() => {
     setIsLoaded(false)
     setIsSourceUnavailable(false)
+  }, [src, generatedSrc])
+
+  useEffect(() => {
+    const currentImage = imageRef.current
+    if (!currentImage) {
+      return
+    }
+
+    if (currentImage.complete && currentImage.naturalWidth > 0) {
+      setIsLoaded(true)
+    }
   }, [displaySrc])
+
+  useEffect(() => {
+    if (!src || isSourceUnavailable) {
+      return
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsSourceUnavailable(true)
+    }, 2200)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [isSourceUnavailable, src, displaySrc])
 
   return (
     <div className={cn('relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]', className)}>
       {!isLoaded ? <Skeleton className="absolute inset-0 h-full w-full rounded-none" /> : null}
       <img
+        ref={imageRef}
         src={displaySrc}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         className={cn(
           'h-full w-full object-cover transition-opacity duration-300',
           isLoaded ? 'opacity-100' : 'opacity-0',

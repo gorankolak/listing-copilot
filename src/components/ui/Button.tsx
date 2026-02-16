@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes } from 'react'
 import { buttonClassName } from './buttonClassName'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'destructive'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'destructive' | 'danger-subtle'
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
 }

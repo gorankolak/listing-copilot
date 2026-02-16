@@ -166,15 +166,21 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
               </p>
               <Button
                 type="button"
-                variant="ghost"
+                variant="danger-subtle"
                 size="sm"
-                className="mt-2 h-8 px-2 text-xs"
+                className="mt-3 h-8 gap-1.5 px-3 text-xs"
                 onClick={(event) => {
                   event.preventDefault()
                   removeImageWithAnimation()
                 }}
                 disabled={disabled}
               >
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M9 3a1 1 0 0 0-1 1v1H5a1 1 0 1 0 0 2h.09l.82 11.47A2 2 0 0 0 7.9 20h8.2a2 2 0 0 0 1.99-1.53L18.91 7H19a1 1 0 1 0 0-2h-3V4a1 1 0 0 0-1-1H9Zm2 2V5h2v0h-2Zm-3.9 2h9.8l-.8 11H7.9l-.8-11Z"
+                  />
+                </svg>
                 Remove image
               </Button>
             </div>

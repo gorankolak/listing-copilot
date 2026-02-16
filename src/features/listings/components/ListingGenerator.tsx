@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 import { useMutation } from '@tanstack/react-query'
+import { createPortal } from 'react-dom'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { Button } from '../../../components/ui/Button'
@@ -28,6 +29,7 @@ import {
   ToastViewport,
 } from '../../../components/ui/Toast'
 import { supabaseClient } from '../../../lib/supabaseClient'
+import { cn } from '../../../lib/utils'
 import { useAuth } from '../../auth/components/useAuth'
 import { listingApi, SessionInvalidatedError } from '../api'
 import { buildFormattedListing } from '../buildFormattedListing'
@@ -84,7 +86,12 @@ function fallbackCopyToClipboard(text: string) {
   return isCopied
 }
 
-export function ListingGenerator() {
+type ListingGeneratorProps = {
+  previewPortalId?: string
+  onDraftPresenceChange?: (hasDraft: boolean) => void
+}
+
+export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: ListingGeneratorProps) {
   const { user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -110,6 +117,7 @@ export function ListingGenerator() {
   const [isGeneratingOverlayVisible, setIsGeneratingOverlayVisible] = useState(false)
   const [generatingOverlayStartedAt, setGeneratingOverlayStartedAt] = useState<number | null>(null)
   const [generatingStepIndex, setGeneratingStepIndex] = useState(0)
+  const [previewPortalHost, setPreviewPortalHost] = useState<HTMLElement | null>(null)
   const imageInputRef = useRef<HTMLInputElement | null>(null)
   const textInputRef = useRef<HTMLTextAreaElement | null>(null)
   const submitErrorRef = useRef<HTMLDivElement | null>(null)
@@ -189,6 +197,10 @@ export function ListingGenerator() {
   }, [draft, draftImageUrl, lastPayload, mode, selectedImage, textInput])
 
   useEffect(() => {
+    onDraftPresenceChange?.(Boolean(draft))
+  }, [draft, onDraftPresenceChange])
+
+  useEffect(() => {
     if (!submitError) {
       return
     }
@@ -234,6 +246,7 @@ export function ListingGenerator() {
 
   const isGenerationInFlight = isUploadingImage || generateMutation.isPending
   const isSubmitting = isGenerationInFlight || isGeneratingOverlayVisible
+  const isOverlayActive = isGenerationInFlight || isGeneratingOverlayVisible
 
   const textError = useMemo(() => {
     if (mode !== 'text') {
@@ -307,6 +320,15 @@ export function ListingGenerator() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!previewPortalId) {
+      setPreviewPortalHost(null)
+      return
+    }
+
+    setPreviewPortalHost(document.getElementById(previewPortalId))
+  }, [previewPortalId])
 
   function handleModeChange(nextMode: InputMode) {
     setMode(nextMode)
@@ -475,7 +497,7 @@ export function ListingGenerator() {
           <CardTitle>Generate a listing</CardTitle>
           <CardDescription>Choose image upload or text input to start.</CardDescription>
         </CardHeader>
-        <CardContent className="relative">
+        <CardContent className={cn('relative', isOverlayActive && 'min-h-[36rem]')}>
           <GeneratingOverlay
             visible={isGeneratingOverlayVisible}
             stepIndex={generatingStepIndex}
@@ -552,13 +574,16 @@ export function ListingGenerator() {
               </div>
             )}
 
-            <Button type="submit" disabled={isSubmitDisabled}>
+            <Button type="submit" disabled={isSubmitDisabled} fullWidth>
               Generate listing
             </Button>
 
             <p
               id={generationStatusId}
-              className="text-sm text-[color:var(--color-text-muted)]"
+              className={cn(
+                'text-sm text-[color:var(--color-text-muted)]',
+                isOverlayActive && 'sr-only',
+              )}
               role="status"
               aria-live="polite"
             >
@@ -591,19 +616,39 @@ export function ListingGenerator() {
       </Card>
 
       {draft ? (
-        <ListingPreview
-          draft={draft}
-          onChange={handleDraftChange}
-          onReset={handleDraftReset}
-          onSave={handleDraftSave}
-          isSaving={saveListingMutation.isPending}
-          saveError={saveError}
-          onCopy={handleCopy}
-          onRegenerate={handleRegenerate}
-          canRegenerate={Boolean(lastPayload)}
-          isRegenerating={isSubmitting}
-          imageUrl={draftImageUrl}
-        />
+        previewPortalHost && previewPortalId ? (
+          createPortal(
+            <ListingPreview
+              draft={draft}
+              onChange={handleDraftChange}
+              onReset={handleDraftReset}
+              onSave={handleDraftSave}
+              isSaving={saveListingMutation.isPending}
+              saveError={saveError}
+              onCopy={handleCopy}
+              onRegenerate={handleRegenerate}
+              canRegenerate={Boolean(lastPayload)}
+              isRegenerating={isSubmitting}
+              imageUrl={draftImageUrl}
+            />,
+            previewPortalHost,
+          )
+        ) : (
+          <ListingPreview
+            className="mt-6"
+            draft={draft}
+            onChange={handleDraftChange}
+            onReset={handleDraftReset}
+            onSave={handleDraftSave}
+            isSaving={saveListingMutation.isPending}
+            saveError={saveError}
+            onCopy={handleCopy}
+            onRegenerate={handleRegenerate}
+            canRegenerate={Boolean(lastPayload)}
+            isRegenerating={isSubmitting}
+            imageUrl={draftImageUrl}
+          />
+        )
       ) : null}
 
       {toast ? (

@@ -57,7 +57,7 @@ const processSteps = [
 export function HomePage() {
   return (
     <div className="space-y-16 md:space-y-24">
-      <section className="relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
+      <section className="relative rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full"
@@ -80,9 +80,12 @@ export function HomePage() {
             <p className="inline-flex rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-1 text-xs font-semibold tracking-wide text-[color:var(--color-text-muted)]">
               Marketplace-ready listing copy in minutes
             </p>
-            <h1 className="mt-5 max-w-xl text-[2.4rem] font-bold leading-[1.04] tracking-tight text-[color:var(--color-text)] md:text-6xl lg:text-7xl">
+            <h1 className="mt-5 max-w-xl pb-2 text-[2.4rem] font-bold leading-[1.12] tracking-tight text-[color:var(--color-text)] md:text-6xl lg:text-7xl">
               Turn product notes into
-              <span className="block bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">
+              <span
+                className="block pb-[0.08em] bg-[image:var(--gradient-primary)] bg-clip-text text-transparent"
+                style={{ WebkitTextFillColor: 'transparent' }}
+              >
                 premium listing output
               </span>
             </h1>
@@ -122,12 +125,12 @@ export function HomePage() {
             </div>
           </div>
 
-          <Card className="relative overflow-hidden p-0">
+          <Card className="relative p-4">
             <div
-              className="p-5"
+              className="surface-elevated rounded-xl p-5"
               style={{
                 background:
-                  'linear-gradient(135deg, color-mix(in srgb, var(--color-primary-start) 14%, var(--color-surface) 86%) 0%, color-mix(in srgb, var(--color-primary-end) 10%, var(--color-surface) 90%) 100%)',
+                  'linear-gradient(135deg, color-mix(in srgb, var(--color-primary-start) 12%, var(--color-surface-muted) 88%) 0%, color-mix(in srgb, var(--color-primary-end) 8%, var(--color-surface-muted) 92%) 100%)',
               }}
             >
               <div className="flex items-center justify-between">
@@ -138,8 +141,8 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="space-y-4 p-5">
-              <div className="surface-elevated overflow-hidden p-0">
+            <div className="space-y-4 pt-4">
+              <div className="surface-elevated overflow-hidden p-0 shadow-none">
                 <div className="aspect-[16/9] w-full bg-[image:var(--gradient-primary)] p-4 text-[color:var(--color-primary-foreground)]">
                   <div className="flex h-full flex-col justify-between">
                     <span className="inline-flex w-fit rounded-xl px-2 py-1 text-xs font-medium"
@@ -157,7 +160,7 @@ export function HomePage() {
                 </div>
               </div>
 
-              <div className="surface-elevated bg-[color:var(--color-surface-muted)] p-4">
+              <div className="surface-elevated bg-[color:var(--color-surface-muted)] p-4 shadow-none">
                 <p className="text-xs uppercase tracking-wide text-[color:var(--color-text-muted)]">Key bullets</p>
                 <ul className="mt-2 space-y-1 text-sm text-[color:var(--color-text-muted)]">
                   <li>Adaptive ANC for commute, work, and travel.</li>
@@ -287,10 +290,10 @@ export function HomePage() {
             <Link
               to="/login"
               className={buttonClassName({
-                variant: 'ghost',
+                variant: 'secondary',
                 size: 'lg',
                 className:
-                  'w-full border border-[color:color-mix(in srgb,var(--color-primary-foreground) 45%,transparent 55%)] text-[color:var(--color-primary-foreground)] hover:bg-[color:color-mix(in srgb,var(--color-primary-foreground) 12%,transparent 88%)] focus-visible:ring-[color:color-mix(in srgb,var(--color-primary-foreground) 35%,transparent 65%)] sm:w-auto',
+                  'w-full border-white/45 bg-white/6 text-[color:var(--color-primary-foreground)] hover:bg-white/16 focus-visible:ring-white/45 sm:w-auto',
               })}
             >
               Sign In

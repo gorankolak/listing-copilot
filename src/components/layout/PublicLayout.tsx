@@ -20,15 +20,15 @@ export function PublicLayout() {
           <nav className="flex items-center gap-2 text-sm">
             <Link
               to={`/login${returnToSearch}`}
-              className={buttonClassName({ variant: 'ghost', size: 'sm' })}
+              className={buttonClassName({ variant: 'secondary', size: 'sm' })}
             >
-              Login
+              Sign in
             </Link>
             <Link
               to={`/signup${returnToSearch}`}
               className={buttonClassName({ variant: 'primary', size: 'sm' })}
             >
-              Get Started
+              Create account
             </Link>
           </nav>
         </header>

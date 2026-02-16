@@ -45,7 +45,7 @@ export function AppLayout() {
             >
               Dashboard
             </NavLink>
-            <Button type="button" onClick={handleLogout} disabled={isSigningOut}>
+            <Button type="button" variant="secondary" onClick={handleLogout} disabled={isSigningOut}>
               {isSigningOut ? 'Logging out...' : 'Logout'}
             </Button>
           </nav>

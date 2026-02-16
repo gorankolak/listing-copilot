@@ -5,7 +5,7 @@ export function LoginPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Sign in</CardTitle>
         <CardDescription>Sign in to continue to your dashboard.</CardDescription>
       </CardHeader>
       <LoginForm />

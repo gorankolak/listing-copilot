@@ -106,7 +106,7 @@ export function SignupForm() {
 
       {submitError ? <ErrorBanner title="Signup failed" message={submitError} /> : null}
 
-      <Button type="submit" disabled={isSubmitting}>
+      <Button type="submit" disabled={isSubmitting} fullWidth>
         {isSubmitting ? 'Creating account...' : 'Create account'}
       </Button>
 
@@ -116,7 +116,7 @@ export function SignupForm() {
           to="/login"
           className="text-[color:var(--color-primary)] hover:text-[color:var(--color-text)]"
         >
-          Login
+          Sign in
         </Link>
       </p>
     </form>

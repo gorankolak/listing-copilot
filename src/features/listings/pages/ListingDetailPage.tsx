@@ -269,26 +269,32 @@ export function ListingDetailPage() {
             </div>
           </section>
 
-          <section className="grid gap-4 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
-            <div className="space-y-4">
-              <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-4">
-                <h3 className="text-sm font-medium text-[color:var(--color-text)]">Description</h3>
-                <p className="mt-2 break-words text-sm text-[color:var(--color-text-muted)]">{listing.description}</p>
+          <section className="grid gap-4 lg:grid-cols-[minmax(0,1.65fr)_minmax(16rem,1fr)] lg:items-start">
+            <div className="rounded-xl bg-[color:var(--color-surface-muted)] p-4 sm:p-5">
+              <div>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-[color:var(--color-text-muted)]">
+                  Description
+                </h3>
+                <p className="mt-3 break-words text-base leading-relaxed text-[color:var(--color-text)]">
+                  {listing.description}
+                </p>
               </div>
-              <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-4">
-                <h3 className="text-sm font-medium text-[color:var(--color-text)]">Bullet points</h3>
+              <div className="mt-5 border-t border-[color:var(--color-border)] pt-5">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-[color:var(--color-text-muted)]">
+                  Bullet points
+                </h3>
                 {listing.bullet_points.length > 0 ? (
-                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[color:var(--color-text)]">
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-base text-[color:var(--color-text)]">
                     {listing.bullet_points.map((bullet, index) => (
                       <li key={`${listing.id}-${index}`}>{bullet}</li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">No bullet points provided.</p>
+                  <p className="mt-3 text-sm text-[color:var(--color-text-muted)]">No bullet points provided.</p>
                 )}
               </div>
             </div>
-            <aside className="surface-elevated rounded-xl p-4">
+            <aside className="surface-elevated self-start rounded-xl p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[color:var(--color-text-muted)]">
                 Price range
               </p>
@@ -314,8 +320,8 @@ export function ListingDetailPage() {
               {deleteError}
             </p>
           ) : null}
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Button variant="secondary" size="sm" onClick={handleCopy}>
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+            <Button variant="secondary" size="sm" onClick={handleCopy} className="w-full sm:w-auto">
               Copy listing
             </Button>
             <Button
@@ -323,12 +329,17 @@ export function ListingDetailPage() {
               size="sm"
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
+              className="w-full sm:w-auto"
             >
               {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
             </Button>
             <Link
               to="/app"
-              className={buttonClassName({ variant: 'ghost', size: 'sm', className: 'sm:ml-auto' })}
+              className={buttonClassName({
+                variant: 'secondary',
+                size: 'sm',
+                className: 'w-full sm:ml-auto sm:w-auto',
+              })}
             >
               Back to dashboard
             </Link>
