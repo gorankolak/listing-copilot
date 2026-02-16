@@ -355,3 +355,83 @@ with expressive gradients, marketplace aesthetic, and improved perceived perform
 - [x] Restyle price range display panel
 - [x] Improve editable fields layout
 - [x] Enhance Save / Copy / Regenerate button styling
+
+---
+
+## EPIC 12 — Post-Deploy UX/UI Polish Sprint (Phase 1 Closeout)
+
+Goal: Resolve live QA UX/UI inconsistencies after Netlify deployment and finalize
+Phase 1 visual/product quality.
+
+---
+
+### Feature: CTA & Button Hierarchy Cleanup
+
+- [x] Replace unfinished ghost/outlined CTA states with consistent button variants
+- [x] Normalize auth/nav button labels and hierarchy (`Sign in`, `Create account`)
+- [x] Improve action hierarchy in listing preview (primary, secondary, tertiary/destructive)
+- [x] Improve mobile button sizing/stacking for generator and preview actions
+
+---
+
+### Feature: Listing Preview UX Rework
+
+- [x] Restructure preview into clearer desktop content/action zones
+- [x] Improve price panel behavior and reduce awkward empty/stretch states
+- [x] Refine bullet row layout and spacing for desktop + mobile
+- [x] Restyle bullet remove action with dedicated destructive utility pattern
+- [x] Improve description/bullets readability (reduce "button-like" field feel)
+
+---
+
+### Feature: Listing Detail Visual Pattern Upgrade
+
+- [x] Replace separated bordered content blocks with unified muted content panel
+- [x] Add internal section dividers for description/bullets structure
+- [x] Improve typography rhythm and readability in detail content areas
+- [x] Reuse upgraded detail pattern language in listing preview editor
+
+---
+
+### Feature: Image Loading & Fallback Reliability
+
+- [x] Fix cached-image skeleton lock in `ListingThumbnail`
+- [x] Add timeout fallback for unavailable remote images
+- [x] Improve fallback labels (`No image`, `Image unavailable`)
+- [x] Ensure thumbnails render consistently across preview, detail, and cards
+
+---
+
+### Feature: Dashboard Information Architecture Pass
+
+- [x] Reorder workspace to prioritize flow: Generate + Listing Preview first
+- [x] Move Recent Listings to tertiary section below main generation workflow
+- [x] Implement preview portal slot so draft preview appears without extra scroll
+- [x] Add explicit empty-state placeholder for preview panel before first generation
+
+---
+
+### Feature: AI Generation Overlay Professionalization
+
+- [x] Redesign generation overlay as stable processing panel
+- [x] Add clear progress header + percentage + progress bar
+- [x] Improve step card spacing and state chip readability
+- [x] Remove clipped/scrolling overlay behavior during generation
+- [x] Expand generator card while overlay is active to prevent visual truncation
+
+---
+
+### Feature: Hero / Landing QA Fixes
+
+- [x] Improve product preview block composition to match card system
+- [x] Fix hero gradient heading clipping edge case (descender cut on "g")
+- [x] Adjust spacing/line-height for safer cross-browser headline rendering
+
+---
+
+### Feature: Reusable Destructive Utility Controls
+
+- [x] Add reusable `danger-subtle` button variant for non-primary remove/reset actions
+- [x] Apply pattern to bullet remove action
+- [x] Apply pattern to image remove action
+- [x] Apply pattern to reset draft action
