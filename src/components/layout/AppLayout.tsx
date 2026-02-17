@@ -28,12 +28,14 @@ export function AppLayout() {
   return (
     <div className="min-h-screen">
       <header className="border-b border-[color:var(--color-border)] bg-[color:var(--color-surface)]/85 backdrop-blur-sm">
-        <div className="page-container flex items-center justify-between py-4">
-          <div>
+        <div className="page-container flex flex-wrap items-center gap-3 py-3 sm:py-4">
+          <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-[color:var(--color-text)]">Listing Copilot</p>
-            <p className="text-xs text-[color:var(--color-text-muted)]">{user?.email ?? 'Signed in'}</p>
+            <p className="max-w-[12rem] truncate text-xs text-[color:var(--color-text-muted)] sm:max-w-none">
+              {user?.email ?? 'Signed in'}
+            </p>
           </div>
-          <nav className="flex items-center gap-4 text-sm">
+          <nav className="ml-auto flex shrink-0 items-center gap-2 text-sm sm:gap-4">
             <NavLink
               to="/app"
               className={({ isActive }) =>
@@ -45,7 +47,7 @@ export function AppLayout() {
             >
               Dashboard
             </NavLink>
-            <Button type="button" variant="secondary" onClick={handleLogout} disabled={isSigningOut}>
+            <Button type="button" size="sm" variant="secondary" onClick={handleLogout} disabled={isSigningOut}>
               {isSigningOut ? 'Logging out...' : 'Logout'}
             </Button>
           </nav>

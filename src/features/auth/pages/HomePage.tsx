@@ -57,7 +57,7 @@ const processSteps = [
 export function HomePage() {
   return (
     <div className="space-y-16 md:space-y-24">
-      <section className="relative rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
+      <section className="relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full"

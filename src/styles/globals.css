@@ -59,6 +59,7 @@ body {
 
 #root {
   min-height: 100vh;
+  overflow-x: clip;
 }
 
 a[href],
@@ -75,6 +76,7 @@ button:disabled,
 .page-container {
   width: min(100% - 2rem, var(--spacing-container));
   margin-inline: auto;
+  overflow-x: clip;
 }
 
 .surface-card {
