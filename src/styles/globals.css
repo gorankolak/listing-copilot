@@ -107,6 +107,42 @@ button:disabled,
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.24);
 }
 
+.decor-orb-primary {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--color-primary-start) 16%, transparent 84%) 0%, transparent 70%);
+}
+
+.decor-orb-accent {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--color-accent) 16%, transparent 84%) 0%, transparent 72%);
+}
+
+.surface-tint-primary {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary-start) 12%, var(--color-surface-muted) 88%) 0%,
+      color-mix(in srgb, var(--color-primary-end) 8%, var(--color-surface-muted) 92%) 100%
+    );
+}
+
+.preview-media-gradient {
+  background: var(--gradient-primary);
+}
+
+.overlay-gradient-soft {
+  background:
+    linear-gradient(
+      125deg,
+      color-mix(in srgb, var(--color-primary-start) 10%, transparent 90%) 0%,
+      color-mix(in srgb, var(--color-primary-end) 12%, transparent 88%) 100%
+    );
+}
+
+.chip-on-primary {
+  background: color-mix(in srgb, var(--color-primary-foreground) 20%, transparent 80%);
+}
+
 .ai-overlay-shimmer {
   background-image: linear-gradient(
     90deg,

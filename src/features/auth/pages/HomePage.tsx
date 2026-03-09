@@ -60,19 +60,11 @@ export function HomePage() {
       <section className="relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, color-mix(in srgb, var(--color-primary-start) 16%, transparent 84%) 0%, transparent 70%)',
-          }}
+          className="decor-orb-primary pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full"
-          style={{
-            background:
-              'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 16%, transparent 84%) 0%, transparent 72%)',
-          }}
+          className="decor-orb-accent pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full"
         />
 
         <div className="relative grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:gap-10">
@@ -127,11 +119,7 @@ export function HomePage() {
 
           <Card className="relative p-4">
             <div
-              className="surface-elevated rounded-xl p-5"
-              style={{
-                background:
-                  'linear-gradient(135deg, color-mix(in srgb, var(--color-primary-start) 12%, var(--color-surface-muted) 88%) 0%, color-mix(in srgb, var(--color-primary-end) 8%, var(--color-surface-muted) 92%) 100%)',
-              }}
+              className="surface-elevated surface-tint-primary rounded-xl p-5"
             >
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-[color:var(--color-text)]">Product Preview</p>
@@ -143,14 +131,9 @@ export function HomePage() {
 
             <div className="space-y-4 pt-4">
               <div className="surface-elevated overflow-hidden p-0 shadow-none">
-                <div className="aspect-[16/9] w-full bg-[image:var(--gradient-primary)] p-4 text-[color:var(--color-primary-foreground)]">
+                <div className="preview-media-gradient aspect-[16/9] w-full p-4 text-[color:var(--color-primary-foreground)]">
                   <div className="flex h-full flex-col justify-between">
-                    <span className="inline-flex w-fit rounded-xl px-2 py-1 text-xs font-medium"
-                      style={{
-                        background:
-                          'color-mix(in srgb, var(--color-primary-foreground) 20%, transparent 80%)',
-                      }}
-                    >
+                    <span className="chip-on-primary inline-flex w-fit rounded-xl px-2 py-1 text-xs font-medium">
                       Preview image
                     </span>
                     <p className="max-w-xs text-sm font-semibold leading-tight">
@@ -241,15 +224,9 @@ export function HomePage() {
             <div className="grid grid-cols-3 gap-3">
               {["Front", "Angle", "Lifestyle"].map((label) => (
                 <div key={label} className="surface-elevated overflow-hidden p-0">
-                  <div className="aspect-[4/3] bg-[image:var(--gradient-primary)] p-2 text-[color:var(--color-primary-foreground)]">
+                  <div className="preview-media-gradient aspect-[4/3] p-2 text-[color:var(--color-primary-foreground)]">
                     <div className="flex h-full items-end">
-                      <span
-                        className="rounded-xl px-2 py-1 text-xs"
-                        style={{
-                          background:
-                            'color-mix(in srgb, var(--color-primary-foreground) 20%, transparent 80%)',
-                        }}
-                      >
+                      <span className="chip-on-primary rounded-xl px-2 py-1 text-xs">
                         {label}
                       </span>
                     </div>

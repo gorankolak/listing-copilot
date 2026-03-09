@@ -37,7 +37,7 @@ export function ListingCardV2({ listing }: ListingCardProps) {
 
   return (
     <Card className="group relative overflow-hidden p-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
-      <div className="pointer-events-none absolute inset-0 rounded-xl bg-[linear-gradient(125deg,color-mix(in_srgb,var(--color-primary-start)_10%,transparent_90%)_0%,color-mix(in_srgb,var(--color-primary-end)_12%,transparent_88%)_100%)] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+      <div className="overlay-gradient-soft pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
       <div className="relative">
         <ListingThumbnail
           className="aspect-video rounded-none border-0 border-b"

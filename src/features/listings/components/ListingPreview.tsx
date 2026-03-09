@@ -85,26 +85,6 @@ export function ListingPreview({
             showFallbackLabel
             alt={`${draft.title || 'Listing'} preview image`}
           />
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-            <ListingThumbnail
-              className="aspect-video"
-              title={draft.title}
-              subtitle="Front view"
-              alt={`${draft.title || 'Listing'} front image`}
-            />
-            <ListingThumbnail
-              className="aspect-video"
-              title={draft.title}
-              subtitle="Detail view"
-              alt={`${draft.title || 'Listing'} detail image`}
-            />
-            <ListingThumbnail
-              className="aspect-video"
-              title={draft.title}
-              subtitle="In-use view"
-              alt={`${draft.title || 'Listing'} lifestyle image`}
-            />
-          </div>
         </section>
 
         <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,0.52fr)] xl:items-start">

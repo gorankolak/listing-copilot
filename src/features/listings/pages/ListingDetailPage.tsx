@@ -247,26 +247,6 @@ export function ListingDetailPage() {
               showFallbackLabel
               alt={`${listing.title} listing image`}
             />
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-              <ListingThumbnail
-                className="aspect-video"
-                title={listing.title}
-                subtitle="Front view"
-                alt={`${listing.title} front view`}
-              />
-              <ListingThumbnail
-                className="aspect-video"
-                title={listing.title}
-                subtitle="Detail view"
-                alt={`${listing.title} detail view`}
-              />
-              <ListingThumbnail
-                className="aspect-video"
-                title={listing.title}
-                subtitle="Context view"
-                alt={`${listing.title} context view`}
-              />
-            </div>
           </section>
 
           <section className="grid gap-4 lg:grid-cols-[minmax(0,1.65fr)_minmax(16rem,1fr)] lg:items-start">
