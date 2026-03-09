@@ -49,18 +49,6 @@ export function ListingThumbnail({
     }
   }, [displaySrc])
 
-  useEffect(() => {
-    if (!src || isSourceUnavailable) {
-      return
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setIsSourceUnavailable(true)
-    }, 2200)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [isSourceUnavailable, src, displaySrc])
-
   return (
     <div className={cn('relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]', className)}>
       {!isLoaded ? <Skeleton className="absolute inset-0 h-full w-full rounded-none" /> : null}
