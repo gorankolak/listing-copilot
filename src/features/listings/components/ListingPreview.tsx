@@ -77,14 +77,33 @@ export function ListingPreview({
 
       <CardContent>
         <section className="space-y-3">
-          <ListingThumbnail
-            className="aspect-video"
-            title={draft.title}
-            subtitle={`$${draft.price_min.toLocaleString()} - $${draft.price_max.toLocaleString()}`}
-            src={imageUrl}
-            showFallbackLabel
-            alt={`${draft.title || 'Listing'} preview image`}
-          />
+          {imageUrl ? (
+            <ListingThumbnail
+              className="aspect-video"
+              title={draft.title}
+              subtitle={`$${draft.price_min.toLocaleString()} - $${draft.price_max.toLocaleString()}`}
+              src={imageUrl}
+              showFallbackLabel
+              alt={`${draft.title || 'Listing'} preview image`}
+            />
+          ) : (
+            <div className="aspect-video rounded-xl border border-dashed border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-5">
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-text-muted)]">
+                  <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden="true">
+                    <path
+                      d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Zm2.5-.5a.5.5 0 0 0-.5.5v8.37l3.53-3.52a1.5 1.5 0 0 1 2.12 0l1.65 1.64 2.94-2.94a1.5 1.5 0 0 1 2.12 0L18 11.42V7.5a.5.5 0 0 0-.5-.5h-11ZM18 14.25l-1.17-1.17a.5.5 0 0 0-.71 0l-2.94 2.94a1.5 1.5 0 0 1-2.12 0l-1.65-1.64a.5.5 0 0 0-.71 0L6 17h11.5a.5.5 0 0 0 .5-.5v-2.25ZM9 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <p className="mt-4 text-base font-semibold text-[color:var(--color-text)]">No product image yet</p>
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-[color:var(--color-text-muted)]">
+                  Upload a product image to show the real item here. Text-only drafts keep the preview focused on the generated copy.
+                </p>
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,0.52fr)] xl:items-start">

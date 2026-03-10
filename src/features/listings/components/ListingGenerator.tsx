@@ -341,7 +341,17 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
     window.requestAnimationFrame(() => textInputRef.current?.focus())
   }
 
+  function clearDraftSession() {
+    setSaveError(null)
+    setDraftAndPersist(null)
+    setDraftImageUrl(null)
+    setLastPayload(null)
+  }
+
   function handleTextInputChange(nextValue: string) {
+    if (draft && nextValue.trim().length > 0) {
+      clearDraftSession()
+    }
     if (!hasInteractedWithTextInput) {
       setHasInteractedWithTextInput(true)
     }
@@ -349,6 +359,9 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
   }
 
   function handleImageChange(file: File | null) {
+    if (draft && file) {
+      clearDraftSession()
+    }
     setSubmitError(null)
     setSelectedImage(file)
     setImageError(validateImageFile(file))
