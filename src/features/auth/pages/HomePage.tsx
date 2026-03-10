@@ -55,6 +55,11 @@ const processSteps = [
 ]
 
 export function HomePage() {
+  const demoHeadphoneImageUrl =
+    'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1200&q=80'
+  const demoMugImageUrl =
+    'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=1200&q=80'
+
   return (
     <div className="space-y-16 md:space-y-24">
       <section className="relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
@@ -131,12 +136,26 @@ export function HomePage() {
 
             <div className="space-y-4 pt-4">
               <div className="surface-elevated overflow-hidden p-0 shadow-none">
-                <div className="preview-media-gradient aspect-[16/9] w-full p-4 text-[color:var(--color-primary-foreground)]">
+                <div className="relative aspect-[16/9] w-full overflow-hidden p-4 text-[color:var(--color-primary-foreground)]">
+                  <img
+                    src={demoHeadphoneImageUrl}
+                    alt="Wireless over-ear headphones"
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(15, 23, 42, 0.18) 0%, rgba(15, 23, 42, 0.52) 55%, rgba(15, 23, 42, 0.72) 100%)',
+                    }}
+                  />
                   <div className="flex h-full flex-col justify-between">
-                    <span className="chip-on-primary inline-flex w-fit rounded-xl px-2 py-1 text-xs font-medium">
+                    <span className="chip-on-primary relative z-10 inline-flex w-fit rounded-xl px-2 py-1 text-xs font-medium">
                       Preview image
                     </span>
-                    <p className="max-w-xs text-sm font-semibold leading-tight">
+                    <p className="relative z-10 max-w-xs text-sm font-semibold leading-tight">
                       Wireless Headphones with ANC, 40H Battery, USB-C Fast Charge
                     </p>
                   </div>
@@ -185,54 +204,74 @@ export function HomePage() {
       </section>
 
       <section className="surface-elevated overflow-hidden p-6 md:p-8 lg:p-10">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-start">
-          <div>
-            <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--color-text)] md:text-4xl">
-              Example listing output
-            </h2>
-            <p className="mt-2 text-base text-[color:var(--color-text-muted)]">
-              See how generated copy and visuals appear before saving to your workspace.
-            </p>
+        <div className="max-w-2xl">
+          <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--color-text)] md:text-4xl">
+            Example listing output
+          </h2>
+          <p className="mt-2 text-base text-[color:var(--color-text-muted)]">
+            See how generated copy, pricing, and a product image appear together before saving to your workspace.
+          </p>
+        </div>
 
-            <div className="mt-6 space-y-4">
-              <div className="surface-elevated bg-[color:var(--color-surface-muted)] p-4">
-                <p className="text-xs uppercase tracking-wide text-[color:var(--color-text-muted)]">Title</p>
-                <p className="mt-2 text-base font-semibold leading-snug text-[color:var(--color-text)]">
-                  Handcrafted Ceramic Coffee Mug, 14 oz, Dishwasher-Safe, Speckled Clay Finish
+        <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-stretch">
+          <div className="surface-elevated flex h-full flex-col bg-[color:var(--color-surface-muted)] p-5 md:p-6">
+            <div>
+              <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                Listing summary
+              </p>
+              <p className="mt-3 text-xl font-semibold leading-snug text-[color:var(--color-text)] md:text-2xl">
+                Handcrafted Ceramic Coffee Mug, 14 oz, Dishwasher-Safe, Speckled Clay Finish
+              </p>
+            </div>
+
+            <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
+              <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Key bullets</p>
+              <ul className="mt-3 space-y-2 text-base leading-relaxed text-[color:var(--color-text-muted)]">
+                <li>Stoneware body with comfortable rounded handle.</li>
+                <li>Neutral finish pairs with modern kitchen setups.</li>
+                <li>Safe for microwave and top-rack dishwasher cycles.</li>
+              </ul>
+            </div>
+
+            <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                    Price guidance
+                  </p>
+                  <p className="mt-2 text-3xl font-bold tracking-tight text-[color:var(--color-text)]">$24 - $29</p>
+                </div>
+                <p className="max-w-xs text-sm leading-relaxed text-[color:var(--color-text-muted)]">
+                  Balanced against similar handcrafted mugs and finish quality.
                 </p>
-              </div>
-              <div className="surface-elevated bg-[color:var(--color-surface-muted)] p-4">
-                <p className="text-xs uppercase tracking-wide text-[color:var(--color-text-muted)]">Bullets</p>
-                <ul className="mt-2 space-y-1 text-sm text-[color:var(--color-text-muted)]">
-                  <li>Stoneware body with comfortable rounded handle.</li>
-                  <li>Neutral finish pairs with modern kitchen setups.</li>
-                  <li>Safe for microwave and top-rack dishwasher cycles.</li>
-                </ul>
               </div>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="surface-elevated bg-[color:var(--color-surface-muted)] p-5">
-              <p className="text-xs uppercase tracking-wide text-[color:var(--color-text-muted)]">Price guidance</p>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-[color:var(--color-text)]">$24 - $29</p>
-              <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">
-                Balanced against similar handcrafted mugs and finish quality.
-              </p>
+          <div className="surface-elevated flex h-full flex-col bg-[color:var(--color-surface-muted)] p-3">
+            <div className="px-1 pb-3">
+              <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Product image</p>
             </div>
-
-            <div className="grid grid-cols-3 gap-3">
-              {["Front", "Angle", "Lifestyle"].map((label) => (
-                <div key={label} className="surface-elevated overflow-hidden p-0">
-                  <div className="preview-media-gradient aspect-[4/3] p-2 text-[color:var(--color-primary-foreground)]">
-                    <div className="flex h-full items-end">
-                      <span className="chip-on-primary rounded-xl px-2 py-1 text-xs">
-                        {label}
-                      </span>
-                    </div>
-                  </div>
+            <div className="surface-elevated flex-1 overflow-hidden p-0">
+              <div className="relative h-full min-h-[320px] text-[color:var(--color-primary-foreground)]">
+                <img
+                  src={demoMugImageUrl}
+                  alt="Ceramic coffee mug product photo"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'linear-gradient(180deg, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.18) 52%, rgba(15, 23, 42, 0.42) 100%)',
+                  }}
+                />
+                <div className="relative z-10 flex h-full items-end p-3">
+                  <span className="chip-on-primary rounded-xl px-2 py-1 text-xs font-medium">Generated preview</span>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
