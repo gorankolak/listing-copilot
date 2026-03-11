@@ -13,12 +13,12 @@ export function PublicLayout() {
   return (
     <div className="min-h-screen bg-hero-gradient">
       <div className="page-container py-6 md:py-8">
-        <header className="surface-elevated sticky top-4 z-10 mb-8 flex items-center justify-between gap-2 px-3 py-3 md:px-5">
+        <header className="surface-elevated sticky top-4 z-10 mb-8 flex flex-wrap items-center justify-between gap-x-2 gap-y-3 px-3 py-3 md:px-5">
           <Link to="/" className="min-w-0 text-sm font-semibold tracking-tight text-[color:var(--color-text)]">
             <span className="sm:hidden">LC</span>
             <span className="hidden sm:inline">ListingCopilot</span>
           </Link>
-          <nav className="ml-auto flex shrink-0 items-center gap-2 text-sm">
+          <nav className="flex w-full items-center justify-between gap-2 text-sm sm:w-auto sm:justify-end">
             <Link
               to={`/login${returnToSearch}`}
               className={buttonClassName({ variant: 'secondary', size: 'sm' })}

@@ -76,7 +76,7 @@ export function DashboardPage() {
         Manage generated listings and review details.
       </p>
       <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-12 xl:items-start">
-        <section aria-labelledby="generate-listing-heading" className="xl:col-span-5">
+        <section aria-labelledby="generate-listing-heading" className="min-w-0 xl:col-span-5">
           <header className="mb-3">
             <h2 id="generate-listing-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
               Generate listing
@@ -91,7 +91,7 @@ export function DashboardPage() {
           />
         </section>
 
-        <section aria-labelledby="listing-preview-heading" className="xl:col-span-7">
+        <section aria-labelledby="listing-preview-heading" className="min-w-0 xl:col-span-7">
           <header className="mb-3">
             <h2 id="listing-preview-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
               Listing preview

@@ -107,7 +107,7 @@ export function ListingPreview({
         </section>
 
         <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,0.52fr)] xl:items-start">
-          <div className="rounded-xl bg-[color:var(--color-surface-muted)] p-4 sm:p-5">
+          <div className="min-w-0 rounded-xl bg-[color:var(--color-surface-muted)] p-4 sm:p-5">
             <div className="space-y-2">
               <label
                 htmlFor="preview-title"
@@ -186,7 +186,7 @@ export function ListingPreview({
             </div>
           </div>
 
-          <aside className="surface-elevated self-start rounded-xl p-4">
+          <aside className="surface-elevated min-w-0 self-start rounded-xl p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[color:var(--color-text-muted)]">
               Price range
             </p>

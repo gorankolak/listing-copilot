@@ -28,14 +28,14 @@ export function AppLayout() {
   return (
     <div className="min-h-screen">
       <header className="border-b border-[color:var(--color-border)] bg-[color:var(--color-surface)]/85 backdrop-blur-sm">
-        <div className="page-container flex flex-wrap items-center gap-3 py-3 sm:py-4">
+        <div className="page-container flex flex-wrap items-center justify-between gap-x-3 gap-y-2 py-3 sm:py-4">
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-[color:var(--color-text)]">Listing Copilot</p>
             <p className="max-w-[12rem] truncate text-xs text-[color:var(--color-text-muted)] sm:max-w-none">
               {user?.email ?? 'Signed in'}
             </p>
           </div>
-          <nav className="ml-auto flex shrink-0 items-center gap-2 text-sm sm:gap-4">
+          <nav className="flex w-full items-center justify-between gap-2 text-sm sm:w-auto sm:justify-end sm:gap-4">
             <NavLink
               to="/app"
               className={({ isActive }) =>
