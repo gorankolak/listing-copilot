@@ -111,7 +111,7 @@ export function HomePage() {
             </div>
           </div>
 
-          <Card className="relative mt-6 w-full max-w-md overflow-hidden p-4 md:justify-self-end md:p-5 lg:mt-0">
+          <Card className="relative mt-6 w-full max-w-md overflow-hidden border-slate-200 bg-gradient-to-b from-white to-slate-50 p-4 shadow-[0_20px_45px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-[2px] md:justify-self-end md:p-5 lg:mt-0">
             <div className="panel-subtle p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
