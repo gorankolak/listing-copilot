@@ -50,7 +50,7 @@ export function ListingThumbnail({
   }, [displaySrc])
 
   return (
-    <div className={cn('relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]', className)}>
+    <div className={cn('relative overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]', className)}>
       {!isLoaded ? <Skeleton className="absolute inset-0 h-full w-full rounded-none" /> : null}
       <img
         ref={imageRef}
@@ -75,7 +75,7 @@ export function ListingThumbnail({
         }}
       />
       {showFallbackLabel && fallbackLabel ? (
-        <span className="pointer-events-none absolute left-3 top-3 rounded-xl border border-[color:color-mix(in_srgb,var(--color-surface)_70%,var(--color-border)_30%)] bg-[color:color-mix(in_srgb,var(--color-surface)_93%,transparent_7%)] px-2 py-1 text-[11px] font-semibold text-[color:var(--color-text-muted)] backdrop-blur">
+        <span className="pointer-events-none absolute left-3 top-3 rounded-full border border-[color:color-mix(in_srgb,var(--color-surface)_70%,var(--color-border)_30%)] bg-[color:color-mix(in_srgb,var(--color-surface)_93%,transparent_7%)] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)] backdrop-blur">
           {fallbackLabel}
         </span>
       ) : null}

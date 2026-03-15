@@ -1,6 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes, ReactNode } from 'react'
 
 import { cn } from '../../lib/utils'
+import { buttonClassName } from './buttonClassName'
 
 type EmptyStateProps = HTMLAttributes<HTMLDivElement> & {
   title: ReactNode
@@ -12,7 +13,7 @@ export function EmptyState({ title, description, icon, className, ...props }: Em
   return (
     <section
       className={cn(
-        'rounded-xl border border-dashed border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-8 text-center',
+        'rounded-[var(--radius-card)] border border-dashed border-[color:var(--color-border-strong)] bg-[color:var(--color-surface)] p-8 text-center shadow-[var(--shadow-sm)]',
         className
       )}
       {...props}
@@ -20,14 +21,14 @@ export function EmptyState({ title, description, icon, className, ...props }: Em
       {icon ? (
         <div
           aria-hidden="true"
-          className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--color-surface-muted)]"
+          className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]"
         >
           {icon}
         </div>
       ) : null}
-      <h2 className="text-base font-semibold text-[color:var(--color-text)]">{title}</h2>
+      <h2 className="text-lg font-bold tracking-[-0.02em] text-[color:var(--color-text)]">{title}</h2>
       {description ? (
-        <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">{description}</p>
+        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[color:var(--color-text-secondary)]">{description}</p>
       ) : null}
     </section>
   )
@@ -41,10 +42,7 @@ export function EmptyStateActionButton({
   return (
     <button
       type={type}
-      className={cn(
-        'btn-primary-gradient mt-4 inline-flex h-10 items-center justify-center rounded-xl px-4 text-sm font-medium text-white hover:brightness-105 focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] focus-visible:outline-none',
-        className
-      )}
+      className={buttonClassName({ variant: 'primary', className: cn('mt-5', className) })}
       {...props}
     />
   )
@@ -53,10 +51,7 @@ export function EmptyStateActionButton({
 export function EmptyStateActionLink({ className, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
     <a
-      className={cn(
-        'btn-primary-gradient mt-4 inline-flex h-10 items-center justify-center rounded-xl px-4 text-sm font-medium text-white hover:brightness-105 focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] focus-visible:outline-none',
-        className
-      )}
+      className={buttonClassName({ variant: 'primary', className: cn('mt-5', className) })}
       {...props}
     />
   )

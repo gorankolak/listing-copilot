@@ -50,14 +50,14 @@ export function GeneratingOverlay({
     <div
       aria-hidden={!visible}
       className={cn(
-        'pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/97 backdrop-blur-[2px] transition-opacity duration-250',
+        'pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)]/97 backdrop-blur-[2px] transition-opacity duration-250',
         visible ? 'opacity-100' : 'opacity-0',
       )}
     >
       <div className="ai-overlay-shimmer absolute inset-x-0 top-0 h-0.5 rounded-full" />
 
       <div className="mx-auto flex min-h-full w-full max-w-xl items-start justify-center p-4 sm:items-center sm:p-6">
-        <div className="surface-elevated w-full rounded-xl bg-[color:var(--color-surface-muted)]/78 p-4 sm:p-5" role="status" aria-live="polite">
+        <div className="surface-elevated w-full rounded-[var(--radius-card)] bg-[color:var(--color-surface-muted)]/92 p-4 sm:p-5" role="status" aria-live="polite">
           <div className="flex items-center gap-3">
             <div
               className="relative h-16 w-16 shrink-0"
@@ -98,7 +98,7 @@ export function GeneratingOverlay({
               <p className="text-base font-semibold text-[color:var(--color-text)]">
                 AI is generating your listing
               </p>
-              <p className="text-sm text-[color:var(--color-text-muted)]">
+              <p className="text-sm text-[color:var(--color-text-secondary)]">
                 {Math.round(progress)}% complete
               </p>
             </div>
@@ -135,13 +135,13 @@ export function GeneratingOverlay({
                     >
                       {step.label}
                     </p>
-                    <p className="text-xs text-[color:var(--color-text-muted)]">
+                    <p className="text-xs leading-5 text-[color:var(--color-text-secondary)]">
                       {step.detailByMode[inputMode]}
                     </p>
                   </div>
                   <span
                     className={cn(
-                      'min-w-[6.5rem] rounded-xl px-2.5 py-1 text-center text-xs font-medium',
+                      'min-w-[6.5rem] rounded-full px-2.5 py-1 text-center text-[11px] font-bold uppercase tracking-[0.12em]',
                       isCompleted && 'bg-[color:var(--color-success-bg)] text-[color:var(--color-success-text)]',
                       isActive && 'bg-[color:var(--color-info-bg)] text-[color:var(--color-info-text)]',
                       !isCompleted &&

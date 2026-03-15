@@ -12,9 +12,9 @@ export function PublicLayout() {
 
   return (
     <div className="min-h-screen bg-hero-gradient">
-      <div className="page-container py-6 md:py-8">
-        <header className="surface-elevated sticky top-4 z-10 mb-8 flex flex-wrap items-center justify-between gap-x-2 gap-y-3 px-3 py-3 md:px-5">
-          <Link to="/" className="min-w-0 text-sm font-semibold tracking-tight text-[color:var(--color-text)]">
+      <div className="page-container py-5 md:py-7">
+        <header className="section-shell sticky top-4 z-10 mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 md:px-6">
+          <Link to="/" className="min-w-0 text-[0.95rem] font-bold tracking-[-0.03em] text-[color:var(--color-text)]">
             <span className="sm:hidden">LC</span>
             <span className="hidden sm:inline">ListingCopilot</span>
           </Link>
@@ -37,8 +37,8 @@ export function PublicLayout() {
         <main
           className={cn(
             isLandingRoute
-              ? 'pb-12 md:pb-16'
-              : 'mx-auto flex min-h-[calc(100vh-9rem)] max-w-lg items-center justify-center py-8'
+              ? 'pb-14 md:pb-20'
+              : 'mx-auto flex min-h-[calc(100vh-9.5rem)] max-w-[30rem] items-center justify-center py-8'
           )}
         >
           <Outlet />

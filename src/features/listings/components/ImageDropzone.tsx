@@ -142,33 +142,34 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
         onKeyDown={handleDropzoneKeyDown}
         tabIndex={disabled ? -1 : 0}
         className={cn(
-          'dropzone-animated-border relative block min-h-64 cursor-pointer overflow-hidden rounded-xl p-4 transition',
-          'focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/30 focus-within:ring-2 focus-within:ring-[color:var(--color-accent)]/30',
+          'dropzone-animated-border practical-grid relative block min-h-72 cursor-pointer overflow-hidden rounded-[var(--radius-card)] p-5 transition',
+          'focus-visible:ring-2 focus-visible:ring-[color:var(--color-primary)]/20 focus-within:ring-2 focus-within:ring-[color:var(--color-primary)]/20',
           disabled && 'cursor-not-allowed opacity-70',
           isDragActive && !disabled && 'dropzone-active ring-accent',
           error && 'border-[color:var(--color-danger)]',
         )}
       >
         {previewUrl ? (
-          <div className={cn('grid gap-3 sm:grid-cols-[7rem_minmax(0,1fr)] sm:items-center', isRemoving && 'dropzone-remove')}>
-            <div className="h-28 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]">
+          <div className={cn('grid gap-4 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-center', isRemoving && 'dropzone-remove')}>
+            <div className="h-28 rounded-[14px] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]">
               <img
                 src={previewUrl}
                 alt={file ? `Preview of ${file.name}` : 'Uploaded image preview'}
-                className="h-full w-full rounded-lg object-cover"
+                className="h-full w-full rounded-[14px] object-cover"
               />
             </div>
 
             <div>
-              <p className="text-sm font-medium text-[color:var(--color-text)]">{statusText}</p>
-              <p className="mt-1 text-xs text-[color:var(--color-text-muted)]">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Uploaded image</p>
+              <p className="mt-2 text-sm font-semibold text-[color:var(--color-text)]">{statusText}</p>
+              <p className="mt-1 text-xs leading-5 text-[color:var(--color-text-secondary)]">
                 Accepted: JPG, PNG, WEBP. Max size: 10MB.
               </p>
               <Button
                 type="button"
                 variant="danger-subtle"
                 size="sm"
-                className="mt-3 h-8 gap-1.5 px-3 text-xs"
+                className="mt-4 h-9 gap-1.5 px-3 text-xs"
                 onClick={(event) => {
                   event.preventDefault()
                   removeImageWithAnimation()
@@ -186,8 +187,8 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
             </div>
           </div>
         ) : (
-          <div className="flex min-h-56 flex-col items-center justify-center text-center">
-            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] text-[color:var(--color-primary)]">
+          <div className="flex min-h-60 flex-col items-center justify-center text-center">
+            <span className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-primary)] shadow-[var(--shadow-sm)]">
               <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                 <path
                   fill="currentColor"
@@ -195,11 +196,12 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
                 />
               </svg>
             </span>
-            <p className="text-sm font-medium text-[color:var(--color-text)]">{statusText}</p>
-            <p className="mt-1 text-xs text-[color:var(--color-text-muted)]">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">Drop product image</p>
+            <p className="mt-3 text-base font-semibold tracking-[-0.02em] text-[color:var(--color-text)]">{statusText}</p>
+            <p className="mt-2 text-xs leading-5 text-[color:var(--color-text-secondary)]">
               Accepted: JPG, PNG, WEBP. Max size: 10MB.
             </p>
-            <p className="mt-1 text-xs text-[color:var(--color-text-muted)]">Press Enter or Space to browse files.</p>
+            <p className="mt-1 text-xs leading-5 text-[color:var(--color-text-secondary)]">Press Enter or Space to browse files.</p>
           </div>
         )}
       </label>

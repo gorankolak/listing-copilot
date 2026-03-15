@@ -13,8 +13,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       ref={ref}
       {...props}
       className={cn(
-        'w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-2 text-sm text-[color:var(--color-text)] shadow-[var(--shadow-sm)] outline-none transition-colors placeholder:text-[color:var(--color-text-muted)] focus-visible:border-[color:var(--color-accent)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/30 disabled:cursor-not-allowed disabled:bg-[color:var(--color-surface-muted)]',
-        'aria-[invalid=true]:border-[color:var(--color-danger)] aria-[invalid=true]:focus-visible:ring-[color:var(--color-danger)]/30',
+        'w-full rounded-[var(--radius-input)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 text-sm font-medium text-[color:var(--color-text)] shadow-none outline-none transition-[border-color,box-shadow,background-color] placeholder:text-[color:var(--color-text-muted)] focus-visible:border-[color:var(--color-primary)] focus-visible:ring-4 focus-visible:ring-[color:var(--color-primary)]/10 disabled:cursor-not-allowed disabled:bg-[color:var(--color-surface-muted)]',
+        'aria-[invalid=true]:border-[color:var(--color-danger)] aria-[invalid=true]:focus-visible:ring-[color:var(--color-danger)]/12',
         className
       )}
     />

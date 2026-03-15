@@ -71,18 +71,43 @@ export function DashboardPage() {
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold text-[color:var(--color-text)]">Dashboard</h1>
-      <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">
-        Manage generated listings and review details.
-      </p>
-      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-12 xl:items-start">
-        <section aria-labelledby="generate-listing-heading" className="min-w-0 xl:col-span-5">
-          <header className="mb-3">
-            <h2 id="generate-listing-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
-              Generate listing
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-2xl">
+          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
+            Listing workspace
+          </p>
+          <h1 className="mt-4 text-[2.3rem] font-bold tracking-[-0.05em] text-[color:var(--color-text)] md:text-[3.2rem]">
+            Generate, polish, and save stronger listings.
+          </h1>
+          <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
+            Start from an image or rough notes, review the output beside it, then save the final draft.
+          </p>
+        </div>
+        <div className="grid grid-cols-3 gap-3 sm:w-auto">
+          <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]">
+            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">{listingCount}</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Saved</p>
+          </div>
+          <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]">
+            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">{hasDraftPreview ? '1' : '0'}</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Active draft</p>
+          </div>
+          <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]">
+            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">2</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Modes</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start">
+        <section aria-labelledby="generate-listing-heading" className="min-w-0">
+          <header className="mb-4">
+            <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Input</p>
+            <h2 id="generate-listing-heading" className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+              Generate a listing draft
             </h2>
-            <p className="mt-1 text-sm text-[color:var(--color-text-muted)]">
-              Start with an image upload or paste details to generate listing copy.
+            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              Add an image or text notes, then generate a structured draft for the editor.
             </p>
           </header>
           <ListingGenerator
@@ -91,18 +116,19 @@ export function DashboardPage() {
           />
         </section>
 
-        <section aria-labelledby="listing-preview-heading" className="min-w-0 xl:col-span-7">
-          <header className="mb-3">
-            <h2 id="listing-preview-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
-              Listing preview
+        <section aria-labelledby="listing-preview-heading" className="min-w-0">
+          <header className="mb-4">
+            <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Output</p>
+            <h2 id="listing-preview-heading" className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+              Preview and editor
             </h2>
-            <p className="mt-1 text-sm text-[color:var(--color-text-muted)]">
-              Generated content appears here so you can edit before saving.
+            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              This is the core workflow: inspect the draft, tighten copy, then save or copy it.
             </p>
           </header>
           {!hasDraftPreview ? (
-            <div className="surface-elevated p-8 text-center">
-              <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] text-[color:var(--color-primary)]">
+            <div className="section-shell practical-grid p-8 text-center md:p-10">
+              <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-primary)] shadow-[var(--shadow-sm)]">
                 <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                   <path
                     fill="currentColor"
@@ -110,11 +136,11 @@ export function DashboardPage() {
                   />
                 </svg>
               </span>
-              <h3 className="mt-4 text-base font-semibold text-[color:var(--color-text)]">
-                Your listing preview will appear here
+              <h3 className="mt-4 text-xl font-bold tracking-[-0.03em] text-[color:var(--color-text)]">
+                Your draft editor appears here
               </h3>
-              <p className="mt-2 text-sm text-[color:var(--color-text-muted)]">
-                Upload an image or enter product details, then click Generate listing to start editing.
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                Add product input on the left and generate a draft to begin the polish-and-save workflow.
               </p>
             </div>
           ) : null}
@@ -123,19 +149,20 @@ export function DashboardPage() {
       </div>
 
       <section aria-labelledby="saved-listings-heading" className="mt-10">
-        <header className="mb-3 flex items-center justify-between gap-2">
+        <header className="mb-4 flex items-center justify-between gap-2">
           <div>
-            <h2 id="saved-listings-heading" className="text-lg font-semibold text-[color:var(--color-text)]">
+            <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Library</p>
+            <h2 id="saved-listings-heading" className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
               Recent listings
             </h2>
-            <p className="mt-1 text-sm text-[color:var(--color-text-muted)]">
-              Your latest saved drafts and generated listings.
+            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              Saved drafts and finished listings from your workspace.
             </p>
           </div>
           {listingCount > 3 && !showAllListings ? (
             <a
               href="#recent-listings"
-              className="text-sm font-medium text-[color:var(--color-primary)] hover:underline"
+              className="text-sm font-semibold text-[color:var(--color-primary)] hover:underline"
               onClick={(event) => {
                 event.preventDefault()
                 setShowAllListings(true)
@@ -196,7 +223,7 @@ export function DashboardPage() {
           <EmptyState
             className="mt-3"
             title="No saved listings yet"
-            description="Generate your first listing to see it here."
+            description="Generate your first listing to build out the workspace library."
           >
             <EmptyStateActionLink href="/app">Start a listing</EmptyStateActionLink>
           </EmptyState>

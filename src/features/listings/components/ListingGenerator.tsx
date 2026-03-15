@@ -341,17 +341,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
     window.requestAnimationFrame(() => textInputRef.current?.focus())
   }
 
-  function clearDraftSession() {
-    setSaveError(null)
-    setDraftAndPersist(null)
-    setDraftImageUrl(null)
-    setLastPayload(null)
-  }
-
   function handleTextInputChange(nextValue: string) {
-    if (draft && nextValue.trim().length > 0) {
-      clearDraftSession()
-    }
     if (!hasInteractedWithTextInput) {
       setHasInteractedWithTextInput(true)
     }
@@ -359,9 +349,6 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
   }
 
   function handleImageChange(file: File | null) {
-    if (draft && file) {
-      clearDraftSession()
-    }
     setSubmitError(null)
     setSelectedImage(file)
     setImageError(validateImageFile(file))
@@ -505,26 +492,35 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle>Generate a listing</CardTitle>
-          <CardDescription>Choose image upload or text input to start.</CardDescription>
+      <Card className="relative overflow-hidden p-0">
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
+        <CardHeader className="px-6 pb-0 pt-7 md:px-7">
+          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
+            Input
+          </p>
+          <CardTitle className="mt-4">Prepare your source material</CardTitle>
+          <CardDescription>
+            Choose image upload or text notes, then generate a draft for the editor.
+          </CardDescription>
         </CardHeader>
-        <CardContent className={cn('relative', isOverlayActive && 'min-h-[36rem]')}>
+        <CardContent className={cn('relative px-6 pb-6 md:px-7 md:pb-7', isOverlayActive && 'min-h-[36rem]')}>
           <GeneratingOverlay
             visible={isGeneratingOverlayVisible}
             stepIndex={generatingStepIndex}
             inputMode={mode}
           />
           <div
-            className="inline-flex rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-1"
+            className="inline-flex rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-1"
             role="group"
             aria-label="Generation mode"
           >
             <Button
               variant={mode === 'image' ? 'primary' : 'ghost'}
               size="sm"
-              className={mode === 'image' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'}
+              className={cn(
+                'rounded-full px-4',
+                mode === 'image' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'
+              )}
               onClick={() => handleModeChange('image')}
               aria-pressed={mode === 'image'}
               disabled={isSubmitting}
@@ -534,7 +530,10 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
             <Button
               variant={mode === 'text' ? 'primary' : 'ghost'}
               size="sm"
-              className={mode === 'text' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'}
+              className={cn(
+                'rounded-full px-4',
+                mode === 'text' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'
+              )}
               onClick={() => handleModeChange('text')}
               aria-pressed={mode === 'text'}
               disabled={isSubmitting}
@@ -543,12 +542,12 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
             </Button>
           </div>
 
-          <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
+          <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
             {mode === 'image' ? (
               <div className="space-y-2">
                 <label
                   htmlFor="listing-image-upload"
-                  className="block text-sm font-medium text-[color:var(--color-text)]"
+                  className="block text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]"
                 >
                   Product image
                 </label>
@@ -568,7 +567,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               <div className="space-y-2">
                 <label
                   htmlFor="listing-text-input"
-                  className="block text-sm font-medium text-[color:var(--color-text)]"
+                  className="block text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]"
                 >
                   Product details
                 </label>
@@ -579,6 +578,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
                   onChange={(event) => handleTextInputChange(event.target.value)}
                   onBlur={() => setHasInteractedWithTextInput(true)}
                   placeholder="Brand, model, condition, accessories, and any important details."
+                  className="min-h-56"
                   aria-invalid={Boolean(visibleTextError)}
                   aria-describedby={visibleTextError ? textErrorId : undefined}
                   disabled={isSubmitting}
@@ -587,25 +587,27 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               </div>
             )}
 
-            <Button type="submit" disabled={isSubmitDisabled} fullWidth>
-              Generate listing
-            </Button>
+            <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-4">
+              <Button type="submit" disabled={isSubmitDisabled} fullWidth size="lg">
+                {isSubmitting ? 'Generating listing...' : 'Generate listing'}
+              </Button>
 
-            <p
-              id={generationStatusId}
-              className={cn(
-                'text-sm text-[color:var(--color-text-muted)]',
-                isOverlayActive && 'sr-only',
-              )}
-              role="status"
-              aria-live="polite"
-            >
-              {isGenerationInFlight || isGeneratingOverlayVisible
-                ? 'AI generation in progress.'
-                : draft
-                  ? 'Listing draft generated and ready for review.'
-                  : 'Ready to generate a listing.'}
-            </p>
+              <p
+                id={generationStatusId}
+                className={cn(
+                  'mt-3 text-xs font-medium leading-5 text-[color:var(--color-text-muted)]',
+                  isOverlayActive && 'sr-only',
+                )}
+                role="status"
+                aria-live="polite"
+              >
+                {isGenerationInFlight || isGeneratingOverlayVisible
+                  ? 'AI generation in progress.'
+                  : draft
+                    ? 'Draft ready for review in the editor.'
+                    : 'Ready to generate a listing.'}
+              </p>
+            </div>
 
             <div ref={submitErrorRef} tabIndex={-1}>
               <FormFieldError id={submitErrorId} message={submitError} />

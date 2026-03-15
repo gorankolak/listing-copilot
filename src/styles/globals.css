@@ -1,40 +1,44 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary-start: #7c3aed;
-  --color-primary: #2563eb;
-  --color-primary-end: #2563eb;
+  --color-primary-start: #6d3df5;
+  --color-primary: #2457f5;
+  --color-primary-end: #2457f5;
   --color-primary-foreground: #ffffff;
-  --color-background: #f3f6ff;
+  --color-background: #eaf3f8;
   --color-surface: #ffffff;
-  --color-surface-muted: #f8faff;
-  --color-border: #dbe3f0;
+  --color-surface-muted: #f5f7fb;
+  --color-border: #d7dfea;
+  --color-border-strong: #c3cedc;
   --color-text: #111827;
-  --color-text-muted: #5b6473;
-  --color-accent: #06b6d4;
-  --color-danger: #dc2626;
-  --color-info-bg: #eff6ff;
-  --color-info-border: #bfdbfe;
-  --color-info-text: #1e3a8a;
-  --color-success-bg: #ecfdf5;
-  --color-success-border: #a7f3d0;
-  --color-success-text: #065f46;
-  --color-warning-bg: #fffbeb;
-  --color-warning-border: #fde68a;
-  --color-warning-text: #92400e;
-  --color-error-bg: #fef2f2;
-  --color-error-border: #fecaca;
-  --color-error-text: #991b1b;
-  --radius-xl: 0.875rem;
+  --color-text-secondary: #5b6475;
+  --color-text-muted: #7c8799;
+  --color-accent: #f6c744;
+  --color-success: #0f9f6e;
+  --color-danger: #d64545;
+  --color-navy: #182033;
+  --color-info-bg: #edf2ff;
+  --color-info-border: #d3ddff;
+  --color-info-text: #2457f5;
+  --color-success-bg: #edf9f5;
+  --color-success-border: #b8ead8;
+  --color-success-text: #0f7a56;
+  --color-warning-bg: #fff8df;
+  --color-warning-border: #f3da86;
+  --color-warning-text: #7b5a09;
+  --color-error-bg: #fff1f1;
+  --color-error-border: #efc4c4;
+  --color-error-text: #b33232;
+  --radius-button: 0.875rem;
+  --radius-input: 0.875rem;
+  --radius-card: 1.125rem;
+  --radius-section: 1.5rem;
+  --radius-pill: 999px;
   --spacing-container: 72rem;
-  --shadow-sm: 0 6px 16px rgba(15, 23, 42, 0.08);
-  --shadow-md: 0 14px 38px rgba(15, 23, 42, 0.12);
-  --gradient-hero: linear-gradient(135deg, #eff3ff 0%, #e9f8ff 55%, #f7fbff 100%);
-  --gradient-primary: linear-gradient(
-    120deg,
-    var(--color-primary-start) 0%,
-    var(--color-primary-end) 100%
-  );
+  --shadow-sm: 0 6px 20px rgba(17, 24, 39, 0.04);
+  --shadow-md: 0 10px 30px rgba(17, 24, 39, 0.06);
+  --gradient-hero: linear-gradient(180deg, #f5fbff 0%, #eaf3f8 48%, #e8f1f8 100%);
+  --gradient-primary: linear-gradient(135deg, #6d3df5 0%, #2457f5 100%);
 }
 
 :root {
@@ -55,6 +59,7 @@ body {
   background: var(--gradient-hero);
   background-attachment: fixed;
   overflow-x: hidden;
+  color: var(--color-text);
 }
 
 #root {
@@ -80,7 +85,7 @@ button:disabled,
 }
 
 .surface-card {
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-md);
@@ -97,14 +102,14 @@ button:disabled,
 }
 
 .surface-elevated {
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
   box-shadow: var(--shadow-sm);
 }
 
 .ring-accent {
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.24);
+  box-shadow: 0 0 0 3px rgba(36, 87, 245, 0.16);
 }
 
 .decor-orb-primary {
@@ -114,7 +119,7 @@ button:disabled,
 
 .decor-orb-accent {
   background:
-    radial-gradient(circle, color-mix(in srgb, var(--color-accent) 16%, transparent 84%) 0%, transparent 72%);
+    radial-gradient(circle, color-mix(in srgb, var(--color-accent) 18%, transparent 82%) 0%, transparent 72%);
 }
 
 .surface-tint-primary {
@@ -156,13 +161,13 @@ button:disabled,
 }
 
 .dropzone-animated-border {
-  --dropzone-dash-color: color-mix(in srgb, var(--color-border) 92%, white 8%);
+  --dropzone-dash-color: color-mix(in srgb, var(--color-border-strong) 84%, white 16%);
   border: 2px dashed var(--dropzone-dash-color);
   background-color: var(--color-surface);
   background-image: linear-gradient(
     120deg,
     transparent 20%,
-    color-mix(in srgb, var(--color-accent) 9%, transparent 91%) 50%,
+    color-mix(in srgb, var(--color-accent) 10%, transparent 90%) 50%,
     transparent 80%
   );
   background-size: 240% 240%;
@@ -170,13 +175,45 @@ button:disabled,
 }
 
 .dropzone-active {
-  --dropzone-dash-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border) 45%);
+  --dropzone-dash-color: color-mix(in srgb, var(--color-primary) 58%, var(--color-border) 42%);
   background-image: linear-gradient(
     120deg,
-    color-mix(in srgb, var(--color-accent) 6%, transparent 94%) 20%,
-    color-mix(in srgb, var(--color-accent) 20%, transparent 80%) 50%,
-    color-mix(in srgb, var(--color-accent) 6%, transparent 94%) 80%
+    color-mix(in srgb, var(--color-primary) 5%, transparent 95%) 20%,
+    color-mix(in srgb, var(--color-primary) 16%, transparent 84%) 50%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent 95%) 80%
   );
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.section-shell {
+  border-radius: var(--radius-section);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.section-heading {
+  font-size: clamp(1.85rem, 2vw + 1rem, 2.85rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+.practical-grid {
+  background-image:
+    linear-gradient(to right, rgba(24, 32, 51, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(24, 32, 51, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 .dropzone-remove {

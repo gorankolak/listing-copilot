@@ -6,7 +6,7 @@ import { Card } from '../../../components/ui/Card'
 const processSteps = [
   {
     title: 'Add input in one minute',
-    description: 'Drop product photos or paste rough notes to start a structured draft.',
+    description: 'Drop product photos or paste rough notes to start a structured first draft.',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
         <path
@@ -22,7 +22,7 @@ const processSteps = [
   },
   {
     title: 'Generate optimized copy',
-    description: 'AI crafts title, bullets, and price guidance aligned to marketplace tone.',
+    description: 'Create a stronger title, concise bullets, and price guidance in one pass.',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
         <path
@@ -37,8 +37,8 @@ const processSteps = [
     ),
   },
   {
-    title: 'Review, polish, and publish',
-    description: 'Adjust details fast, then copy your listing and launch with confidence.',
+    title: 'Review, polish, and save',
+    description: 'Edit the result directly in the preview workspace, then copy or save it.',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
         <path
@@ -62,36 +62,23 @@ export function HomePage() {
 
   return (
     <div className="space-y-16 md:space-y-24">
-      <section className="relative overflow-hidden rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-9 shadow-[var(--shadow-sm)] md:px-10 md:py-14 lg:px-12 lg:py-16">
-        <div
-          aria-hidden="true"
-          className="decor-orb-primary pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full"
-        />
-        <div
-          aria-hidden="true"
-          className="decor-orb-accent pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full"
-        />
+      <section className="section-shell practical-grid relative overflow-hidden px-5 py-8 md:px-10 md:py-12 lg:px-12 lg:py-14">
+        <div aria-hidden="true" className="decor-orb-primary pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full" />
+        <div aria-hidden="true" className="decor-orb-accent pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full" />
 
-        <div className="relative grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:gap-10">
+        <div className="relative grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:gap-12">
           <div>
-            <p className="inline-flex rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-1 text-xs font-semibold tracking-wide text-[color:var(--color-text-muted)]">
-              Marketplace-ready listing copy in minutes
+            <p className="eyebrow w-fit rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-1 text-[color:var(--color-text-secondary)]">
+              Built for practical selling teams
             </p>
-            <h1 className="mt-5 max-w-xl pb-2 text-[2.4rem] font-bold leading-[1.12] tracking-tight text-[color:var(--color-text)] md:text-6xl lg:text-7xl">
-              Turn product notes into
-              <span
-                className="block pb-[0.08em] bg-[image:var(--gradient-primary)] bg-clip-text text-transparent"
-                style={{ WebkitTextFillColor: 'transparent' }}
-              >
-                premium listing output
-              </span>
+            <h1 className="mt-5 max-w-xl text-[2.7rem] font-bold leading-[0.97] tracking-[-0.06em] text-[color:var(--color-text)] md:text-[4.65rem]">
+              Turn rough product notes into listings that sell.
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-[color:var(--color-text-muted)] md:text-lg md:leading-relaxed">
-              ListingCopilot generates optimized titles, bullets, and pricing guidance so your listings
-              look polished, consistent, and ready to publish.
+            <p className="mt-5 max-w-lg text-base leading-7 text-[color:var(--color-text-secondary)] md:text-lg">
+              Generate a clear title, sharp bullets, a usable description, and price guidance in one focused workflow.
             </p>
 
-            <div className="mt-9 grid max-w-sm grid-cols-1 gap-3 sm:max-w-none sm:flex sm:flex-wrap">
+            <div className="mt-8 grid max-w-sm grid-cols-1 gap-3 sm:max-w-none sm:flex sm:flex-wrap">
               <Link
                 to="/signup"
                 className={buttonClassName({ variant: 'primary', size: 'lg', className: 'w-full sm:w-auto' })}
@@ -102,34 +89,35 @@ export function HomePage() {
                 to="/login"
                 className={buttonClassName({ variant: 'secondary', size: 'lg', className: 'w-full sm:w-auto' })}
               >
-                Login
+                See example
               </Link>
             </div>
 
-            <div className="mt-8 grid max-w-lg grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-3">
-                <p className="text-base font-semibold text-[color:var(--color-text)] md:text-lg">60s</p>
-                <p className="text-xs text-[color:var(--color-text-muted)]">to first draft</p>
+            <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-4">
+                <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">60s</p>
+                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">To first draft</p>
               </div>
-              <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-3">
-                <p className="text-base font-semibold text-[color:var(--color-text)] md:text-lg">3x</p>
-                <p className="text-xs text-[color:var(--color-text-muted)]">faster iterations</p>
+              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-4">
+                <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">3x</p>
+                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Faster edits</p>
               </div>
-              <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-3">
-                <p className="text-base font-semibold text-[color:var(--color-text)] md:text-lg">1 click</p>
-                <p className="text-xs text-[color:var(--color-text-muted)]">publish flow</p>
+              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-4">
+                <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">1 flow</p>
+                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Input to saved</p>
               </div>
             </div>
           </div>
 
-          <Card className="relative p-4">
-            <div
-              className="surface-elevated surface-tint-primary rounded-xl p-5"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-[color:var(--color-text)]">Product Preview</p>
-                <span className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-2 py-1 text-xs font-medium text-[color:var(--color-text-muted)]">
-                  Auto-generated
+          <Card className="relative overflow-hidden p-4 md:p-5">
+            <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">Preview workspace</p>
+                  <p className="mt-1 text-base font-bold tracking-[-0.03em] text-[color:var(--color-text)]">Draft ready to polish</p>
+                </div>
+                <span className="rounded-full bg-[color:var(--color-accent)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-navy)]">
+                  Ready
                 </span>
               </div>
             </div>
@@ -145,30 +133,33 @@ export function HomePage() {
                   />
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        'linear-gradient(180deg, rgba(15, 23, 42, 0.18) 0%, rgba(15, 23, 42, 0.52) 55%, rgba(15, 23, 42, 0.72) 100%)',
-                    }}
+                    className="absolute inset-0 bg-gradient-to-t from-[rgba(24,32,51,0.84)] via-[rgba(24,32,51,0.34)] to-transparent"
                   />
-                  <div className="flex h-full flex-col justify-between">
-                    <span className="chip-on-primary relative z-10 inline-flex w-fit rounded-xl px-2 py-1 text-xs font-medium">
-                      Preview image
+                  <div className="relative flex h-full flex-col justify-between">
+                    <span className="chip-on-primary inline-flex w-fit rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
+                      Input image
                     </span>
-                    <p className="relative z-10 max-w-xs text-sm font-semibold leading-tight">
+                    <p className="max-w-xs text-base font-bold leading-tight tracking-[-0.03em]">
                       Wireless Headphones with ANC, 40H Battery, USB-C Fast Charge
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="surface-elevated bg-[color:var(--color-surface-muted)] p-4 shadow-none">
-                <p className="text-xs uppercase tracking-wide text-[color:var(--color-text-muted)]">Key bullets</p>
-                <ul className="mt-2 space-y-1 text-sm text-[color:var(--color-text-muted)]">
-                  <li>Adaptive ANC for commute, work, and travel.</li>
-                  <li>Lightweight fold-flat build with padded comfort.</li>
-                  <li>Suggested range: $89 - $109.</li>
-                </ul>
+              <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_11rem]">
+                <div className="surface-elevated bg-[color:var(--color-surface)] p-4 shadow-none">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">Output</p>
+                  <ul className="mt-3 space-y-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                    <li>Adaptive ANC for commute, work, and travel.</li>
+                    <li>Lightweight fold-flat build with padded comfort.</li>
+                    <li>USB-C fast charge and 40-hour battery headline.</li>
+                  </ul>
+                </div>
+                <div className="surface-elevated bg-[color:var(--color-navy)] p-4 text-white shadow-none">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/65">Price guide</p>
+                  <p className="mt-3 text-3xl font-bold tracking-[-0.05em]">$89</p>
+                  <p className="text-sm text-white/78">to $109</p>
+                </div>
               </div>
             </div>
           </Card>
@@ -177,56 +168,58 @@ export function HomePage() {
 
       <section className="space-y-6 md:space-y-7">
         <div className="max-w-2xl space-y-2">
-          <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--color-text)] md:text-4xl">
-            Built for a fast listing workflow
+          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
+            Workflow
+          </p>
+          <h2 className="section-heading max-w-xl">
+            A disciplined path from rough input to marketplace-ready copy.
           </h2>
-          <p className="text-base text-[color:var(--color-text-muted)]">
-            A clear three-step flow from rough product input to polished marketplace copy.
+          <p className="text-base leading-7 text-[color:var(--color-text-secondary)]">
+            Each step is visible, structured, and tuned for quick seller review instead of generic AI output.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {processSteps.map((step, index) => (
-            <Card key={step.title} className="h-full space-y-4 p-5 md:p-6">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[image:var(--gradient-primary)] text-[color:var(--color-primary-foreground)]">
+            <Card key={step.title} className="h-full space-y-5 p-5 md:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[color:var(--color-navy)] text-[color:var(--color-accent)]">
                   {step.icon}
                 </div>
-                <span className="text-xs font-semibold tracking-wide text-[color:var(--color-text-muted)]">
-                  Step {index + 1}
-                </span>
+                <span className="eyebrow text-[color:var(--color-text-muted)]">Step {index + 1}</span>
               </div>
-              <h3 className="text-lg font-semibold text-[color:var(--color-text)] md:text-xl">{step.title}</h3>
-              <p className="text-sm leading-relaxed text-[color:var(--color-text-muted)]">{step.description}</p>
+              <h3 className="text-xl font-bold tracking-[-0.03em] text-[color:var(--color-text)]">{step.title}</h3>
+              <p className="text-sm leading-6 text-[color:var(--color-text-secondary)]">{step.description}</p>
             </Card>
           ))}
         </div>
       </section>
 
-      <section className="surface-elevated overflow-hidden p-6 md:p-8 lg:p-10">
+      <section className="section-shell overflow-hidden p-6 md:p-8 lg:p-10">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--color-text)] md:text-4xl">
-            Example listing output
+          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
+            Example output
+          </p>
+          <h2 className="section-heading mt-4">
+            Preview exactly what the seller will review before saving.
           </h2>
-          <p className="mt-2 text-base text-[color:var(--color-text-muted)]">
-            See how generated copy, pricing, and a product image appear together before saving to your workspace.
+          <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
+            Real title, bullets, description, and price guidance arranged as a working product panel instead of filler marketing chrome.
           </p>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-stretch">
           <div className="surface-elevated flex h-full flex-col bg-[color:var(--color-surface-muted)] p-5 md:p-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                Listing summary
-              </p>
-              <p className="mt-3 text-xl font-semibold leading-snug text-[color:var(--color-text)] md:text-2xl">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Listing summary</p>
+              <p className="mt-3 text-2xl font-bold leading-snug tracking-[-0.04em] text-[color:var(--color-text)] md:text-[2rem]">
                 Handcrafted Ceramic Coffee Mug, 14 oz, Dishwasher-Safe, Speckled Clay Finish
               </p>
             </div>
 
             <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
-              <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Key bullets</p>
-              <ul className="mt-3 space-y-2 text-base leading-relaxed text-[color:var(--color-text-muted)]">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Key bullets</p>
+              <ul className="mt-3 space-y-2 text-base leading-relaxed text-[color:var(--color-text-secondary)]">
                 <li>Stoneware body with comfortable rounded handle.</li>
                 <li>Neutral finish pairs with modern kitchen setups.</li>
                 <li>Safe for microwave and top-rack dishwasher cycles.</li>
@@ -236,12 +229,10 @@ export function HomePage() {
             <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                    Price guidance
-                  </p>
-                  <p className="mt-2 text-3xl font-bold tracking-tight text-[color:var(--color-text)]">$24 - $29</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Price guidance</p>
+                  <p className="mt-2 text-4xl font-bold tracking-[-0.05em] text-[color:var(--color-text)]">$24 - $29</p>
                 </div>
-                <p className="max-w-xs text-sm leading-relaxed text-[color:var(--color-text-muted)]">
+                <p className="max-w-xs text-sm leading-6 text-[color:var(--color-text-secondary)]">
                   Balanced against similar handcrafted mugs and finish quality.
                 </p>
               </div>
@@ -250,7 +241,7 @@ export function HomePage() {
 
           <div className="surface-elevated flex h-full flex-col bg-[color:var(--color-surface-muted)] p-3">
             <div className="px-1 pb-3">
-              <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Product image</p>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Product image</p>
             </div>
             <div className="surface-elevated flex-1 overflow-hidden p-0">
               <div className="relative h-full min-h-[320px] text-[color:var(--color-primary-foreground)]">
@@ -260,16 +251,19 @@ export function HomePage() {
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
                 />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      'linear-gradient(180deg, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.18) 52%, rgba(15, 23, 42, 0.42) 100%)',
-                  }}
-                />
-                <div className="relative z-10 flex h-full items-end p-3">
-                  <span className="chip-on-primary rounded-xl px-2 py-1 text-xs font-medium">Generated preview</span>
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[rgba(24,32,51,0.88)] via-[rgba(24,32,51,0.26)] to-transparent" />
+                <div className="relative flex h-full flex-col justify-between p-5">
+                  <span className="inline-flex w-fit rounded-full bg-white/16 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] backdrop-blur">
+                    Example asset
+                  </span>
+                  <div className="space-y-2">
+                    <p className="text-lg font-bold leading-tight tracking-[-0.03em]">
+                      Lifestyle image and polished copy stay connected in the same workspace.
+                    </p>
+                    <p className="max-w-sm text-sm text-white/80">
+                      Sellers see the visual asset, output structure, and price recommendation together.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -277,42 +271,29 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="surface-elevated overflow-hidden p-7 md:p-10" style={{ background: 'var(--gradient-primary)' }}>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-          <div>
-            <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--color-primary-foreground)] md:text-4xl">
-              Ready to accelerate your listings?
+      <section className="overflow-hidden rounded-[1.75rem] bg-[image:var(--gradient-primary)] px-6 py-10 text-[color:var(--color-primary-foreground)] shadow-[var(--shadow-md)] md:px-10 md:py-12">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="eyebrow w-fit rounded-full bg-white/14 px-3 py-1 text-white/80">Start now</p>
+            <h2 className="mt-4 text-3xl font-bold tracking-[-0.05em] md:text-5xl">
+              Build stronger listings in a workspace that feels production-ready.
             </h2>
-            <p
-              className="mt-3 max-w-2xl text-base"
-              style={{ color: 'color-mix(in srgb, var(--color-primary-foreground) 86%, transparent 14%)' }}
-            >
-              Join ListingCopilot and move from draft product notes to clean marketplace-ready copy in
-              a faster, repeatable workflow.
+            <p className="mt-3 max-w-xl text-base text-white/82">
+              One tool for input, generation, polish, and saving. No generic AI blank page.
             </p>
           </div>
-
-          <div className="grid max-w-sm grid-cols-1 gap-3 sm:max-w-none sm:flex sm:flex-wrap md:justify-end">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <Link
               to="/signup"
-              className={buttonClassName({
-                variant: 'secondary',
-                size: 'lg',
-                className: 'w-full border-[color:var(--color-surface)] bg-[color:var(--color-surface)] sm:w-auto',
-              })}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-button)] bg-white px-5 text-sm font-semibold text-[color:var(--color-text)] shadow-[var(--shadow-sm)] transition hover:bg-white/92"
             >
-              Create Account
+              Create account
             </Link>
             <Link
               to="/login"
-              className={buttonClassName({
-                variant: 'secondary',
-                size: 'lg',
-                className:
-                  'w-full border-white/45 bg-white/6 text-[color:var(--color-primary-foreground)] hover:bg-white/16 focus-visible:ring-white/45 sm:w-auto',
-              })}
+              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-button)] border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/16"
             >
-              Sign In
+              Sign in
             </Link>
           </div>
         </div>

@@ -12,7 +12,7 @@ export function Skeleton({ className, width, height, circle = false, ...props }:
   return (
     <div
       className={cn(
-        'animate-pulse bg-[color:var(--color-border)]',
+        'animate-pulse bg-[color:color-mix(in_srgb,var(--color-border)_74%,white_26%)]',
         circle ? 'rounded-full' : 'rounded-xl',
         !width && 'w-full',
         !height && 'h-6',
