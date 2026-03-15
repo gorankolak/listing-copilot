@@ -50,7 +50,7 @@ export function ListingThumbnail({
   }, [displaySrc])
 
   return (
-    <div className={cn('relative overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]', className)}>
+    <div className={cn('image-frame relative', className)}>
       {!isLoaded ? <Skeleton className="absolute inset-0 h-full w-full rounded-none" /> : null}
       <img
         ref={imageRef}

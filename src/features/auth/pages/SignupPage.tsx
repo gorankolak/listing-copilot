@@ -9,7 +9,7 @@ export function SignupPage() {
         <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
           Start free
         </p>
-        <CardTitle className="mt-4 text-3xl md:text-[2rem]">Create your ListingCopilot account</CardTitle>
+        <CardTitle className="mt-4 text-[1.9rem] md:text-[2.15rem]">Create your ListingCopilot account</CardTitle>
         <CardDescription className="max-w-sm">
           Set up a focused workspace for turning rough product input into polished listing output.
         </CardDescription>

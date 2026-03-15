@@ -64,9 +64,9 @@ export function SignupForm() {
   })
 
   return (
-    <form onSubmit={onSubmit} className="mt-5 space-y-5" noValidate>
-      <label className="block space-y-1">
-        <span className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Email</span>
+    <form onSubmit={onSubmit} className="mt-6 space-y-5" noValidate>
+      <label className="block space-y-2">
+        <span className="eyebrow text-[color:var(--color-text-muted)]">Email</span>
         <Input
           type="email"
           autoComplete="email"
@@ -77,8 +77,8 @@ export function SignupForm() {
         <FormFieldError id="signup-email-error" message={errors.email?.message} />
       </label>
 
-      <label className="block space-y-1">
-        <span className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Password</span>
+      <label className="block space-y-2">
+        <span className="eyebrow text-[color:var(--color-text-muted)]">Password</span>
         <Input
           type="password"
           autoComplete="new-password"
@@ -89,8 +89,8 @@ export function SignupForm() {
         <FormFieldError id="signup-password-error" message={errors.password?.message} />
       </label>
 
-      <label className="block space-y-1">
-        <span className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Confirm password</span>
+      <label className="block space-y-2">
+        <span className="eyebrow text-[color:var(--color-text-muted)]">Confirm password</span>
         <Input
           type="password"
           autoComplete="new-password"

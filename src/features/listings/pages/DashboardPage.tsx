@@ -71,42 +71,45 @@ export function DashboardPage() {
 
   return (
     <section>
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-2xl">
           <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
             Listing workspace
           </p>
-          <h1 className="mt-4 text-[2.3rem] font-bold tracking-[-0.05em] text-[color:var(--color-text)] md:text-[3.2rem]">
+          <h1 className="workspace-heading mt-4 text-[color:var(--color-text)]">
             Generate, polish, and save stronger listings.
           </h1>
-          <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
+          <p className="workspace-supporting-text mt-3 max-w-xl">
             Start from an image or rough notes, review the output beside it, then save the final draft.
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3 sm:w-auto">
-          <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]">
+          <div className="surface-elevated px-4 py-3">
             <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">{listingCount}</p>
             <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Saved</p>
           </div>
-          <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]">
+          <div className="surface-elevated px-4 py-3">
             <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">{hasDraftPreview ? '1' : '0'}</p>
             <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Active draft</p>
           </div>
-          <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 shadow-[var(--shadow-sm)]">
+          <div className="surface-elevated px-4 py-3">
             <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">2</p>
             <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Modes</p>
           </div>
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start">
+      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(20rem,0.9fr)_minmax(0,1.1fr)] xl:items-start">
         <section aria-labelledby="generate-listing-heading" className="min-w-0">
-          <header className="mb-4">
+          <header className="mb-4 flex flex-col xl:min-h-[7.75rem]">
             <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Input</p>
-            <h2 id="generate-listing-heading" className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+            <h2
+              id="generate-listing-heading"
+              className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
+            >
               Generate a listing draft
             </h2>
-            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+            <p className="workspace-supporting-text mt-2 max-w-lg">
               Add an image or text notes, then generate a structured draft for the editor.
             </p>
           </header>
@@ -116,13 +119,19 @@ export function DashboardPage() {
           />
         </section>
 
-        <section aria-labelledby="listing-preview-heading" className="min-w-0">
-          <header className="mb-4">
+        <section
+          aria-labelledby="listing-preview-heading"
+          className="flex w-full max-w-full min-w-0 flex-col items-stretch"
+        >
+          <header className="mb-4 flex flex-col xl:min-h-[7.75rem]">
             <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Output</p>
-            <h2 id="listing-preview-heading" className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+            <h2
+              id="listing-preview-heading"
+              className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
+            >
               Preview and editor
             </h2>
-            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+            <p className="workspace-supporting-text mt-2 max-w-xl">
               This is the core workflow: inspect the draft, tighten copy, then save or copy it.
             </p>
           </header>
@@ -136,15 +145,15 @@ export function DashboardPage() {
                   />
                 </svg>
               </span>
-              <h3 className="mt-4 text-xl font-bold tracking-[-0.03em] text-[color:var(--color-text)]">
+              <h3 className="mt-4 text-xl font-extrabold tracking-[-0.03em] text-[color:var(--color-text)]">
                 Your draft editor appears here
               </h3>
-              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              <p className="mx-auto mt-2 max-w-md text-base leading-7 text-[color:var(--color-text-secondary)]">
                 Add product input on the left and generate a draft to begin the polish-and-save workflow.
               </p>
             </div>
           ) : null}
-          <div id="dashboard-listing-preview-slot" />
+          <div id="dashboard-listing-preview-slot" className="flex w-full max-w-full min-w-0 flex-col items-stretch" />
         </section>
       </div>
 
@@ -152,10 +161,13 @@ export function DashboardPage() {
         <header className="mb-4 flex items-center justify-between gap-2">
           <div>
             <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Library</p>
-            <h2 id="saved-listings-heading" className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+            <h2
+              id="saved-listings-heading"
+              className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
+            >
               Recent listings
             </h2>
-            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+            <p className="workspace-supporting-text mt-2">
               Saved drafts and finished listings from your workspace.
             </p>
           </div>

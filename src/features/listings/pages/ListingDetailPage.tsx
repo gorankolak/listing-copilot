@@ -235,82 +235,103 @@ export function ListingDetailPage() {
         <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
           Saved listing
         </p>
-        <h1 className="mt-4 text-[2.2rem] font-bold tracking-[-0.05em] text-[color:var(--color-text)] md:text-[3rem]">
+        <h1 className="workspace-heading mt-4 text-[color:var(--color-text)]">
           Listing details
         </h1>
-        <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+        <p className="workspace-supporting-text mt-3 max-w-2xl">
           Review the saved draft, copy the final output, or remove it from the workspace.
         </p>
       </div>
-      <Card className="mt-5 overflow-hidden p-0">
-        <div aria-hidden="true" className="h-1 bg-[image:var(--gradient-primary)]" />
+      <Card className="relative mt-5 overflow-hidden p-0">
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
         <CardHeader className="px-6 pb-0 pt-7 md:px-7">
           <Badge variant={status === 'READY' ? 'success' : 'warning'}>{status}</Badge>
-          <CardTitle className="mt-3 break-words text-3xl md:text-[2rem]">{listing.title}</CardTitle>
+          <CardTitle className="mt-3 break-words text-[1.55rem] md:text-[1.9rem]">{listing.title}</CardTitle>
         </CardHeader>
         <CardContent className="px-6 pb-6 md:px-7 md:pb-7">
-          <section className="space-y-3">
-            <ListingThumbnail
-              className="aspect-video"
-              title={listing.title}
-              subtitle={priceLabel}
-              src={listing.image_url}
-              showFallbackLabel
-              alt={`${listing.title} listing image`}
-            />
-          </section>
+          <section className="grid grid-cols-12 gap-6">
+            <div className="col-span-12 space-y-6 lg:col-span-8">
+              <section className="surface-elevated p-5 sm:p-6">
+                <div className="mx-auto w-full max-w-[420px]">
+                  <ListingThumbnail
+                    className="aspect-[4/3] w-full"
+                    imageClassName="w-full object-contain"
+                    title={listing.title}
+                    subtitle={priceLabel}
+                    src={listing.image_url}
+                    showFallbackLabel
+                    alt={`${listing.title} listing image`}
+                  />
+                </div>
+              </section>
 
-          <section className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(16rem,0.65fr)] lg:items-start">
-            <div className="grid gap-4">
-              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-4 sm:p-5">
-                <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">
-                  Bullet points
-                </h3>
-                {listing.bullet_points.length > 0 ? (
-                  <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-7 text-[color:var(--color-text)]">
-                    {listing.bullet_points.map((bullet, index) => (
-                      <li key={`${listing.id}-${index}`}>{bullet}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">No bullet points provided.</p>
-                )}
-              </div>
+              <section className="rounded-md border border-gray-200 bg-gray-50 p-4">
+                <div className="space-y-2.5">
+                  <p className="text-xs uppercase tracking-wide text-gray-500">Bullet points</p>
+                  {listing.bullet_points.length > 0 ? (
+                    <ul className="list-disc space-y-3 pl-5 text-base leading-7 text-[color:var(--color-text)]">
+                      {listing.bullet_points.map((bullet, index) => (
+                        <li key={`${listing.id}-${index}`}>{bullet}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-base leading-7 text-[color:var(--color-text-secondary)]">
+                      No bullet points provided.
+                    </p>
+                  )}
+                </div>
+              </section>
 
-              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-4 sm:p-5">
-                <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">
-                  Description
-                </h3>
-                <p className="mt-3 break-words text-base leading-7 text-[color:var(--color-text)]">
-                  {listing.description}
-                </p>
-              </div>
+              <section className="panel-subtle p-5 sm:p-6">
+                <div className="space-y-2.5">
+                  <p className="text-xs uppercase tracking-wide text-gray-500">Description</p>
+                  <p className="break-words text-base leading-7 text-[color:var(--color-text)]">
+                    {listing.description}
+                  </p>
+                </div>
+              </section>
             </div>
 
-            <aside className="grid gap-4">
-              <div className="surface-elevated self-start rounded-[var(--radius-card)] bg-[color:var(--color-navy)] p-5 text-white">
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-white/65">
-                  Price range
+            <aside className="col-span-12 space-y-4 lg:col-span-4 lg:sticky lg:top-6 lg:self-start">
+              <section className="surface-elevated p-5 sm:p-6">
+                <p className="text-xs uppercase tracking-wide text-gray-500">Price</p>
+                <p className="mt-3 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
+                  {priceLabel}
                 </p>
-                <p className="mt-3 text-4xl font-bold tracking-[-0.05em]">{priceLabel}</p>
-                <p className="mt-3 text-sm leading-6 text-white/80">
+                <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
                   Created {new Date(listing.created_at).toLocaleString()}
                 </p>
-              </div>
+              </section>
 
-              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">
-                  Actions
-                </p>
-                <div className="mt-4 space-y-2">
-                  <Button variant="secondary" size="sm" onClick={handleCopy} className="w-full">
+              <section className="panel-subtle p-5 sm:p-6">
+                <p className="text-xs uppercase tracking-wide text-gray-500">Metadata</p>
+                <dl className="mt-4 space-y-3">
+                  <div>
+                    <dt className="muted-meta font-bold uppercase tracking-[0.14em]">Currency</dt>
+                    <dd className="mt-1 text-base font-semibold text-[color:var(--color-text)]">
+                      {listing.currency}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="muted-meta font-bold uppercase tracking-[0.14em]">Status</dt>
+                    <dd className="mt-1 text-base font-semibold text-[color:var(--color-text)]">
+                      {status}
+                    </dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section className="panel-subtle p-5 sm:p-6">
+                <p className="text-xs uppercase tracking-wide text-gray-500">Actions</p>
+                <div className="mt-4 space-y-2.5">
+                  <Button variant="primary" size="md" onClick={handleCopy} className="w-full">
                     Copy listing
                   </Button>
                   <Link
                     to="/app"
                     className={buttonClassName({
                       variant: 'secondary',
-                      size: 'sm',
+                      size: 'md',
                       className: 'w-full',
                     })}
                   >
@@ -318,7 +339,7 @@ export function ListingDetailPage() {
                   </Link>
                   <Button
                     variant="destructive"
-                    size="sm"
+                    size="md"
                     onClick={handleDelete}
                     disabled={deleteMutation.isPending}
                     className="w-full"
@@ -326,7 +347,7 @@ export function ListingDetailPage() {
                     {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
                   </Button>
                 </div>
-              </div>
+              </section>
             </aside>
           </section>
 
@@ -390,7 +411,7 @@ export function ListingDetailPage() {
                 Cancel
               </Button>
               <Button
-                variant="destructive"
+                variant="danger-subtle"
                 size="sm"
                 onClick={handleConfirmDelete}
                 disabled={deleteMutation.isPending}

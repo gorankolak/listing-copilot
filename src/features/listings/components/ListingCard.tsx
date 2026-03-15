@@ -37,10 +37,9 @@ export function ListingCardV2({ listing }: ListingCardProps) {
 
   return (
     <Card className="group relative overflow-hidden p-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
-      <div className="overlay-gradient-soft pointer-events-none absolute inset-0 rounded-[var(--radius-card)] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
       <div className="relative">
         <ListingThumbnail
-          className="aspect-video rounded-none border-0 border-b"
+          className="aspect-[4/3] max-h-56 rounded-none border-0 border-b"
           title={listing.title}
           subtitle={priceLabel}
           src={listing.image_url}
@@ -54,17 +53,17 @@ export function ListingCardV2({ listing }: ListingCardProps) {
           {status}
         </Badge>
       </div>
-      <div className="relative min-w-0 space-y-3 p-4">
+      <div className="relative min-w-0 space-y-4 p-5">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="line-clamp-2 break-words text-lg font-bold leading-tight tracking-[-0.03em] text-[color:var(--color-text)]">
+          <h3 className="line-clamp-2 break-words text-xl font-extrabold leading-tight tracking-[-0.035em] text-[color:var(--color-text)]">
             {listing.title}
           </h3>
-          <p className="shrink-0 text-xs font-bold uppercase tracking-[0.1em] text-[color:var(--color-text-muted)]">
+          <p className="muted-meta shrink-0 font-bold uppercase tracking-[0.14em]">
             {new Date(listing.created_at).toLocaleDateString()}
           </p>
         </div>
-        <p className="text-sm font-semibold text-[color:var(--color-text)]">{priceLabel}</p>
-        <p className="line-clamp-2 break-words text-sm leading-6 text-[color:var(--color-text-secondary)]">{listing.description}</p>
+        <p className="text-base font-semibold text-[color:var(--color-text)]">{priceLabel}</p>
+        <p className="line-clamp-2 break-words text-base leading-7 text-[color:var(--color-text-secondary)]">{listing.description}</p>
         <Link
           to={`/app/listings/${listing.id}`}
           className={buttonClassName({

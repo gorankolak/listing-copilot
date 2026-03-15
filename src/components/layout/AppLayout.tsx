@@ -31,8 +31,8 @@ export function AppLayout() {
         <div className="page-container py-4">
           <div className="section-shell flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 md:px-6">
             <div className="min-w-0 flex-1">
-              <p className="text-base font-bold tracking-[-0.03em] text-[color:var(--color-text)]">ListingCopilot</p>
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">
+              <p className="text-base font-extrabold tracking-[-0.04em] text-[color:var(--color-text)]">ListingCopilot</p>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
                 Seller workspace
               </p>
             </div>
@@ -41,14 +41,14 @@ export function AppLayout() {
                 to="/app"
                 className={({ isActive }) =>
                   isActive
-                    ? 'rounded-full bg-[color:var(--color-navy)] px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-white'
-                    : 'rounded-full px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)] hover:bg-[color:var(--color-surface-muted)] hover:text-[color:var(--color-text)]'
+                    ? 'rounded-[var(--radius-button)] border border-[color:var(--color-navy)] bg-[color:var(--color-navy)] px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white'
+                    : 'rounded-[var(--radius-button)] border border-transparent px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)] hover:border-[color:var(--color-border)] hover:bg-[color:var(--color-surface-muted)] hover:text-[color:var(--color-text)]'
                 }
                 end
               >
                 Listings
               </NavLink>
-              <div className="flex min-w-0 items-center gap-2 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-2">
+              <div className="flex min-w-0 items-center gap-2 rounded-[var(--radius-card-secondary)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-3 py-2">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-accent)] text-[0.72rem] font-bold text-[color:var(--color-navy)]">
                   {(user?.email?.[0] ?? 'U').toUpperCase()}
                 </div>

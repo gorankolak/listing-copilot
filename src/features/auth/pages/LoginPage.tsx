@@ -9,7 +9,7 @@ export function LoginPage() {
         <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
           Welcome back
         </p>
-        <CardTitle className="mt-4 text-3xl md:text-[2rem]">Sign in to your workspace</CardTitle>
+        <CardTitle className="mt-4 text-[1.9rem] md:text-[2.15rem]">Sign in to your workspace</CardTitle>
         <CardDescription className="max-w-sm">
           Generate, polish, and save marketplace listings from one structured utility app.
         </CardDescription>

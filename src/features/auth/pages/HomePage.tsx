@@ -61,7 +61,7 @@ export function HomePage() {
     'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=1200&q=80'
 
   return (
-    <div className="space-y-16 md:space-y-24">
+    <div className="space-y-16 md:space-y-22">
       <section className="section-shell practical-grid relative overflow-hidden px-5 py-8 md:px-10 md:py-12 lg:px-12 lg:py-14">
         <div aria-hidden="true" className="decor-orb-primary pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full" />
         <div aria-hidden="true" className="decor-orb-accent pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full" />
@@ -71,7 +71,7 @@ export function HomePage() {
             <p className="eyebrow w-fit rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-1 text-[color:var(--color-text-secondary)]">
               Built for practical selling teams
             </p>
-            <h1 className="mt-5 max-w-xl text-[2.7rem] font-bold leading-[0.97] tracking-[-0.06em] text-[color:var(--color-text)] md:text-[4.65rem]">
+            <h1 className="mt-5 max-w-xl text-[2.85rem] font-extrabold leading-[0.94] tracking-[-0.065em] text-[color:var(--color-text)] md:text-[4.7rem]">
               Turn rough product notes into listings that sell.
             </h1>
             <p className="mt-5 max-w-lg text-base leading-7 text-[color:var(--color-text-secondary)] md:text-lg">
@@ -94,15 +94,15 @@ export function HomePage() {
             </div>
 
             <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-4">
+              <div className="surface-elevated px-4 py-4">
                 <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">60s</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">To first draft</p>
               </div>
-              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-4">
+              <div className="surface-elevated px-4 py-4">
                 <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">3x</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Faster edits</p>
               </div>
-              <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-4">
+              <div className="surface-elevated px-4 py-4">
                 <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">1 flow</p>
                 <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Input to saved</p>
               </div>
@@ -110,10 +110,10 @@ export function HomePage() {
           </div>
 
           <Card className="relative overflow-hidden p-4 md:p-5">
-            <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-4">
+            <div className="panel-subtle p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">Preview workspace</p>
+                  <p className="eyebrow text-[color:var(--color-text-muted)]">Preview workspace</p>
                   <p className="mt-1 text-base font-bold tracking-[-0.03em] text-[color:var(--color-text)]">Draft ready to polish</p>
                 </div>
                 <span className="rounded-full bg-[color:var(--color-accent)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-navy)]">
@@ -124,7 +124,7 @@ export function HomePage() {
 
             <div className="space-y-4 pt-4">
               <div className="surface-elevated overflow-hidden p-0 shadow-none">
-                <div className="relative aspect-[16/9] w-full overflow-hidden p-4 text-[color:var(--color-primary-foreground)]">
+                <div className="relative aspect-[16/10] max-h-[18rem] w-full overflow-hidden p-4 text-[color:var(--color-primary-foreground)]">
                   <img
                     src={demoHeadphoneImageUrl}
                     alt="Wireless over-ear headphones"
@@ -146,19 +146,19 @@ export function HomePage() {
                 </div>
               </div>
 
-              <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_11rem]">
-                <div className="surface-elevated bg-[color:var(--color-surface)] p-4 shadow-none">
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">Output</p>
-                  <ul className="mt-3 space-y-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_12rem]">
+                <div className="panel-subtle p-4">
+                  <p className="eyebrow text-[color:var(--color-text-muted)]">Output</p>
+                  <ul className="mt-3 space-y-2 text-base leading-7 text-[color:var(--color-text-secondary)]">
                     <li>Adaptive ANC for commute, work, and travel.</li>
                     <li>Lightweight fold-flat build with padded comfort.</li>
                     <li>USB-C fast charge and 40-hour battery headline.</li>
                   </ul>
                 </div>
-                <div className="surface-elevated bg-[color:var(--color-navy)] p-4 text-white shadow-none">
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-white/65">Price guide</p>
+                <div className="surface-elevated p-4">
+                  <p className="eyebrow text-[color:var(--color-text-muted)]">Price guide</p>
                   <p className="mt-3 text-3xl font-bold tracking-[-0.05em]">$89</p>
-                  <p className="text-sm text-white/78">to $109</p>
+                  <p className="text-base text-[color:var(--color-text-secondary)]">to $109</p>
                 </div>
               </div>
             </div>
@@ -183,7 +183,7 @@ export function HomePage() {
           {processSteps.map((step, index) => (
             <Card key={step.title} className="h-full space-y-5 p-5 md:p-6">
               <div className="flex items-center justify-between gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[color:var(--color-navy)] text-[color:var(--color-accent)]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-button)] bg-[color:var(--color-navy)] text-[color:var(--color-accent)]">
                   {step.icon}
                 </div>
                 <span className="eyebrow text-[color:var(--color-text-muted)]">Step {index + 1}</span>
@@ -209,16 +209,16 @@ export function HomePage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-stretch">
-          <div className="surface-elevated flex h-full flex-col bg-[color:var(--color-surface-muted)] p-5 md:p-6">
+          <div className="panel-subtle flex h-full flex-col p-5 md:p-6">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Listing summary</p>
+              <p className="eyebrow text-[color:var(--color-text-muted)]">Listing summary</p>
               <p className="mt-3 text-2xl font-bold leading-snug tracking-[-0.04em] text-[color:var(--color-text)] md:text-[2rem]">
                 Handcrafted Ceramic Coffee Mug, 14 oz, Dishwasher-Safe, Speckled Clay Finish
               </p>
             </div>
 
             <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Key bullets</p>
+              <p className="eyebrow text-[color:var(--color-text-muted)]">Key bullets</p>
               <ul className="mt-3 space-y-2 text-base leading-relaxed text-[color:var(--color-text-secondary)]">
                 <li>Stoneware body with comfortable rounded handle.</li>
                 <li>Neutral finish pairs with modern kitchen setups.</li>
@@ -229,7 +229,7 @@ export function HomePage() {
             <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Price guidance</p>
+                  <p className="eyebrow text-[color:var(--color-text-muted)]">Price guidance</p>
                   <p className="mt-2 text-4xl font-bold tracking-[-0.05em] text-[color:var(--color-text)]">$24 - $29</p>
                 </div>
                 <p className="max-w-xs text-sm leading-6 text-[color:var(--color-text-secondary)]">
@@ -239,12 +239,12 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="surface-elevated flex h-full flex-col bg-[color:var(--color-surface-muted)] p-3">
+          <div className="panel-subtle flex h-full flex-col p-3">
             <div className="px-1 pb-3">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">Product image</p>
+              <p className="eyebrow text-[color:var(--color-text-muted)]">Product image</p>
             </div>
             <div className="surface-elevated flex-1 overflow-hidden p-0">
-              <div className="relative h-full min-h-[320px] text-[color:var(--color-primary-foreground)]">
+              <div className="relative h-full min-h-[320px] max-h-[26rem] text-[color:var(--color-primary-foreground)]">
                 <img
                   src={demoMugImageUrl}
                   alt="Ceramic coffee mug product photo"
@@ -271,7 +271,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-[1.75rem] bg-[image:var(--gradient-primary)] px-6 py-10 text-[color:var(--color-primary-foreground)] shadow-[var(--shadow-md)] md:px-10 md:py-12">
+      <section className="overflow-hidden rounded-[var(--radius-section)] bg-[image:var(--gradient-primary)] px-6 py-10 text-[color:var(--color-primary-foreground)] shadow-[var(--shadow-sm)] md:px-10 md:py-12">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl">
             <p className="eyebrow w-fit rounded-full bg-white/14 px-3 py-1 text-white/80">Start now</p>

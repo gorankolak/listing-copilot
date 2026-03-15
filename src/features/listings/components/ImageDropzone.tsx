@@ -142,7 +142,7 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
         onKeyDown={handleDropzoneKeyDown}
         tabIndex={disabled ? -1 : 0}
         className={cn(
-          'dropzone-animated-border practical-grid relative block min-h-72 cursor-pointer overflow-hidden rounded-[var(--radius-card)] p-5 transition',
+          'dropzone-animated-border practical-grid relative block min-h-72 cursor-pointer overflow-hidden rounded-[var(--radius-card)] p-6 transition',
           'focus-visible:ring-2 focus-visible:ring-[color:var(--color-primary)]/20 focus-within:ring-2 focus-within:ring-[color:var(--color-primary)]/20',
           disabled && 'cursor-not-allowed opacity-70',
           isDragActive && !disabled && 'dropzone-active ring-accent',
@@ -150,26 +150,26 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
         )}
       >
         {previewUrl ? (
-          <div className={cn('grid gap-4 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-center', isRemoving && 'dropzone-remove')}>
-            <div className="h-28 rounded-[14px] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)]">
+          <div className={cn('grid gap-5 sm:grid-cols-[8rem_minmax(0,1fr)] sm:items-center', isRemoving && 'dropzone-remove')}>
+            <div className="image-frame h-28">
               <img
                 src={previewUrl}
                 alt={file ? `Preview of ${file.name}` : 'Uploaded image preview'}
-                className="h-full w-full rounded-[14px] object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
 
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Uploaded image</p>
-              <p className="mt-2 text-sm font-semibold text-[color:var(--color-text)]">{statusText}</p>
-              <p className="mt-1 text-xs leading-5 text-[color:var(--color-text-secondary)]">
+              <p className="eyebrow text-[color:var(--color-text-muted)]">Uploaded image</p>
+              <p className="mt-2 text-base font-semibold tracking-[-0.02em] text-[color:var(--color-text)]">{statusText}</p>
+              <p className="mt-1 text-sm leading-6 text-[color:var(--color-text-secondary)]">
                 Accepted: JPG, PNG, WEBP. Max size: 10MB.
               </p>
               <Button
                 type="button"
                 variant="danger-subtle"
                 size="sm"
-                className="mt-4 h-9 gap-1.5 px-3 text-xs"
+                className="mt-4 gap-1.5"
                 onClick={(event) => {
                   event.preventDefault()
                   removeImageWithAnimation()
@@ -196,12 +196,12 @@ export const ImageDropzone = forwardRef<HTMLInputElement, ImageDropzoneProps>(fu
                 />
               </svg>
             </span>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-muted)]">Drop product image</p>
-            <p className="mt-3 text-base font-semibold tracking-[-0.02em] text-[color:var(--color-text)]">{statusText}</p>
-            <p className="mt-2 text-xs leading-5 text-[color:var(--color-text-secondary)]">
+            <p className="eyebrow text-[color:var(--color-text-muted)]">Drop product image</p>
+            <p className="mt-3 text-lg font-semibold tracking-[-0.03em] text-[color:var(--color-text)]">{statusText}</p>
+            <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
               Accepted: JPG, PNG, WEBP. Max size: 10MB.
             </p>
-            <p className="mt-1 text-xs leading-5 text-[color:var(--color-text-secondary)]">Press Enter or Space to browse files.</p>
+            <p className="mt-1 text-sm leading-6 text-[color:var(--color-text-secondary)]">Press Enter or Space to browse files.</p>
           </div>
         )}
       </label>

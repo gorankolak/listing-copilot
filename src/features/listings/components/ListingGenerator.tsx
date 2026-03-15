@@ -498,7 +498,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
           <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
             Input
           </p>
-          <CardTitle className="mt-4">Prepare your source material</CardTitle>
+          <CardTitle className="mt-4 text-[1.5rem] md:text-[1.65rem]">Prepare your source material</CardTitle>
           <CardDescription>
             Choose image upload or text notes, then generate a draft for the editor.
           </CardDescription>
@@ -510,7 +510,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
             inputMode={mode}
           />
           <div
-            className="inline-flex rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-1"
+            className="inline-flex rounded-[var(--radius-card-secondary)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-1"
             role="group"
             aria-label="Generation mode"
           >
@@ -518,7 +518,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               variant={mode === 'image' ? 'primary' : 'ghost'}
               size="sm"
               className={cn(
-                'rounded-full px-4',
+                'rounded-[calc(var(--radius-card-secondary)-4px)] px-4',
                 mode === 'image' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'
               )}
               onClick={() => handleModeChange('image')}
@@ -531,7 +531,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               variant={mode === 'text' ? 'primary' : 'ghost'}
               size="sm"
               className={cn(
-                'rounded-full px-4',
+                'rounded-[calc(var(--radius-card-secondary)-4px)] px-4',
                 mode === 'text' ? 'shadow-[var(--shadow-sm)]' : 'text-[color:var(--color-text-muted)]'
               )}
               onClick={() => handleModeChange('text')}
@@ -542,12 +542,12 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
             </Button>
           </div>
 
-          <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
+          <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
             {mode === 'image' ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <label
                   htmlFor="listing-image-upload"
-                  className="block text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]"
+                  className="eyebrow text-[color:var(--color-text-muted)]"
                 >
                   Product image
                 </label>
@@ -564,10 +564,10 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
                 <FormFieldError id={imageErrorId} message={imageError} />
               </div>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <label
                   htmlFor="listing-text-input"
-                  className="block text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]"
+                  className="eyebrow text-[color:var(--color-text-muted)]"
                 >
                   Product details
                 </label>
@@ -587,7 +587,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               </div>
             )}
 
-            <div className="rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] p-4">
+            <div className="panel-subtle p-4">
               <Button type="submit" disabled={isSubmitDisabled} fullWidth size="lg">
                 {isSubmitting ? 'Generating listing...' : 'Generate listing'}
               </Button>
