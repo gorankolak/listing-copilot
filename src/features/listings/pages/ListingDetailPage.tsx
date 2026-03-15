@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { Badge } from '../../../components/ui/Badge'
 import { Button } from '../../../components/ui/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card'
+import { Card, CardContent, CardHeader } from '../../../components/ui/Card'
 import { EmptyState, EmptyStateActionLink } from '../../../components/ui/EmptyState'
 import { ErrorBanner, ErrorBannerActionButton } from '../../../components/ui/ErrorBanner'
 import { Skeleton } from '../../../components/ui/Skeleton'
@@ -83,13 +83,7 @@ export function ListingDetailPage() {
         },
       })
     })
-  }, [
-    listingQuery.error,
-    location.hash,
-    location.pathname,
-    location.search,
-    navigate,
-  ])
+  }, [listingQuery.error, location.hash, location.pathname, location.search, navigate])
 
   useEffect(() => {
     if (!isDeleteDialogOpen) {
@@ -136,9 +130,15 @@ export function ListingDetailPage() {
     return (
       <ErrorBanner
         title="Could not load listing"
-        message={listingQuery.error instanceof Error ? listingQuery.error.message : 'Please try again.'}
+        message={
+          listingQuery.error instanceof Error
+            ? listingQuery.error.message
+            : 'Please try again.'
+        }
       >
-        <ErrorBannerActionButton onClick={() => listingQuery.refetch()}>Retry</ErrorBannerActionButton>
+        <ErrorBannerActionButton onClick={() => listingQuery.refetch()}>
+          Retry
+        </ErrorBannerActionButton>
       </ErrorBanner>
     )
   }
@@ -158,8 +158,25 @@ export function ListingDetailPage() {
   const minPrice = formatPrice(listing.price_min, listing.currency)
   const maxPrice = formatPrice(listing.price_max, listing.currency)
   const priceLabel =
-    minPrice && maxPrice ? `${minPrice} - ${maxPrice}` : minPrice ?? maxPrice ?? 'N/A'
+    minPrice && maxPrice ? `${minPrice} - ${maxPrice}` : (minPrice ?? maxPrice ?? 'N/A')
   const status = getListingStatus(listing)
+  const createdLabel = new Date(listing.created_at).toLocaleString()
+
+  async function copyText(text: string, successMessage: string) {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopyStatus(successMessage)
+      return true
+    } catch {
+      if (fallbackCopyToClipboard(text)) {
+        setCopyStatus(successMessage)
+        return true
+      }
+    }
+
+    setCopyStatus('Copy failed. Please copy manually.')
+    return false
+  }
 
   async function handleCopy() {
     const listingText = buildFormattedListing({
@@ -170,18 +187,7 @@ export function ListingDetailPage() {
       price_max: listing.price_max ?? 0,
     })
 
-    try {
-      await navigator.clipboard.writeText(listingText)
-      setCopyStatus('Listing copied to clipboard.')
-      return
-    } catch {
-      if (fallbackCopyToClipboard(listingText)) {
-        setCopyStatus('Listing copied to clipboard.')
-        return
-      }
-    }
-
-    setCopyStatus('Copy failed. Please copy manually.')
+    await copyText(listingText, 'Listing copied to clipboard.')
   }
 
   function handleDelete() {
@@ -224,150 +230,216 @@ export function ListingDetailPage() {
         }
 
         setIsDeleteDialogOpen(false)
-        setDeleteError(error instanceof Error ? error.message : 'Failed to delete listing.')
+        setDeleteError(
+          error instanceof Error ? error.message : 'Failed to delete listing.',
+        )
       },
     })
   }
 
   return (
-    <section>
-      <div className="max-w-3xl">
-        <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
-          Saved listing
-        </p>
-        <h1 className="workspace-heading mt-4 text-[color:var(--color-text)]">
-          Listing details
-        </h1>
-        <p className="workspace-supporting-text mt-3 max-w-2xl">
-          Review the saved draft, copy the final output, or remove it from the workspace.
-        </p>
-      </div>
-      <Card className="relative mt-5 overflow-hidden p-0">
-        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
-        <CardHeader className="px-6 pb-0 pt-7 md:px-7">
-          <Badge variant={status === 'READY' ? 'success' : 'warning'}>{status}</Badge>
-          <CardTitle className="mt-3 break-words text-[1.55rem] md:text-[1.9rem]">{listing.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="px-6 pb-6 md:px-7 md:pb-7">
-          <section className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 space-y-6 lg:col-span-8">
-              <section className="surface-elevated p-5 sm:p-6">
-                <div className="mx-auto w-full max-w-[420px]">
-                  <ListingThumbnail
-                    className="aspect-[4/3] w-full"
-                    imageClassName="w-full object-contain"
-                    title={listing.title}
-                    subtitle={priceLabel}
-                    src={listing.image_url}
-                    showFallbackLabel
-                    alt={`${listing.title} listing image`}
-                  />
-                </div>
-              </section>
+    <section className="space-y-6">
+      <header className="space-y-3">
+        <Link
+          to="/app"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-text-muted)] transition-colors hover:text-[color:var(--color-text)]"
+        >
+          <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M8.56 4.31a.75.75 0 0 1 0 1.06L4.94 9h10.31a.75.75 0 0 1 0 1.5H4.94l3.62 3.62a.75.75 0 1 1-1.06 1.06L2.6 10.28a.75.75 0 0 1 0-1.06L7.5 4.31a.75.75 0 0 1 1.06 0Z"
+            />
+          </svg>
+          Back to workspace
+        </Link>
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="break-words text-2xl font-semibold tracking-[-0.045em] text-[color:var(--color-text)] md:text-3xl">
+              {listing.title}
+            </h1>
+            <Badge variant={status === 'READY' ? 'success' : 'warning'}>{status}</Badge>
+          </div>
+          <p className="text-sm text-[color:var(--color-text-secondary)]">
+            Review the saved draft, copy the final output, or remove it from the
+            workspace.
+          </p>
+        </div>
+      </header>
 
-              <section className="rounded-md border border-gray-200 bg-gray-50 p-4">
-                <div className="space-y-2.5">
-                  <p className="text-xs uppercase tracking-wide text-gray-500">Bullet points</p>
-                  {listing.bullet_points.length > 0 ? (
-                    <ul className="list-disc space-y-3 pl-5 text-base leading-7 text-[color:var(--color-text)]">
-                      {listing.bullet_points.map((bullet, index) => (
-                        <li key={`${listing.id}-${index}`}>{bullet}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-base leading-7 text-[color:var(--color-text-secondary)]">
-                      No bullet points provided.
-                    </p>
-                  )}
-                </div>
-              </section>
-
-              <section className="panel-subtle p-5 sm:p-6">
-                <div className="space-y-2.5">
-                  <p className="text-xs uppercase tracking-wide text-gray-500">Description</p>
-                  <p className="break-words text-base leading-7 text-[color:var(--color-text)]">
-                    {listing.description}
-                  </p>
-                </div>
-              </section>
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 space-y-6 lg:col-span-8">
+          <section className="surface-elevated overflow-hidden p-4 sm:p-5">
+            <div
+              aria-hidden="true"
+              className="preview-media-gradient -mx-4 -mt-4 mb-4 h-1.5 sm:-mx-5 sm:-mt-5"
+            />
+            <div className="mx-auto w-full max-w-[44rem]">
+              <ListingThumbnail
+                className="aspect-[16/10] w-full"
+                imageClassName="w-full object-contain p-4 transition-transform duration-200 hover:scale-[1.02] sm:p-5"
+                title={listing.title}
+                subtitle={priceLabel}
+                src={listing.image_url}
+                showFallbackLabel
+                alt={`${listing.title} listing image`}
+              />
             </div>
-
-            <aside className="col-span-12 space-y-4 lg:col-span-4 lg:sticky lg:top-6 lg:self-start">
-              <section className="surface-elevated p-5 sm:p-6">
-                <p className="text-xs uppercase tracking-wide text-gray-500">Price</p>
-                <p className="mt-3 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
-                  {priceLabel}
-                </p>
-                <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
-                  Created {new Date(listing.created_at).toLocaleString()}
-                </p>
-              </section>
-
-              <section className="panel-subtle p-5 sm:p-6">
-                <p className="text-xs uppercase tracking-wide text-gray-500">Metadata</p>
-                <dl className="mt-4 space-y-3">
-                  <div>
-                    <dt className="muted-meta font-bold uppercase tracking-[0.14em]">Currency</dt>
-                    <dd className="mt-1 text-base font-semibold text-[color:var(--color-text)]">
-                      {listing.currency}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="muted-meta font-bold uppercase tracking-[0.14em]">Status</dt>
-                    <dd className="mt-1 text-base font-semibold text-[color:var(--color-text)]">
-                      {status}
-                    </dd>
-                  </div>
-                </dl>
-              </section>
-
-              <section className="panel-subtle p-5 sm:p-6">
-                <p className="text-xs uppercase tracking-wide text-gray-500">Actions</p>
-                <div className="mt-4 space-y-2.5">
-                  <Button variant="primary" size="md" onClick={handleCopy} className="w-full">
-                    Copy listing
-                  </Button>
-                  <Link
-                    to="/app"
-                    className={buttonClassName({
-                      variant: 'secondary',
-                      size: 'md',
-                      className: 'w-full',
-                    })}
-                  >
-                    Back to dashboard
-                  </Link>
-                  <Button
-                    variant="destructive"
-                    size="md"
-                    onClick={handleDelete}
-                    disabled={deleteMutation.isPending}
-                    className="w-full"
-                  >
-                    {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
-                  </Button>
-                </div>
-              </section>
-            </aside>
           </section>
 
-          {copyStatus ? (
-            <p
-              id={copyStatusId}
-              className="text-sm text-[color:var(--color-text-secondary)]"
-              role="status"
-              aria-live="polite"
-            >
-              {copyStatus}
-            </p>
-          ) : null}
-          {deleteError ? (
-            <p id={deleteErrorId} className="text-sm text-[color:var(--color-danger)]" role="alert">
-              {deleteError}
-            </p>
-          ) : null}
-        </CardContent>
-      </Card>
+          <section className="panel-subtle p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                Bullet points
+              </p>
+              {listing.bullet_points.length > 0 ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() =>
+                    void copyText(
+                      listing.bullet_points.map((bullet) => `- ${bullet}`).join('\n'),
+                      'Bullet points copied to clipboard.',
+                    )
+                  }
+                >
+                  Copy bullet points
+                </Button>
+              ) : null}
+            </div>
+            <div className="mt-3 border-t border-[color:var(--color-border)] pt-3.5">
+              {listing.bullet_points.length > 0 ? (
+                <ul className="space-y-2.5 pl-5 text-sm leading-6 text-[color:var(--color-text)] marker:text-[color:var(--color-text-muted)]">
+                  {listing.bullet_points.map((bullet, index) => (
+                    <li key={`${listing.id}-${index}`}>{bullet}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                  No bullet points provided.
+                </p>
+              )}
+            </div>
+          </section>
+
+          <section className="panel-subtle p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                Description
+              </p>
+              {listing.description.trim() ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() =>
+                    void copyText(listing.description, 'Description copied to clipboard.')
+                  }
+                >
+                  Copy description
+                </Button>
+              ) : null}
+            </div>
+            <div className="mt-3 border-t border-[color:var(--color-border)] pt-3.5">
+              <p className="max-w-prose break-words text-sm leading-relaxed text-[color:var(--color-text)]">
+                {listing.description}
+              </p>
+            </div>
+          </section>
+        </div>
+
+        <aside className="col-span-12 lg:col-span-4">
+          <div className="space-y-4 lg:sticky lg:top-6">
+            <section className="surface-elevated p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                Info
+              </p>
+              <div className="mt-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                  Price range
+                </p>
+                <p className="mt-2 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
+                  {priceLabel}
+                </p>
+              </div>
+
+              <dl className="mt-4 space-y-3 border-t border-[color:var(--color-border)] pt-4">
+                <div className="flex items-center justify-between gap-3 text-sm">
+                  <dt className="text-[color:var(--color-text-muted)]">Currency</dt>
+                  <dd className="font-semibold text-[color:var(--color-text)]">
+                    {listing.currency}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between gap-3 text-sm">
+                  <dt className="text-[color:var(--color-text-muted)]">Status</dt>
+                  <dd className="font-semibold text-[color:var(--color-text)]">
+                    {status}
+                  </dd>
+                </div>
+                <div className="flex items-start justify-between gap-3 text-sm">
+                  <dt className="text-[color:var(--color-text-muted)]">Created</dt>
+                  <dd className="max-w-[12rem] text-right font-medium text-[color:var(--color-text)]">
+                    {createdLabel}
+                  </dd>
+                </div>
+              </dl>
+            </section>
+
+            <section className="panel-subtle p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
+                Actions
+              </p>
+              <div className="mt-4 space-y-2.5">
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={handleCopy}
+                  className="w-full"
+                >
+                  Copy listing
+                </Button>
+                <Link
+                  to="/app"
+                  className={buttonClassName({
+                    variant: 'ghost',
+                    size: 'md',
+                    className: 'w-full',
+                  })}
+                >
+                  Back to workspace
+                </Link>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={deleteMutation.isPending}
+                  className="w-full"
+                >
+                  {deleteMutation.isPending ? 'Deleting...' : 'Delete listing'}
+                </Button>
+              </div>
+            </section>
+
+            {copyStatus ? (
+              <p
+                id={copyStatusId}
+                className="text-sm text-[color:var(--color-text-secondary)]"
+                role="status"
+                aria-live="polite"
+              >
+                {copyStatus}
+              </p>
+            ) : null}
+            {deleteError ? (
+              <p
+                id={deleteErrorId}
+                className="text-sm text-[color:var(--color-danger)]"
+                role="alert"
+              >
+                {deleteError}
+              </p>
+            ) : null}
+          </div>
+        </aside>
+      </div>
       {isDeleteDialogOpen ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -380,7 +452,9 @@ export function ListingDetailPage() {
         >
           <div
             className="absolute inset-0"
-            style={{ background: 'color-mix(in srgb, var(--color-text) 42%, transparent)' }}
+            style={{
+              background: 'color-mix(in srgb, var(--color-text) 42%, transparent)',
+            }}
             aria-hidden="true"
           />
           <Card
@@ -392,12 +466,18 @@ export function ListingDetailPage() {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="space-y-2">
-              <h2 id={deleteDialogTitleId} className="text-lg font-semibold text-[color:var(--color-text)]">
+              <h2
+                id={deleteDialogTitleId}
+                className="text-lg font-semibold text-[color:var(--color-text)]"
+              >
                 Delete listing?
               </h2>
-              <p id={deleteDialogDescriptionId} className="text-sm text-[color:var(--color-text-muted)]">
-                This action cannot be undone. The listing and generated content will be permanently
-                removed.
+              <p
+                id={deleteDialogDescriptionId}
+                className="text-sm text-[color:var(--color-text-muted)]"
+              >
+                This action cannot be undone. The listing and generated content will be
+                permanently removed.
               </p>
             </div>
             <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
