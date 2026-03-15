@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 
 import { buttonClassName } from '../ui/buttonClassName'
 import { cn } from '../../lib/utils'
+import { ProductLogo } from '../ui/ProductLogo'
 
 export function PublicLayout() {
   const { pathname, search } = useLocation()
@@ -14,10 +15,7 @@ export function PublicLayout() {
     <div className="min-h-screen bg-hero-gradient">
       <div className="page-container py-5 md:py-7">
         <header className="section-shell sticky top-4 z-10 mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 md:px-6">
-          <Link to="/" className="min-w-0 text-base font-extrabold tracking-[-0.04em] text-[color:var(--color-text)]">
-            <span className="sm:hidden">LC</span>
-            <span className="hidden sm:inline">ListingCopilot</span>
-          </Link>
+          <ProductLogo />
           <nav className="flex w-full items-center justify-between gap-2 text-sm sm:w-auto sm:justify-end sm:gap-3">
             <Link
               to={`/login${returnToSearch}`}

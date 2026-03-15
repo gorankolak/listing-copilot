@@ -5,6 +5,7 @@ import { useAuth } from '../../features/auth/components/useAuth'
 import { authApi } from '../../features/auth/api'
 import { Button } from '../ui/Button'
 import { ErrorBanner } from '../ui/ErrorBanner'
+import { ProductLogo } from '../ui/ProductLogo'
 
 export function AppLayout() {
   const { user } = useAuth()
@@ -31,7 +32,7 @@ export function AppLayout() {
         <div className="page-container py-4">
           <div className="section-shell flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 md:px-6">
             <div className="min-w-0 flex-1">
-              <p className="text-base font-extrabold tracking-[-0.04em] text-[color:var(--color-text)]">ListingCopilot</p>
+              <ProductLogo />
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
                 Seller workspace
               </p>
