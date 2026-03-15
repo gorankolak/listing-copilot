@@ -67,6 +67,12 @@ export function ListingPreview({
     onChange({ ...draft, bullet_points: [...draft.bullet_points, ''] })
   }
 
+  function handleReset() {
+    if (window.confirm('Reset this draft? This will clear your current edits.')) {
+      onReset()
+    }
+  }
+
   return (
     <Card className={cn('workspace-shell relative w-full min-w-0 overflow-hidden p-0 md:p-0', className)}>
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
@@ -203,29 +209,40 @@ export function ListingPreview({
           <section className="workspace-sidebar-panel p-4 sm:p-5">
             <p className={sectionLabelClassName}>Actions</p>
             <div className="mt-4 space-y-2.5">
-              <Button onClick={onSave} disabled={isSaving} size="md" className="w-full whitespace-nowrap">
+              <Button
+                onClick={onSave}
+                disabled={isSaving}
+                size="md"
+                className="h-11 w-full whitespace-nowrap rounded-lg font-semibold"
+              >
                 {isSaving ? 'Saving...' : 'Save listing'}
               </Button>
-              <Button variant="secondary" size="md" onClick={onCopy} className="w-full whitespace-nowrap">
+              <Button
+                variant="secondary"
+                onClick={onCopy}
+                className="h-10 w-full whitespace-nowrap rounded-lg border bg-white"
+              >
                 Copy listing
               </Button>
-              <Button
-                variant="ghost"
-                size="md"
-                onClick={onRegenerate}
-                disabled={!canRegenerate || isRegenerating}
-                className="w-full whitespace-nowrap"
-              >
-                {isRegenerating ? 'Regenerating...' : 'Regenerate'}
-              </Button>
-              <Button
-                variant="ghost"
-                size="md"
-                onClick={onReset}
-                className="w-full whitespace-nowrap border border-[color:var(--color-error-border)] text-[color:var(--color-error-text)] hover:border-[color:var(--color-danger)]/35 hover:bg-[color:var(--color-error-bg)] hover:text-[color:var(--color-error-text)]"
-              >
-                Reset draft
-              </Button>
+              <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4 text-sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onRegenerate}
+                  disabled={!canRegenerate || isRegenerating}
+                  className="h-auto rounded-none px-0 text-sm font-medium text-slate-500 shadow-none hover:bg-transparent hover:text-slate-800"
+                >
+                  {isRegenerating ? 'Regenerating...' : 'Regenerate'}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleReset}
+                  className="h-auto rounded-none px-0 text-sm font-medium text-red-500 shadow-none hover:bg-transparent hover:text-red-600"
+                >
+                  Reset draft
+                </Button>
+              </div>
             </div>
           </section>
         </div>

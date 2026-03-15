@@ -64,6 +64,14 @@ export function HomePage() {
     'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=1200&q=80'
   const sectionLabelClassName =
     'text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]'
+  const ctaPrimaryClassName =
+    'transition-[transform,box-shadow] duration-[180ms] ease-out hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(37,99,235,0.22),0_6px_14px_rgba(59,130,246,0.14)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(37,99,235,0.16)]'
+  const ctaSecondaryClassName =
+    'transition-[transform,box-shadow] duration-[180ms] ease-out hover:-translate-y-px hover:shadow-[0_10px_24px_rgba(15,23,42,0.08)] active:translate-y-0 active:shadow-[0_4px_12px_rgba(15,23,42,0.05)]'
+  const statCardClassName =
+    'surface-elevated rounded-xl border p-4 transition-[transform,box-shadow,border-color] duration-[180ms] ease-out hover:-translate-y-[2px] hover:border-[color:var(--color-border-strong)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.07),0_4px_12px_rgba(15,23,42,0.04)]'
+  const contentCardClassName =
+    'transition-[transform,box-shadow,border-color] duration-[180ms] ease-out hover:-translate-y-[2px] hover:border-[color:var(--color-border-strong)] hover:shadow-[0_14px_28px_rgba(15,23,42,0.07),0_4px_12px_rgba(15,23,42,0.04)]'
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -94,7 +102,7 @@ export function HomePage() {
                 className={buttonClassName({
                   variant: 'primary',
                   size: 'lg',
-                  className: 'w-full sm:w-auto',
+                  className: `w-full sm:w-auto ${ctaPrimaryClassName}`,
                 })}
               >
                 Start Free
@@ -104,7 +112,7 @@ export function HomePage() {
                 className={buttonClassName({
                   variant: 'secondary',
                   size: 'lg',
-                  className: 'w-full sm:w-auto',
+                  className: `w-full sm:w-auto ${ctaSecondaryClassName}`,
                 })}
               >
                 See example
@@ -112,7 +120,7 @@ export function HomePage() {
             </div>
 
             <div className="mt-5 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="surface-elevated rounded-xl border p-4">
+              <div className={statCardClassName}>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">
                   To first draft
                 </p>
@@ -120,7 +128,7 @@ export function HomePage() {
                   60s
                 </p>
               </div>
-              <div className="surface-elevated rounded-xl border p-4">
+              <div className={statCardClassName}>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">
                   Faster edits
                 </p>
@@ -128,7 +136,7 @@ export function HomePage() {
                   3x
                 </p>
               </div>
-              <div className="surface-elevated rounded-xl border p-4">
+              <div className={statCardClassName}>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">
                   Input to saved
                 </p>
@@ -139,7 +147,7 @@ export function HomePage() {
             </div>
           </div>
 
-          <Card className="relative mt-6 w-full max-w-md overflow-hidden border-slate-200 bg-gradient-to-b from-white to-slate-50 p-4 shadow-[0_20px_45px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-[2px] md:justify-self-end md:p-5 lg:mt-0">
+          <Card className="relative mt-6 w-full max-w-md overflow-hidden border-slate-200 bg-gradient-to-b from-white to-slate-50 p-4 shadow-[0_20px_45px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04)] transition-[transform,box-shadow,border-color] duration-[200ms] ease-out hover:-translate-y-[3px] hover:border-slate-300 hover:shadow-[0_26px_54px_rgba(15,23,42,0.11),0_8px_18px_rgba(15,23,42,0.07)] md:justify-self-end md:p-5 lg:mt-0">
             <div className="panel-subtle p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -215,7 +223,7 @@ export function HomePage() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {processSteps.map((step, index) => (
-            <Card key={step.title} className="h-full space-y-5 p-5 md:p-6">
+            <Card key={step.title} className={`h-full space-y-5 p-5 md:p-6 ${contentCardClassName}`}>
               <div className="flex items-center justify-between gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-button)] bg-[color:var(--color-navy)] text-[color:var(--color-accent)]">
                   {step.icon}
@@ -248,7 +256,7 @@ export function HomePage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-stretch">
-          <div className="panel-subtle flex h-full flex-col p-5 md:p-6">
+          <div className={`panel-subtle flex h-full flex-col p-5 md:p-6 ${contentCardClassName}`}>
             <div>
               <p className="eyebrow text-[color:var(--color-text-muted)]">
                 Listing summary
@@ -285,7 +293,7 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="panel-subtle flex h-full flex-col p-4">
+          <div className={`panel-subtle flex h-full flex-col p-4 ${contentCardClassName}`}>
             <div className="px-1 pb-3">
               <p className="eyebrow text-[color:var(--color-text-muted)]">
                 Product image
@@ -347,7 +355,7 @@ export function HomePage() {
               to="/signup"
               className={buttonClassName({
                 variant: 'primary',
-                className: 'w-full sm:w-auto',
+                className: `w-full sm:w-auto ${ctaPrimaryClassName}`,
               })}
             >
               Create account
@@ -356,7 +364,7 @@ export function HomePage() {
               to="/login"
               className={buttonClassName({
                 variant: 'secondary',
-                className: 'w-full sm:w-auto',
+                className: `w-full sm:w-auto ${ctaSecondaryClassName}`,
               })}
             >
               Sign in
