@@ -63,24 +63,24 @@ export function HomePage() {
     'text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]'
 
   return (
-    <div className="space-y-16 md:space-y-22">
-      <section className="section-shell practical-grid relative overflow-hidden px-5 py-8 md:px-10 md:py-12 lg:px-12 lg:py-14">
+    <div className="space-y-12 md:space-y-16">
+      <section className="section-shell practical-grid relative overflow-hidden px-5 py-6 md:px-10 md:py-8 lg:px-12 lg:py-10">
         <div aria-hidden="true" className="decor-orb-primary pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full" />
         <div aria-hidden="true" className="decor-orb-accent pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full" />
 
-        <div className="relative grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:gap-12">
-          <div>
+        <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:gap-8">
+          <div className="space-y-4">
             <p className={sectionLabelClassName}>
               Built for practical selling teams
             </p>
-            <h1 className="mt-5 max-w-2xl text-[2.85rem] font-extrabold leading-[0.94] tracking-[-0.065em] text-[color:var(--color-text)] md:text-[4.7rem]">
+            <h1 className="max-w-2xl text-[2.85rem] font-extrabold leading-[0.94] tracking-[-0.065em] text-[color:var(--color-text)] md:text-[4.7rem]">
               Turn rough product notes into listings that sell.
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-7 text-[color:var(--color-text-secondary)] md:text-lg">
+            <p className="max-w-lg text-base leading-7 text-[color:var(--color-text-secondary)] md:text-lg">
               Generate a clear title, sharp bullets, a usable description, and price guidance in one focused workflow.
             </p>
 
-            <div className="mt-8 grid max-w-sm grid-cols-1 gap-3 sm:max-w-none sm:flex sm:flex-wrap">
+            <div className="grid max-w-sm grid-cols-1 gap-3 sm:max-w-none sm:flex sm:flex-wrap">
               <Link
                 to="/signup"
                 className={buttonClassName({ variant: 'primary', size: 'lg', className: 'w-full sm:w-auto' })}
@@ -95,7 +95,7 @@ export function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
               <div className="surface-elevated rounded-xl border p-4">
                 <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">To first draft</p>
                 <p className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">60s</p>
@@ -111,7 +111,7 @@ export function HomePage() {
             </div>
           </div>
 
-          <Card className="relative overflow-hidden p-4 md:p-5">
+          <Card className="relative mt-6 w-full max-w-md overflow-hidden p-4 md:justify-self-end md:p-5 lg:mt-0">
             <div className="panel-subtle p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -124,9 +124,9 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="space-y-4 pt-4">
+            <div className="space-y-3 pt-3">
               <div className="surface-elevated overflow-hidden p-0 shadow-none">
-                <div className="relative aspect-[16/10] max-h-[18rem] w-full overflow-hidden p-4 text-[color:var(--color-primary-foreground)]">
+                <div className="relative aspect-[16/10] max-h-[16rem] w-full overflow-hidden p-4 text-[color:var(--color-primary-foreground)]">
                   <img
                     src={demoHeadphoneImageUrl}
                     alt="Wireless over-ear headphones"
@@ -148,19 +148,16 @@ export function HomePage() {
                 </div>
               </div>
 
-              <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_12rem]">
-                <div className="panel-subtle p-4">
+              <div className="grid grid-cols-[1fr_auto] items-start gap-3">
+                <div className="min-w-0">
                   <p className="eyebrow text-[color:var(--color-text-muted)]">Output</p>
-                  <ul className="mt-3 space-y-2 text-base leading-7 text-[color:var(--color-text-secondary)]">
-                    <li>Adaptive ANC for commute, work, and travel.</li>
-                    <li>Lightweight fold-flat build with padded comfort.</li>
-                    <li>USB-C fast charge and 40-hour battery headline.</li>
-                  </ul>
+                  <p className="mt-2 line-clamp-2 max-w-[30ch] text-sm leading-5 text-[color:var(--color-text-secondary)]">
+                    Adaptive ANC for commute and travel. USB-C fast charge • 40h battery.
+                  </p>
                 </div>
-                <div className="surface-elevated p-4">
-                  <p className="eyebrow text-[color:var(--color-text-muted)]">Price guide</p>
-                  <p className="mt-3 text-3xl font-bold tracking-[-0.05em]">$89</p>
-                  <p className="text-base text-[color:var(--color-text-secondary)]">to $109</p>
+                <div className="justify-self-end text-right">
+                  <p className="eyebrow text-[11px] text-[color:var(--color-text-muted)]">Price guide</p>
+                  <p className="mt-2 whitespace-nowrap text-2xl font-bold tracking-[-0.05em] text-[color:var(--color-text)]">$89–$109</p>
                 </div>
               </div>
             </div>

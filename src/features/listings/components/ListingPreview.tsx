@@ -11,10 +11,10 @@ import {
 } from '../../../components/ui/Card'
 import { Input } from '../../../components/ui/Input'
 import { Textarea } from '../../../components/ui/Textarea'
+import { cn } from '../../../lib/utils'
+import type { ListingDraft } from '../types'
 import { ListingThumbnail } from './ListingThumbnail'
 import { getListingStatus } from './listingVisuals'
-import type { ListingDraft } from '../types'
-import { cn } from '../../../lib/utils'
 
 type ListingPreviewProps = {
   className?: string
@@ -47,8 +47,8 @@ export function ListingPreview({
 }: ListingPreviewProps) {
   const bulletGroupId = useId()
   const status = getListingStatus(draft)
-  const sectionLabelClassName =
-    'text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]'
+  const priceLabel = `$${draft.price_min.toLocaleString()} - $${draft.price_max.toLocaleString()}`
+  const sectionLabelClassName = 'workspace-label'
 
   function updateBullet(index: number, nextValue: string) {
     const nextBullets = [...draft.bullet_points]
@@ -68,7 +68,7 @@ export function ListingPreview({
   }
 
   return (
-    <Card className={cn('relative w-full min-w-0 overflow-hidden p-0 md:p-0', className)}>
+    <Card className={cn('workspace-shell relative w-full min-w-0 overflow-hidden p-0 md:p-0', className)}>
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
       <CardHeader className="px-5 pb-0 pt-5">
         <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
@@ -82,57 +82,55 @@ export function ListingPreview({
       </CardHeader>
 
       <CardContent className="min-w-0 px-5 pb-5">
-        <section className="mx-auto w-full max-w-[34rem] 2xl:mx-0 2xl:max-w-none">
-          {imageUrl ? (
-            <ListingThumbnail
-              className="aspect-[16/9] max-h-[20rem] lg:max-h-[22rem]"
-              title={draft.title}
-              subtitle={`$${draft.price_min.toLocaleString()} - $${draft.price_max.toLocaleString()}`}
-              src={imageUrl}
-              showFallbackLabel
-              alt={`${draft.title || 'Listing'} preview image`}
-            />
-          ) : (
-            <div className="practical-grid image-frame aspect-[16/10] max-h-[22rem] border-dashed p-5">
-              <div className="flex h-full flex-col items-center justify-center text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-text-muted)] shadow-[var(--shadow-sm)]">
-                  <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden="true">
-                    <path
-                      d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Zm2.5-.5a.5.5 0 0 0-.5.5v8.37l3.53-3.52a1.5 1.5 0 0 1 2.12 0l1.65 1.64 2.94-2.94a1.5 1.5 0 0 1 2.12 0L18 11.42V7.5a.5.5 0 0 0-.5-.5h-11ZM18 14.25l-1.17-1.17a.5.5 0 0 0-.71 0l-2.94 2.94a1.5 1.5 0 0 1-2.12 0l-1.65-1.64a.5.5 0 0 0-.71 0L6 17h11.5a.5.5 0 0 0 .5-.5v-2.25ZM9 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-                      fill="currentColor"
-                    />
-                  </svg>
+        <div className="space-y-5">
+          <section className="workspace-canvas p-4 sm:p-5">
+            <p className={sectionLabelClassName}>Image</p>
+            <div className="mx-auto mt-4 w-full max-w-[34rem]">
+              {imageUrl ? (
+                <ListingThumbnail
+                  className="aspect-[16/9] max-h-[20rem] lg:max-h-[22rem]"
+                  title={draft.title}
+                  subtitle={priceLabel}
+                  src={imageUrl}
+                  showFallbackLabel
+                  alt={`${draft.title || 'Listing'} preview image`}
+                />
+              ) : (
+                <div className="practical-grid image-frame aspect-[16/10] max-h-[22rem] border-dashed p-5">
+                  <div className="flex h-full flex-col items-center justify-center text-center">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-text-muted)] shadow-[var(--shadow-sm)]">
+                      <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden="true">
+                        <path
+                          d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Zm2.5-.5a.5.5 0 0 0-.5.5v8.37l3.53-3.52a1.5 1.5 0 0 1 2.12 0l1.65 1.64 2.94-2.94a1.5 1.5 0 0 1 2.12 0L18 11.42V7.5a.5.5 0 0 0-.5-.5h-11ZM18 14.25l-1.17-1.17a.5.5 0 0 0-.71 0l-2.94 2.94a1.5 1.5 0 0 1-2.12 0l-1.65-1.64a.5.5 0 0 0-.71 0L6 17h11.5a.5.5 0 0 0 .5-.5v-2.25ZM9 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </div>
+                    <p className="mt-4 text-lg font-bold tracking-[-0.03em] text-[color:var(--color-text)]">No product image yet</p>
+                    <p className="mt-2 max-w-sm text-base leading-7 text-[color:var(--color-text-secondary)]">
+                      Upload a product image to show the real item here. Text-only drafts keep the preview focused on the generated copy.
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-4 text-lg font-bold tracking-[-0.03em] text-[color:var(--color-text)]">No product image yet</p>
-                <p className="mt-2 max-w-sm text-base leading-7 text-[color:var(--color-text-secondary)]">
-                  Upload a product image to show the real item here. Text-only drafts keep the preview focused on the generated copy.
-                </p>
-              </div>
-            </div>
-          )}
-        </section>
-
-        <section className="mx-auto w-full max-w-[34rem] space-y-5 2xl:mx-0 2xl:max-w-none">
-          <section className="panel-subtle p-4 sm:p-5">
-            <div className="space-y-2.5">
-              <label
-                htmlFor="preview-title"
-                className={sectionLabelClassName}
-              >
-                Title
-              </label>
-              <Input
-                id="preview-title"
-                value={draft.title}
-                onChange={(event) => onChange({ ...draft, title: event.target.value })}
-                placeholder="Listing title"
-                className="min-w-0 bg-[color:var(--color-surface)] shadow-none"
-              />
+              )}
             </div>
           </section>
 
-          <section className="panel-subtle p-4 sm:p-5">
-            <div className="space-y-3.5">
+          <div className="space-y-2.5 px-1">
+            <label htmlFor="preview-title" className={sectionLabelClassName}>
+              Title
+            </label>
+            <Input
+              id="preview-title"
+              value={draft.title}
+              onChange={(event) => onChange({ ...draft, title: event.target.value })}
+              placeholder="Listing title"
+              className="min-w-0 bg-[color:var(--color-surface)] shadow-none"
+            />
+          </div>
+
+          <section className="workspace-canvas p-5 sm:p-6">
+            <div className="space-y-4">
               <p id={bulletGroupId} className={sectionLabelClassName}>
                 Bullet points
               </p>
@@ -176,78 +174,66 @@ export function ListingPreview({
             </div>
           </section>
 
-          <section className="panel-subtle p-4 sm:p-5">
-            <div className="space-y-2.5">
-              <label
-                htmlFor="preview-description"
-                className={sectionLabelClassName}
-              >
+          <section className="workspace-canvas p-5 sm:p-6">
+            <div className="space-y-3">
+              <label htmlFor="preview-description" className={sectionLabelClassName}>
                 Description
               </label>
               <Textarea
                 id="preview-description"
                 value={draft.description}
                 onChange={(event) => onChange({ ...draft, description: event.target.value })}
-                rows={7}
-                className="min-h-52 bg-[color:var(--color-surface)] shadow-none"
+                rows={8}
+                className="min-h-60 bg-[color:var(--color-surface)] shadow-none"
                 placeholder="Listing description"
               />
             </div>
           </section>
 
-          <div className="grid gap-4 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <section className="surface-elevated min-w-0 self-start p-4 sm:p-5">
-              <p className={sectionLabelClassName}>Price range</p>
-              <p className="mt-3 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
-                ${draft.price_min.toLocaleString()} - ${draft.price_max.toLocaleString()}
-              </p>
-              <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
-                Adjust in the generated prompt if market comps suggest a tighter range.
-              </p>
-            </section>
+          <section className="workspace-canvas p-4 sm:p-5">
+            <p className={sectionLabelClassName}>Price range</p>
+            <p className="mt-3 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
+              {priceLabel}
+            </p>
+            <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
+              Adjust in the generated prompt if market comps suggest a tighter range.
+            </p>
+          </section>
 
-            <section className="panel-subtle p-4 sm:p-5">
-              <p className={sectionLabelClassName}>Actions</p>
-              <div className="mt-4 space-y-2.5">
-                <Button
-                  onClick={onSave}
-                  disabled={isSaving}
-                  size="md"
-                  className="w-full whitespace-nowrap"
-                >
-                  {isSaving ? 'Saving...' : 'Save listing'}
-                </Button>
-                <Button variant="secondary" size="md" onClick={onCopy} className="w-full whitespace-nowrap">
-                  Copy listing
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={onRegenerate}
-                  disabled={!canRegenerate || isRegenerating}
-                  className="w-full whitespace-nowrap"
-                >
-                  {isRegenerating ? 'Regenerating...' : 'Regenerate'}
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={onReset}
-                  className="w-full whitespace-nowrap border border-[color:var(--color-error-border)] text-[color:var(--color-error-text)] hover:border-[color:var(--color-danger)]/35 hover:bg-[color:var(--color-error-bg)] hover:text-[color:var(--color-error-text)]"
-                >
-                  Reset draft
-                </Button>
-              </div>
-            </section>
-          </div>
-        </section>
+          <section className="workspace-sidebar-panel p-4 sm:p-5">
+            <p className={sectionLabelClassName}>Actions</p>
+            <div className="mt-4 space-y-2.5">
+              <Button onClick={onSave} disabled={isSaving} size="md" className="w-full whitespace-nowrap">
+                {isSaving ? 'Saving...' : 'Save listing'}
+              </Button>
+              <Button variant="secondary" size="md" onClick={onCopy} className="w-full whitespace-nowrap">
+                Copy listing
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                onClick={onRegenerate}
+                disabled={!canRegenerate || isRegenerating}
+                className="w-full whitespace-nowrap"
+              >
+                {isRegenerating ? 'Regenerating...' : 'Regenerate'}
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                onClick={onReset}
+                className="w-full whitespace-nowrap border border-[color:var(--color-error-border)] text-[color:var(--color-error-text)] hover:border-[color:var(--color-danger)]/35 hover:bg-[color:var(--color-error-bg)] hover:text-[color:var(--color-error-text)]"
+              >
+                Reset draft
+              </Button>
+            </div>
+          </section>
+        </div>
+
+        {saveError ? (
+          <p className="mt-4 text-sm font-medium text-[color:var(--color-danger)]">{saveError}</p>
+        ) : null}
       </CardContent>
-
-      {saveError ? (
-        <p className="px-5 pb-5 text-sm font-medium text-[color:var(--color-danger)]">
-          {saveError}
-        </p>
-      ) : null}
     </Card>
   )
 }

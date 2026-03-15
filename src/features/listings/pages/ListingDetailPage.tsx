@@ -161,6 +161,7 @@ export function ListingDetailPage() {
     minPrice && maxPrice ? `${minPrice} - ${maxPrice}` : (minPrice ?? maxPrice ?? 'N/A')
   const status = getListingStatus(listing)
   const createdLabel = new Date(listing.created_at).toLocaleString()
+  const sectionLabelClassName = 'workspace-label'
 
   async function copyText(text: string, successMessage: string) {
     try {
@@ -266,13 +267,14 @@ export function ListingDetailPage() {
         </div>
       </header>
 
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 space-y-6 lg:col-span-8">
-          <section className="surface-elevated overflow-hidden p-4 sm:p-5">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_18rem] xl:items-start">
+        <div className="space-y-5">
+          <section className="workspace-shell overflow-hidden p-4 sm:p-5">
             <div
               aria-hidden="true"
               className="preview-media-gradient -mx-4 -mt-4 mb-4 h-1.5 sm:-mx-5 sm:-mt-5"
             />
+            <p className={sectionLabelClassName}>Image</p>
             <div className="mx-auto w-full max-w-[44rem]">
               <ListingThumbnail
                 className="aspect-[16/10] w-full"
@@ -286,11 +288,16 @@ export function ListingDetailPage() {
             </div>
           </section>
 
-          <section className="panel-subtle p-4 sm:p-5">
+          <section className="workspace-canvas p-4 sm:p-5">
+            <p className={sectionLabelClassName}>Title</p>
+            <h2 className="mt-3 break-words text-[1.55rem] font-semibold tracking-[-0.04em] text-[color:var(--color-text)]">
+              {listing.title}
+            </h2>
+          </section>
+
+          <section className="workspace-canvas p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                Bullet points
-              </p>
+              <p className={sectionLabelClassName}>Bullet points</p>
               {listing.bullet_points.length > 0 ? (
                 <Button
                   variant="ghost"
@@ -321,11 +328,9 @@ export function ListingDetailPage() {
             </div>
           </section>
 
-          <section className="panel-subtle p-4 sm:p-5">
+          <section className="workspace-canvas p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                Description
-              </p>
+              <p className={sectionLabelClassName}>Description</p>
               {listing.description.trim() ? (
                 <Button
                   variant="ghost"
@@ -344,24 +349,23 @@ export function ListingDetailPage() {
               </p>
             </div>
           </section>
+
+          <section className="workspace-canvas p-4 sm:p-5">
+            <p className={sectionLabelClassName}>Price</p>
+            <p className="mt-3 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
+              {priceLabel}
+            </p>
+            <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
+              Saved range stays attached to the listing so copy and review stay in the same workspace context.
+            </p>
+          </section>
         </div>
 
-        <aside className="col-span-12 lg:col-span-4">
-          <div className="space-y-4 lg:sticky lg:top-6">
-            <section className="surface-elevated p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                Info
-              </p>
-              <div className="mt-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                  Price range
-                </p>
-                <p className="mt-2 text-3xl font-extrabold tracking-[-0.05em] text-[color:var(--color-text)]">
-                  {priceLabel}
-                </p>
-              </div>
-
-              <dl className="mt-4 space-y-3 border-t border-[color:var(--color-border)] pt-4">
+        <aside>
+          <div className="space-y-4 xl:sticky xl:top-6">
+            <section className="workspace-sidebar-panel p-4 sm:p-5">
+              <p className={sectionLabelClassName}>Metadata</p>
+              <dl className="mt-4 space-y-3">
                 <div className="flex items-center justify-between gap-3 text-sm">
                   <dt className="text-[color:var(--color-text-muted)]">Currency</dt>
                   <dd className="font-semibold text-[color:var(--color-text)]">
@@ -370,8 +374,8 @@ export function ListingDetailPage() {
                 </div>
                 <div className="flex items-center justify-between gap-3 text-sm">
                   <dt className="text-[color:var(--color-text-muted)]">Status</dt>
-                  <dd className="font-semibold text-[color:var(--color-text)]">
-                    {status}
+                  <dd>
+                    <Badge variant={status === 'READY' ? 'success' : 'warning'}>{status}</Badge>
                   </dd>
                 </div>
                 <div className="flex items-start justify-between gap-3 text-sm">
@@ -380,13 +384,17 @@ export function ListingDetailPage() {
                     {createdLabel}
                   </dd>
                 </div>
+                <div className="workspace-divider pt-3">
+                  <dt className="text-sm text-[color:var(--color-text-muted)]">Price range</dt>
+                  <dd className="mt-2 text-xl font-extrabold tracking-[-0.04em] text-[color:var(--color-text)]">
+                    {priceLabel}
+                  </dd>
+                </div>
               </dl>
             </section>
 
-            <section className="panel-subtle p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-muted)]">
-                Actions
-              </p>
+            <section className="workspace-sidebar-panel p-4 sm:p-5">
+              <p className={sectionLabelClassName}>Actions</p>
               <div className="mt-4 space-y-2.5">
                 <Button
                   variant="primary"
@@ -399,7 +407,7 @@ export function ListingDetailPage() {
                 <Link
                   to="/app"
                   className={buttonClassName({
-                    variant: 'ghost',
+                    variant: 'secondary',
                     size: 'md',
                     className: 'w-full',
                   })}
@@ -408,7 +416,7 @@ export function ListingDetailPage() {
                 </Link>
                 <Button
                   variant="destructive"
-                  size="sm"
+                  size="md"
                   onClick={handleDelete}
                   disabled={deleteMutation.isPending}
                   className="w-full"

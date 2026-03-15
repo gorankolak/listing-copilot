@@ -492,7 +492,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
 
   return (
     <>
-      <Card className="relative overflow-hidden p-0">
+      <Card className="workspace-shell relative overflow-hidden p-0">
         <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
         <CardHeader className="px-5 pb-0 pt-5">
           <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
@@ -547,7 +547,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               <div className="space-y-3">
                 <label
                   htmlFor="listing-image-upload"
-                  className="eyebrow text-[color:var(--color-text-muted)]"
+                  className="workspace-label"
                 >
                   Product image
                 </label>
@@ -567,7 +567,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               <div className="space-y-3">
                 <label
                   htmlFor="listing-text-input"
-                  className="eyebrow text-[color:var(--color-text-muted)]"
+                  className="workspace-label"
                 >
                   Product details
                 </label>
@@ -587,7 +587,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
               </div>
             )}
 
-            <div className="panel-subtle p-4">
+            <div className="workspace-sidebar-panel p-4">
               <Button type="submit" disabled={isSubmitDisabled} fullWidth size="lg">
                 {isSubmitting ? 'Generating listing...' : 'Generate listing'}
               </Button>

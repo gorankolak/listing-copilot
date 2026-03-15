@@ -99,10 +99,10 @@ export function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(20rem,0.9fr)_minmax(0,1.1fr)] xl:items-start">
+      <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(20rem,0.88fr)_minmax(0,1.12fr)] xl:items-start">
         <section aria-labelledby="generate-listing-heading" className="min-w-0">
           <header className="mb-4 flex flex-col xl:min-h-[7.75rem]">
-            <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Input</p>
+            <p className="workspace-label">Input</p>
             <h2
               id="generate-listing-heading"
               className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
@@ -124,7 +124,7 @@ export function DashboardPage() {
           className="flex w-full max-w-full min-w-0 flex-col items-stretch"
         >
           <header className="mb-4 flex flex-col xl:min-h-[7.75rem]">
-            <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Output</p>
+            <p className="workspace-label">Output</p>
             <h2
               id="listing-preview-heading"
               className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
@@ -136,7 +136,7 @@ export function DashboardPage() {
             </p>
           </header>
           {!hasDraftPreview ? (
-            <div className="section-shell practical-grid p-5 text-center sm:p-5">
+            <div className="workspace-shell practical-grid p-5 text-center sm:p-5">
               <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-primary)] shadow-[var(--shadow-sm)]">
                 <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                   <path
@@ -160,7 +160,7 @@ export function DashboardPage() {
       <section aria-labelledby="saved-listings-heading" className="mt-10">
         <header className="mb-4 flex items-center justify-between gap-2">
           <div>
-            <p className="eyebrow w-fit text-[color:var(--color-text-muted)]">Library</p>
+            <p className="workspace-label">Library</p>
             <h2
               id="saved-listings-heading"
               className="workspace-section-heading mt-2 text-[color:var(--color-text)]"

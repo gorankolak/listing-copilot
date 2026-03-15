@@ -244,6 +244,42 @@ button:disabled,
   color: var(--color-text-secondary);
 }
 
+.workspace-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.workspace-shell {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface) 94%, var(--color-surface-muted) 6%) 0%,
+    var(--color-surface) 100%
+  );
+  box-shadow: var(--shadow-sm);
+}
+
+.workspace-canvas {
+  border-radius: var(--radius-card-secondary);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.workspace-sidebar-panel {
+  border-radius: var(--radius-card-secondary);
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface-muted) 72%, white 28%);
+}
+
+.workspace-divider {
+  border-top: 1px solid var(--color-border);
+}
+
 .card-title {
   font-size: 1.125rem;
   line-height: 1.2;
