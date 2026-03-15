@@ -59,6 +59,8 @@ export function HomePage() {
     'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1200&q=80'
   const demoMugImageUrl =
     'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=1200&q=80'
+  const sectionLabelClassName =
+    'text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]'
 
   return (
     <div className="space-y-16 md:space-y-22">
@@ -68,10 +70,10 @@ export function HomePage() {
 
         <div className="relative grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:items-center lg:gap-12">
           <div>
-            <p className="eyebrow w-fit rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-1 text-[color:var(--color-text-secondary)]">
+            <p className={sectionLabelClassName}>
               Built for practical selling teams
             </p>
-            <h1 className="mt-5 max-w-xl text-[2.85rem] font-extrabold leading-[0.94] tracking-[-0.065em] text-[color:var(--color-text)] md:text-[4.7rem]">
+            <h1 className="mt-5 max-w-2xl text-[2.85rem] font-extrabold leading-[0.94] tracking-[-0.065em] text-[color:var(--color-text)] md:text-[4.7rem]">
               Turn rough product notes into listings that sell.
             </h1>
             <p className="mt-5 max-w-lg text-base leading-7 text-[color:var(--color-text-secondary)] md:text-lg">
@@ -94,17 +96,17 @@ export function HomePage() {
             </div>
 
             <div className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="surface-elevated px-4 py-4">
-                <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">60s</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">To first draft</p>
+              <div className="surface-elevated rounded-xl border p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">To first draft</p>
+                <p className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">60s</p>
               </div>
-              <div className="surface-elevated px-4 py-4">
-                <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">3x</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Faster edits</p>
+              <div className="surface-elevated rounded-xl border p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">Faster edits</p>
+                <p className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">3x</p>
               </div>
-              <div className="surface-elevated px-4 py-4">
-                <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">1 flow</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Input to saved</p>
+              <div className="surface-elevated rounded-xl border p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)]">Input to saved</p>
+                <p className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">1 flow</p>
               </div>
             </div>
           </div>
@@ -168,7 +170,7 @@ export function HomePage() {
 
       <section className="space-y-6 md:space-y-7">
         <div className="max-w-2xl space-y-2">
-          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
+          <p className={sectionLabelClassName}>
             Workflow
           </p>
           <h2 className="section-heading max-w-xl">
@@ -197,7 +199,7 @@ export function HomePage() {
 
       <section className="section-shell overflow-hidden p-6 md:p-8 lg:p-10">
         <div className="max-w-2xl">
-          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
+          <p className={sectionLabelClassName}>
             Example output
           </p>
           <h2 className="section-heading mt-4">
@@ -239,12 +241,12 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="panel-subtle flex h-full flex-col p-3">
+          <div className="panel-subtle flex h-full flex-col p-4">
             <div className="px-1 pb-3">
               <p className="eyebrow text-[color:var(--color-text-muted)]">Product image</p>
             </div>
             <div className="surface-elevated flex-1 overflow-hidden p-0">
-              <div className="relative h-full min-h-[320px] max-h-[26rem] text-[color:var(--color-primary-foreground)]">
+              <div className="relative aspect-[4/3] h-full min-h-[320px] max-h-[26rem] text-[color:var(--color-primary-foreground)]">
                 <img
                   src={demoMugImageUrl}
                   alt="Ceramic coffee mug product photo"
@@ -285,13 +287,13 @@ export function HomePage() {
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
               to="/signup"
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-button)] bg-white px-5 text-sm font-semibold text-[color:var(--color-text)] shadow-[var(--shadow-sm)] transition hover:bg-white/92"
+              className={buttonClassName({ variant: 'primary', className: 'w-full sm:w-auto' })}
             >
               Create account
             </Link>
             <Link
               to="/login"
-              className="inline-flex h-11 items-center justify-center rounded-[var(--radius-button)] border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/16"
+              className={buttonClassName({ variant: 'secondary', className: 'w-full sm:w-auto' })}
             >
               Sign in
             </Link>

@@ -494,7 +494,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
     <>
       <Card className="relative overflow-hidden p-0">
         <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-[image:var(--gradient-primary)]" />
-        <CardHeader className="px-6 pb-0 pt-7 md:px-7">
+        <CardHeader className="px-5 pb-0 pt-5">
           <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
             Input
           </p>
@@ -503,7 +503,7 @@ export function ListingGenerator({ previewPortalId, onDraftPresenceChange }: Lis
             Choose image upload or text notes, then generate a draft for the editor.
           </CardDescription>
         </CardHeader>
-        <CardContent className={cn('relative px-6 pb-6 md:px-7 md:pb-7', isOverlayActive && 'min-h-[36rem]')}>
+        <CardContent className={cn('relative px-5 pb-5', isOverlayActive && 'min-h-[36rem]')}>
           <GeneratingOverlay
             visible={isGeneratingOverlayVisible}
             stepIndex={generatingStepIndex}

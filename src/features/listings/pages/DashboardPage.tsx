@@ -136,7 +136,7 @@ export function DashboardPage() {
             </p>
           </header>
           {!hasDraftPreview ? (
-            <div className="section-shell practical-grid p-8 text-center md:p-10">
+            <div className="section-shell practical-grid p-5 text-center sm:p-5">
               <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-primary)] shadow-[var(--shadow-sm)]">
                 <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden="true">
                   <path
