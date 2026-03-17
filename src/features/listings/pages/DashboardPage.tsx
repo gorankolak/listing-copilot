@@ -31,11 +31,11 @@ export function DashboardPage() {
   const [showAllListings, setShowAllListings] = useState(false)
   const [hasDraftPreview, setHasDraftPreview] = useState(false)
   const [toast, setToast] = useState<ToastMessage | null>(
-    (location.state as { toast?: ToastMessage } | null)?.toast ?? null
+    (location.state as { toast?: ToastMessage } | null)?.toast ?? null,
   )
   const listingCount = listingsQuery.data?.length ?? 0
   const recentListings = (listingsQuery.data ?? []).slice(0, 3)
-  const visibleListings = showAllListings ? listingsQuery.data ?? [] : recentListings
+  const visibleListings = showAllListings ? (listingsQuery.data ?? []) : recentListings
 
   useEffect(() => {
     if ((location.state as { toast?: ToastMessage } | null)?.toast) {
@@ -61,55 +61,64 @@ export function DashboardPage() {
         },
       })
     })
-  }, [
-    listingsQuery.error,
-    location.hash,
-    location.pathname,
-    location.search,
-    navigate,
-  ])
+  }, [listingsQuery.error, location.hash, location.pathname, location.search, navigate])
 
   return (
     <section>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <div className="max-w-2xl">
-          <p className="eyebrow w-fit rounded-full bg-[color:var(--color-warning-bg)] px-3 py-1 text-[color:var(--color-warning-text)]">
-            Listing workspace
-          </p>
-          <h1 className="workspace-heading mt-4 text-[color:var(--color-text)]">
-            Generate, polish, and save stronger listings.
-          </h1>
-          <p className="workspace-supporting-text mt-3 max-w-xl">
-            Start from an image or rough notes, review the output beside it, then save the final draft.
+        <div className="max-w-[34rem]">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <h1 className="workspace-heading text-[color:var(--color-text)]">
+              Generate, polish, and save stronger listings.
+            </h1>
+            <span className="workspace-label rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface-muted)] px-2.5 py-1 opacity-80">
+              Workspace
+            </span>
+          </div>
+          <p className="workspace-supporting-text mt-2 max-w-[32rem]">
+            Start from an image or rough notes, review the output beside it, then save the
+            final draft.
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3 sm:w-auto">
           <div className="surface-elevated px-4 py-3">
-            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">{listingCount}</p>
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Saved</p>
+            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+              {listingCount}
+            </p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">
+              Saved
+            </p>
           </div>
           <div className="surface-elevated px-4 py-3">
-            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">{hasDraftPreview ? '1' : '0'}</p>
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Active draft</p>
+            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+              {hasDraftPreview ? '1' : '0'}
+            </p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">
+              Active draft
+            </p>
           </div>
           <div className="surface-elevated px-4 py-3">
-            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">2</p>
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">Modes</p>
+            <p className="text-2xl font-bold tracking-[-0.04em] text-[color:var(--color-text)]">
+              2
+            </p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[color:var(--color-text-muted)]">
+              Modes
+            </p>
           </div>
         </div>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(20rem,0.88fr)_minmax(0,1.12fr)] xl:items-start">
         <section aria-labelledby="generate-listing-heading" className="min-w-0">
-          <header className="mb-4 flex flex-col xl:min-h-[7.75rem]">
+          <header className="mb-4 flex flex-col gap-2 xl:min-h-[7.75rem]">
             <p className="workspace-label">Input</p>
             <h2
               id="generate-listing-heading"
-              className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
+              className="workspace-section-heading text-[color:var(--color-text)]"
             >
               Generate a listing draft
             </h2>
-            <p className="workspace-supporting-text mt-2 max-w-lg">
+            <p className="workspace-supporting-text max-w-lg">
               Add an image or text notes, then generate a structured draft for the editor.
             </p>
           </header>
@@ -123,16 +132,17 @@ export function DashboardPage() {
           aria-labelledby="listing-preview-heading"
           className="flex w-full max-w-full min-w-0 flex-col items-stretch"
         >
-          <header className="mb-4 flex flex-col xl:min-h-[7.75rem]">
+          <header className="mb-4 flex flex-col gap-2 xl:min-h-[7.75rem]">
             <p className="workspace-label">Output</p>
             <h2
               id="listing-preview-heading"
-              className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
+              className="workspace-section-heading text-[color:var(--color-text)]"
             >
               Preview and editor
             </h2>
-            <p className="workspace-supporting-text mt-2 max-w-xl">
-              This is the core workflow: inspect the draft, tighten copy, then save or copy it.
+            <p className="workspace-supporting-text max-w-xl">
+              This is the core workflow: inspect the draft, tighten copy, then save or
+              copy it.
             </p>
           </header>
           {!hasDraftPreview ? (
@@ -149,25 +159,29 @@ export function DashboardPage() {
                 Your draft editor appears here
               </h3>
               <p className="mx-auto mt-2 max-w-md text-base leading-7 text-[color:var(--color-text-secondary)]">
-                Add product input on the left and generate a draft to begin the polish-and-save workflow.
+                Add product input on the left and generate a draft to begin the
+                polish-and-save workflow.
               </p>
             </div>
           ) : null}
-          <div id="dashboard-listing-preview-slot" className="flex w-full max-w-full min-w-0 flex-col items-stretch" />
+          <div
+            id="dashboard-listing-preview-slot"
+            className="flex w-full max-w-full min-w-0 flex-col items-stretch"
+          />
         </section>
       </div>
 
-      <section aria-labelledby="saved-listings-heading" className="mt-10">
+      <section aria-labelledby="saved-listings-heading" className="mt-8">
         <header className="mb-4 flex items-center justify-between gap-2">
-          <div>
+          <div className="flex flex-col gap-2">
             <p className="workspace-label">Library</p>
             <h2
               id="saved-listings-heading"
-              className="workspace-section-heading mt-2 text-[color:var(--color-text)]"
+              className="workspace-section-heading text-[color:var(--color-text)]"
             >
               Recent listings
             </h2>
-            <p className="workspace-supporting-text mt-2">
+            <p className="workspace-supporting-text">
               Saved drafts and finished listings from your workspace.
             </p>
           </div>
@@ -187,9 +201,13 @@ export function DashboardPage() {
 
         {listingsQuery.isError ? (
           <ErrorBanner
-            className="mt-3"
+            className="mt-4"
             title="Could not load your listings"
-            message={listingsQuery.error instanceof Error ? listingsQuery.error.message : 'Please try again.'}
+            message={
+              listingsQuery.error instanceof Error
+                ? listingsQuery.error.message
+                : 'Please try again.'
+            }
           >
             <ErrorBannerActionButton onClick={() => listingsQuery.refetch()}>
               Retry
@@ -199,7 +217,7 @@ export function DashboardPage() {
 
         {listingsQuery.isLoading ? (
           <div
-            className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+            className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
             aria-label="Loading listings"
           >
             <div className="surface-elevated overflow-hidden p-0">
@@ -229,11 +247,9 @@ export function DashboardPage() {
           </div>
         ) : null}
 
-        {!listingsQuery.isLoading &&
-        !listingsQuery.isError &&
-        listingCount === 0 ? (
+        {!listingsQuery.isLoading && !listingsQuery.isError && listingCount === 0 ? (
           <EmptyState
-            className="mt-3"
+            className="mt-4"
             title="No saved listings yet"
             description="Generate your first listing to build out the workspace library."
           >
@@ -241,14 +257,14 @@ export function DashboardPage() {
           </EmptyState>
         ) : null}
 
-        {!listingsQuery.isLoading &&
-        !listingsQuery.isError &&
-        listingCount > 0 ? (
+        {!listingsQuery.isLoading && !listingsQuery.isError && listingCount > 0 ? (
           <div
             id="recent-listings"
-            className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+            className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
           >
-            {visibleListings.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
+            {visibleListings.map((listing) => (
+              <ListingCard key={listing.id} listing={listing} />
+            ))}
           </div>
         ) : null}
       </section>
@@ -257,7 +273,9 @@ export function DashboardPage() {
         <ToastViewport>
           <Toast variant={toast.variant ?? 'info'}>
             <ToastTitle>{toast.title}</ToastTitle>
-            {toast.description ? <ToastDescription>{toast.description}</ToastDescription> : null}
+            {toast.description ? (
+              <ToastDescription>{toast.description}</ToastDescription>
+            ) : null}
             <ToastCloseButton onClick={() => setToast(null)} />
           </Toast>
         </ToastViewport>
